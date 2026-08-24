@@ -1,8 +1,23 @@
+import Hero from "@/components/sections/Hero";
+import Services from "@/components/sections/Services";
+import AboutPreview from "@/components/sections/AboutPreview";
+import Stats from "@/components/sections/Stats";
+import FeaturedProject from "@/components/sections/FeaturedProject";
+import Testimonials from "@/components/sections/Testimonials";
+import BlogPreview from "@/components/sections/BlogPreview";
+import Newsletter from "@/components/sections/Newsletter";
+
 export default function HomePage() {
   return (
-    <div className="container mx-auto px-4 py-20">
-      <h1 className="text-4xl font-bold">Puskin and Partners</h1>
-      <p className="text-gray-600 mt-4">Homepage — bude implementováno v TASK-003</p>
-    </div>
+    <>
+      <Hero />
+      <Services />
+      <AboutPreview />
+      <Stats />
+      <FeaturedProject />
+      <Testimonials />
+      <BlogPreview />
+      <Newsletter />
+    </>
   );
 }
