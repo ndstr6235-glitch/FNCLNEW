@@ -9,20 +9,20 @@ export default function AboutPreview() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <AnimateIn>
             <p className="text-accent-600 font-medium uppercase tracking-wider text-sm mb-4">
-              O naší společnosti
+              O nás
             </p>
             <h2 className="font-heading text-3xl md:text-4xl font-bold text-primary-900 mb-6">
-              Více než 20 let na trhu
+              Stavíme v Praze od roku 2004
             </h2>
             <p className="text-neutral-600 leading-relaxed mb-4">
-              Puskin and Partners je přední česká společnost specializující se na development,
-              rekonstrukce a realitní služby. Od roku 2004 pomáháme našim klientům realizovat
-              jejich vize a budovat hodnoty, které přetrvávají generace.
+              Začínali jsme rekonstrukcemi bytů na Starém Městě. Dnes řídíme developerské
+              projekty, spravujeme nemovitosti a pomáháme investorům zhodnotit kapitál
+              v pražských realitách.
             </p>
             <p className="text-neutral-600 leading-relaxed mb-8">
-              Naším cílem je spojit moderní přístup s tradiční řemeslnou kvalitou. Každý projekt
-              bereme jako příležitost vytvořit něco výjimečného — ať už jde o kompletní
-              rekonstrukci historické budovy nebo development nového rezidenčního projektu.
+              Za 20 let jsme dokončili přes 230 projektů — od kompletních přestaveb historických
+              budov po novostavby rodinných vil. Pracujeme s vlastním týmem řemeslníků
+              a osvědčenými subdodavateli.
             </p>
             <Link
               href="/o-nas"
@@ -32,8 +32,18 @@ export default function AboutPreview() {
             </Link>
           </AnimateIn>
           <AnimateIn delay={200}>
-            <div className="aspect-[4/3] bg-gradient-to-br from-primary-200 to-primary-300 rounded-2xl flex items-center justify-center">
-              <p className="text-primary-600 font-medium">Fotografie týmu</p>
+            <div className="aspect-[4/3] bg-gradient-to-br from-neutral-100 via-primary-100 to-accent-50 rounded-2xl relative overflow-hidden">
+              <div className="absolute inset-0 flex flex-col items-center justify-center p-8">
+                <div className="w-20 h-20 rounded-full bg-primary-200/60 flex items-center justify-center mb-4">
+                  <svg className="w-10 h-10 text-primary-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8.25 21v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21m0 0h4.5V3.545M12.75 21h7.5V10.75M2.25 21h1.5m18 0h-18M2.25 9l4.5-1.636M18.75 3l-1.5.545m0 6.205l3 1m1.5.5l-1.5-.5M6.75 7.364V3h-3v18m3-13.636l10.5-3.819" />
+                  </svg>
+                </div>
+                <p className="text-primary-500 text-sm font-medium">Kancelář Rybná, Praha 1</p>
+              </div>
+              {/* Decorative grid lines */}
+              <div className="absolute top-6 left-6 w-16 h-16 border-l-2 border-t-2 border-primary-200/40" />
+              <div className="absolute bottom-6 right-6 w-16 h-16 border-r-2 border-b-2 border-accent-300/40" />
             </div>
           </AnimateIn>
         </div>

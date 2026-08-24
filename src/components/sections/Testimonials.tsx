@@ -2,40 +2,15 @@ import { Section, Container, Heading, Card } from "@/components/ui";
 import Icon from "@/components/ui/Icon";
 import AnimateIn from "@/components/ui/AnimateIn";
 
-const testimonials = [
-  {
-    text: "Profesionální přístup od první schůzky až po předání klíčů. Naprosto bezproblémová spolupráce.",
-    name: "Jana Nováková",
-    role: "Klientka — rekonstrukce bytu",
-    rating: 5,
-  },
-  {
-    text: "Investice do projektu s Puskin & Partners mi přinesla výnos přes 12%. Doporučuji všem investorům.",
-    name: "Martin Dvořák",
-    role: "Investor",
-    rating: 5,
-  },
-  {
-    text: "Rekonstrukce proběhla přesně podle harmonogramu a rozpočtu. Výsledek předčil naše očekávání.",
-    name: "Petr Svoboda",
-    role: "Klient — rekonstrukce domu",
-    rating: 5,
-  },
-  {
-    text: "Díky týmu Puskin & Partners jsme našli ideální byt v centru Prahy za vynikající cenu.",
-    name: "Eva Králová",
-    role: "Klientka — nákup nemovitosti",
-    rating: 5,
-  },
-];
+import { testimonials } from "@/data/testimonials";
 
 export default function Testimonials() {
   return (
     <Section>
       <Container>
         <AnimateIn>
-          <Heading subtitle="Přečtěte si, co o nás říkají naši klienti">
-            Co říkají naši klienti
+          <Heading subtitle="Konkrétní zkušenosti našich klientů">
+            Reference
           </Heading>
         </AnimateIn>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">

@@ -6,25 +6,29 @@ import Link from "next/link";
 const services = [
   {
     title: "Development",
-    description: "Komplexní developerské projekty od návrhu po realizaci.",
+    description:
+      "Rezidenční a komerční projekty v Praze a okolí. Od vyhledání pozemku přes projektovou dokumentaci po kolaudaci.",
     href: "/sluzby/development",
     icon: "building" as const,
   },
   {
     title: "Rekonstrukce",
-    description: "Kompletní rekonstrukce bytů a domů na klíč.",
+    description:
+      "Rekonstrukce bytů, domů i historických budov. Řídíme celý proces — stavbu, řemesla, interiér.",
     href: "/sluzby/rekonstrukce",
     icon: "hammer" as const,
   },
   {
     title: "Nemovitosti",
-    description: "Prodej, nákup a správa nemovitostí v Praze.",
+    description:
+      "Pomůžeme vám prodat, koupit nebo pronajmout nemovitost v Praze. Osobní přístup, ne call centrum.",
     href: "/sluzby/nemovitosti",
     icon: "key" as const,
   },
   {
     title: "Investice",
-    description: "Investice do nemovitostí s výnosem až 15% ročně.",
+    description:
+      "Vstupte do developerských projektů jako investor. Dva modely spolupráce podle výše vkladu.",
     href: "/sluzby/investice",
     icon: "chart" as const,
   },
@@ -35,7 +39,7 @@ export default function Services() {
     <Section background="light">
       <Container>
         <AnimateIn>
-          <Heading subtitle="Co pro vás můžeme udělat">Naše služby</Heading>
+          <Heading subtitle="Čtyři pilíře naší práce">Služby</Heading>
         </AnimateIn>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {services.map((service, i) => (

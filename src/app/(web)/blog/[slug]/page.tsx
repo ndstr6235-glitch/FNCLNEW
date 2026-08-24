@@ -55,8 +55,9 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                 {post.title}
               </h1>
             </div>
-            {/* Placeholder image */}
-            <div className="aspect-[21/9] bg-gradient-to-br from-neutral-200 to-neutral-300 rounded-xl mb-10" />
+            <div className="aspect-[21/9] bg-gradient-to-br from-primary-100 via-primary-50 to-accent-50 rounded-xl mb-10 flex items-center justify-center">
+              <span className="text-sm uppercase tracking-wider text-primary-300 font-medium">{post.category}</span>
+            </div>
             <div className="max-w-none">
               {post.content.map((paragraph, i) => (
                 <p key={i} className="text-neutral-700 text-lg leading-relaxed mb-6">

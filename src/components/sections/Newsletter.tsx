@@ -16,11 +16,11 @@ export default function Newsletter() {
       <Container size="md">
         <div className="text-center">
           <h2 className="font-heading text-3xl md:text-4xl font-bold text-white mb-4">
-            Zůstaňte v obraze
+            Newsletter
           </h2>
           <p className="text-primary-200 max-w-xl mx-auto mb-8">
-            Přihlaste se k odběru novinek a získejte přehled o aktuálních projektech,
-            investičních příležitostech a trendech na realitním trhu.
+            Nové projekty, investiční příležitosti a aktuality z pražského realitního trhu.
+            Jednou měsíčně, bez spamu.
           </p>
           <form onSubmit={handleSubmit} className="max-w-md mx-auto">
             <div className="flex gap-3">

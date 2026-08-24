@@ -15,15 +15,17 @@ export default function TeamGrid({ team }: TeamGridProps) {
     <Section>
       <Container>
         <AnimateIn>
-          <Heading subtitle="Seznamte se s lidmi, kteří stojí za našimi projekty">
-            Náš tým
-          </Heading>
+          <Heading subtitle="Lidé za projekty">Tým</Heading>
         </AnimateIn>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
           {team.map((member, i) => (
             <AnimateIn key={member.name} delay={i * 80}>
               <div className="text-center">
-                <div className="w-24 h-24 mx-auto rounded-full bg-gradient-to-br from-primary-200 to-primary-300 mb-4" />
+                <div className="w-24 h-24 mx-auto rounded-full bg-gradient-to-br from-primary-100 to-primary-200 mb-4 flex items-center justify-center">
+                  <span className="text-primary-500 font-heading font-bold text-xl">
+                    {member.name.split(" ").map((n) => n[0]).join("")}
+                  </span>
+                </div>
                 <h3 className="font-heading font-bold text-primary-900">{member.name}</h3>
                 <p className="text-sm text-neutral-500 mt-1">{member.role}</p>
               </div>

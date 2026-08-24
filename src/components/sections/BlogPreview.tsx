@@ -2,26 +2,9 @@ import { Section, Container, Heading, Card } from "@/components/ui";
 import AnimateIn from "@/components/ui/AnimateIn";
 import Link from "next/link";
 
-const blogPosts = [
-  {
-    title: "Jak investovat do nemovitostí v roce 2026",
-    excerpt: "Přehled aktuálních trendů a příležitostí na pražském realitním trhu.",
-    date: "2026-08-15",
-    slug: "jak-investovat-do-nemovitosti-2026",
-  },
-  {
-    title: "5 kroků k úspěšné rekonstrukci",
-    excerpt: "Kompletní průvodce rekonstrukcí od plánování po předání hotového projektu.",
-    date: "2026-08-01",
-    slug: "5-kroku-k-uspesne-rekonstrukci",
-  },
-  {
-    title: "Proč investovat do Prahy?",
-    excerpt: "Praha jako jedno z nejatraktivnějších měst pro investice do nemovitostí.",
-    date: "2026-07-20",
-    slug: "proc-investovat-do-prahy",
-  },
-];
+import { blogPosts as allPosts } from "@/data/blog";
+
+const blogPosts = allPosts.slice(0, 3);
 
 function formatDate(dateStr: string) {
   return new Date(dateStr).toLocaleDateString("cs-CZ", {
@@ -36,14 +19,15 @@ export default function BlogPreview() {
     <Section background="light">
       <Container>
         <AnimateIn>
-          <Heading subtitle="Novinky ze světa nemovitostí a investic">Z našeho blogu</Heading>
+          <Heading subtitle="Ze světa nemovitostí a investic">Blog</Heading>
         </AnimateIn>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {blogPosts.map((post, i) => (
             <AnimateIn key={post.slug} delay={i * 100}>
               <Card hover className="h-full flex flex-col">
-                {/* Placeholder image */}
-                <div className="aspect-[16/9] bg-gradient-to-br from-neutral-200 to-neutral-300 rounded-lg mb-4" />
+                <div className="aspect-[16/9] bg-gradient-to-br from-primary-100 via-primary-50 to-accent-50 rounded-lg mb-4 flex items-center justify-center">
+                  <span className="text-xs uppercase tracking-wider text-primary-400 font-medium">{post.category}</span>
+                </div>
                 <p className="text-sm text-neutral-400 mb-2">{formatDate(post.date)}</p>
                 <h3 className="font-heading text-lg font-bold text-primary-900 mb-2">
                   {post.title}
