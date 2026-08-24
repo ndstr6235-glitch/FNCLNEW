@@ -20,7 +20,7 @@ export default function Logo({ variant = "dark", size = "md" }: LogoProps) {
   return (
     <Link
       href="/"
-      className={`font-heading font-bold tracking-tight ${sizeClasses[size]} ${colorClasses[variant]}`}
+      className={`font-heading font-bold tracking-tight outline-none focus-visible:ring-2 focus-visible:ring-accent-500 focus-visible:ring-offset-2 rounded-sm ${sizeClasses[size]} ${colorClasses[variant]}`}
     >
       Puskin <span className="text-accent-500">&amp;</span> Partners
     </Link>
