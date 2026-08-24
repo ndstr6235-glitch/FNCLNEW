@@ -9,7 +9,7 @@ import { team } from "@/data/team";
 export const metadata: Metadata = {
   title: "O nás",
   description:
-    "Puskin and Partners — stabilní stavebně-developerská společnost s více než 20 lety zkušeností v Praze.",
+    "Puskin and Partners — 20+ let ve stavebnictví, od roku 2023 investiční společnost. Development, rekonstrukce a investice v Praze.",
 };
 
 const values = [
@@ -21,7 +21,7 @@ const values = [
 export default function AboutPage() {
   return (
     <>
-      <PageHero title="O nás" subtitle="Stavíme důvěru, vytváříme hodnoty" />
+      <PageHero title="O nás" subtitle="20+ let ve stavebnictví. Od roku 2023 investiční společnost." />
 
       {/* Company story */}
       <Section>
@@ -32,23 +32,22 @@ export default function AboutPage() {
                 Naše cesta
               </p>
               <h2 className="font-heading text-3xl md:text-4xl font-bold text-primary-900 mb-6">
-                Více než 20 let na trhu
+                Od rekonstrukcí k investicím
               </h2>
               <p className="text-neutral-600 leading-relaxed mb-4">
-                Společnost Alexandr Puškin, s.r.o. působí na českém trhu od roku 2004. Za více než
-                dvě dekády jsme se vyvinuli v přední stavebně-developerskou firmu specializující se
-                na prémiové projekty v Praze a okolí.
+                Společnost Alexandr Puškin, s.r.o. byla založena 9. prosince 2002. Od roku 2004
+                stavíme v Praze — začínali jsme rekonstrukcemi bytů na Starém Městě a postupně
+                jsme se rozrostli v developerskou firmu s vlastním týmem řemeslníků.
               </p>
               <p className="text-neutral-600 leading-relaxed mb-4">
-                Naším posláním je spojit tradiční řemeslnou kvalitu s moderními architektonickými
-                trendy. Každý projekt přistupujeme s maximální péčí a důrazem na detail — ať už jde
-                o kompletní rekonstrukci historické budovy nebo development nového rezidenčního
-                projektu.
+                V roce 2023 jsme přidali nový pilíř: investice do nemovitostí. Dvě dekády
+                stavebních zkušeností nám dávají jedinečnou schopnost posoudit rizika
+                a příležitosti, které jiné investiční společnosti nemají.
               </p>
               <p className="text-neutral-600 leading-relaxed">
-                Pod vedením Lukáše Salamánka a jeho zkušeného týmu realizujeme projekty, které
-                přetrvávají generace. Naši klienti oceňují především transparentní přístup,
-                dodržování termínů a výjimečnou kvalitu zpracování.
+                Pod vedením Lukáše Salamánka dnes spojujeme stavební know-how s investičním
+                poradenstvím. Za 20+ let jsme dokončili přes 230 projektů — od kompletních
+                přestaveb historických budov po novostavby rezidenčních vil.
               </p>
             </AnimateIn>
             <AnimateIn delay={200}>

@@ -10,15 +10,15 @@ export default function Hero() {
       </div>
       <Container className="relative z-10 text-white">
         <p className="text-accent-400 font-medium uppercase tracking-widest text-sm mb-4">
-          Praha &bull; Development &bull; Reality &bull; Investice
+          Praha &bull; Stavby &bull; Reality &bull; Investice
         </p>
         <h1 className="font-heading text-5xl md:text-6xl lg:text-7xl font-bold max-w-4xl leading-tight">
-          Přeměňujeme prostory,{" "}
-          <span className="text-accent-400">tvoříme domovy</span>
+          20 let stavíme,{" "}
+          <span className="text-accent-400">teď i investujeme</span>
         </h1>
         <p className="mt-6 text-lg md:text-xl text-primary-200 max-w-2xl">
-          Od kompletních rekonstrukcí přes development rezidenčních projektů až po investice
-          do nemovitostí. V Praze stavíme od roku 2004.
+          Stavíme od roku 2004. Od roku 2023 spojujeme stavební know-how
+          s investičními příležitostmi v pražských nemovitostech.
         </p>
         <div className="mt-10 flex flex-wrap gap-4">
           <Link

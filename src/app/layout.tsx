@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     template: "%s | Puskin and Partners",
   },
   description:
-    "Puskin and Partners — prémiový development, rekonstrukce, realitní služby a investice v Praze. 20+ let zkušeností.",
+    "Puskin and Partners — 20+ let ve stavebnictví, od roku 2023 investiční společnost. Development, rekonstrukce a investice v Praze.",
   metadataBase: new URL("https://puskinandpartners.cz"),
   openGraph: {
     type: "website",

@@ -17,7 +17,7 @@ export default function InvestmentsPage() {
     <>
       <PageHero
         title="Investice do nemovitostí"
-        subtitle="Zhodnoťte své prostředky s výnosem až 15% ročně"
+        subtitle="Od roku 2023 spojujeme 20 let stavebních zkušeností s investičními příležitostmi"
       />
       <InvestmentModels models={investmentModels} />
       <ProcessTimeline

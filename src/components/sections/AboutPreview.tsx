@@ -12,17 +12,17 @@ export default function AboutPreview() {
               O nás
             </p>
             <h2 className="font-heading text-3xl md:text-4xl font-bold text-primary-900 mb-6">
-              Stavíme v Praze od roku 2004
+              Od staveb k investicím
             </h2>
             <p className="text-neutral-600 leading-relaxed mb-4">
-              Začínali jsme rekonstrukcemi bytů na Starém Městě. Dnes řídíme developerské
-              projekty, spravujeme nemovitosti a pomáháme investorům zhodnotit kapitál
-              v pražských realitách.
+              Více než 20 let zkušeností ve stavebnictví. Začínali jsme v roce 2004
+              rekonstrukcemi na Starém Městě. Dnes řídíme developerské projekty
+              a spravujeme nemovitosti v celé Praze.
             </p>
             <p className="text-neutral-600 leading-relaxed mb-8">
-              Za 20 let jsme dokončili přes 230 projektů — od kompletních přestaveb historických
-              budov po novostavby rodinných vil. Pracujeme s vlastním týmem řemeslníků
-              a osvědčenými subdodavateli.
+              Od roku 2023 fungujeme jako investiční společnost — spojujeme stavební
+              know-how s investičními příležitostmi. Za dvě dekády jsme dokončili přes
+              230 projektů s vlastním týmem řemeslníků a osvědčenými subdodavateli.
             </p>
             <Link
               href="/o-nas"

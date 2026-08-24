@@ -4,6 +4,9 @@ export const siteConfig = {
     legalName: "Alexandr Puškin, s.r.o.",
     ico: "26740788",
     dic: "CZ26740788",
+    founded: "2002-12-09",
+    buildingSince: 2004,
+    investmentSince: 2023,
     address: {
       street: "Rybná 716/24",
       city: "Praha 1",

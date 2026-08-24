@@ -5,7 +5,7 @@ import { useCountUp } from "@/hooks/useCountUp";
 const stats = [
   { value: 230, suffix: "+", label: "Dokončených projektů" },
   { value: 500, suffix: "+", label: "Spokojených klientů" },
-  { value: 20, suffix: " let", label: "Let na trhu" },
+  { value: 20, suffix: "+", label: "Let ve stavebnictví" },
   { value: 15, suffix: "+", label: "Členů týmu" },
 ];
 
