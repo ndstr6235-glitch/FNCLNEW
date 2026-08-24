@@ -2,10 +2,12 @@ import Hero from "@/components/sections/Hero";
 import Services from "@/components/sections/Services";
 import AboutPreview from "@/components/sections/AboutPreview";
 import Stats from "@/components/sections/Stats";
+import TeamGrid from "@/components/sections/TeamGrid";
 import FeaturedProject from "@/components/sections/FeaturedProject";
 import Testimonials from "@/components/sections/Testimonials";
 import BlogPreview from "@/components/sections/BlogPreview";
 import Newsletter from "@/components/sections/Newsletter";
+import { team } from "@/data/team";
 
 export default function HomePage() {
   return (
@@ -14,6 +16,7 @@ export default function HomePage() {
       <Services />
       <AboutPreview />
       <Stats />
+      <TeamGrid team={team} />
       <FeaturedProject />
       <Testimonials />
       <BlogPreview />

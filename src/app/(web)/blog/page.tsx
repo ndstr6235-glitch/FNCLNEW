@@ -1,8 +1,24 @@
+import type { Metadata } from "next";
+import PageHero from "@/components/sections/PageHero";
+import BlogList from "@/components/sections/BlogList";
+import Newsletter from "@/components/sections/Newsletter";
+import { blogPosts } from "@/data/blog";
+
+export const metadata: Metadata = {
+  title: "Blog",
+  description:
+    "Články o nemovitostech, investicích, designu a stavebnictví od Puskin and Partners.",
+};
+
 export default function BlogPage() {
   return (
-    <div className="container mx-auto px-4 py-20">
-      <h1 className="text-4xl font-bold">Blog</h1>
-      <p className="text-gray-600 mt-4">Stránka Blog — bude implementováno v TASK-004</p>
-    </div>
+    <>
+      <PageHero
+        title="Blog"
+        subtitle="Novinky, tipy a trendy ze světa nemovitostí"
+      />
+      <BlogList posts={blogPosts} />
+      <Newsletter />
+    </>
   );
 }

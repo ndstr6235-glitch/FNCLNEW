@@ -1,8 +1,36 @@
+import type { Metadata } from "next";
+import PageHero from "@/components/sections/PageHero";
+import BenefitsGrid from "@/components/sections/BenefitsGrid";
+import JobPositions from "@/components/sections/JobPositions";
+import ProcessTimeline from "@/components/sections/ProcessTimeline";
+import CTASection from "@/components/sections/CTASection";
+import { benefits, positions, hiringProcess } from "@/data/jobs";
+
+export const metadata: Metadata = {
+  title: "Kariéra",
+  description: "Pracovní příležitosti v Puskin and Partners — připojte se k našemu týmu.",
+};
+
 export default function CareerPage() {
   return (
-    <div className="container mx-auto px-4 py-20">
-      <h1 className="text-4xl font-bold">Kariéra</h1>
-      <p className="text-gray-600 mt-4">Stránka Kariéra — bude implementováno v TASK-004</p>
-    </div>
+    <>
+      <PageHero
+        title="Kariéra"
+        subtitle="Připojte se k našemu týmu profesionálů"
+      />
+      <BenefitsGrid benefits={benefits} />
+      <JobPositions positions={positions} />
+      <ProcessTimeline
+        title="Náborový proces"
+        subtitle="Jak probíhá přijetí do týmu"
+        steps={hiringProcess}
+      />
+      <CTASection
+        title="Máte zájem?"
+        description="Napište nám na info@apartmentspushkin.com nebo se přihlaste přímo na vybranou pozici."
+        primaryLabel="Napište nám"
+        primaryHref="mailto:info@apartmentspushkin.com"
+      />
+    </>
   );
 }
