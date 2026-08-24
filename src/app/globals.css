@@ -1,28 +1,88 @@
 @import "tailwindcss";
 
-/* Tailwind CSS v4 — CSS-first konfigurace */
-/* Custom theme bude pridano v TASK-002 */
-
 @theme {
-  /* Barvy — placeholder, definitivni v TASK-002 */
-  --color-primary: #1a365d;
-  --color-primary-light: #2a4a7f;
-  --color-primary-dark: #0f2440;
-  --color-accent: #c9a96e;
-  --color-accent-light: #d4b98a;
+  /* Primary — Deep Navy */
+  --color-primary-50:  #f0f4f8;
+  --color-primary-100: #d9e2ec;
+  --color-primary-200: #bcccdc;
+  --color-primary-300: #9fb3c8;
+  --color-primary-400: #829ab1;
+  --color-primary-500: #627d98;
+  --color-primary-600: #486581;
+  --color-primary-700: #334e68;
+  --color-primary-800: #243b53;
+  --color-primary-900: #102a43;
 
-  /* Fonty — placeholder, definitivni v TASK-002 */
-  --font-heading: "Inter", sans-serif;
-  --font-body: "Inter", sans-serif;
+  /* Accent — Warm Gold */
+  --color-accent-50:  #fdf8f0;
+  --color-accent-100: #f9ecd8;
+  --color-accent-200: #f0d9b0;
+  --color-accent-300: #e6c584;
+  --color-accent-400: #d4a94e;
+  --color-accent-500: #c49a3c;
+  --color-accent-600: #a67f2e;
+  --color-accent-700: #876524;
+  --color-accent-800: #6b4f1d;
+  --color-accent-900: #4e3a16;
+
+  /* Neutral — Warm Stone */
+  --color-neutral-50:  #fafaf9;
+  --color-neutral-100: #f5f5f4;
+  --color-neutral-200: #e7e5e4;
+  --color-neutral-300: #d6d3d1;
+  --color-neutral-400: #a8a29e;
+  --color-neutral-500: #78716c;
+  --color-neutral-600: #57534e;
+  --color-neutral-700: #44403c;
+  --color-neutral-800: #292524;
+  --color-neutral-900: #1c1917;
+
+  /* Semantic */
+  --color-success: #16a34a;
+  --color-error:   #dc2626;
+  --color-warning: #f59e0b;
+  --color-info:    #3b82f6;
+
+  /* Typography */
+  --font-heading: var(--font-playfair-display), Georgia, serif;
+  --font-body:    var(--font-inter), system-ui, sans-serif;
+
+  /* Spacing scale (extends default) */
+  --spacing-18: 4.5rem;
+  --spacing-22: 5.5rem;
+
+  /* Border radius */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
+
+  /* Shadows */
+  --shadow-soft: 0 2px 15px -3px rgba(0, 0, 0, 0.07), 0 10px 20px -2px rgba(0, 0, 0, 0.04);
+  --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+  --shadow-elevated: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
 }
 
-/* Globalni reset a base styly */
+/* Base styles */
 html {
   scroll-behavior: smooth;
 }
 
 body {
   font-family: var(--font-body);
+  color: var(--color-neutral-800);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  color: var(--color-primary-900);
+}
+
+/* Selection color */
+::selection {
+  background-color: var(--color-accent-200);
+  color: var(--color-primary-900);
 }
