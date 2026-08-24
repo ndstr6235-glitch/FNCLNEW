@@ -33,8 +33,8 @@ export default function InvestmentsPage() {
         columns={4}
       />
       <CTASection
-        title="Zajímá vás investice?"
-        description="Kontaktujte nás pro nezávaznou konzultaci."
+        title="Nezávazná konzultace"
+        description="Bez jakýchkoliv závazků Vám poskytneme individuální poradenství a podporu, abychom Vám pomohli realizovat Vaše investiční plány."
         phone
       />
     </>

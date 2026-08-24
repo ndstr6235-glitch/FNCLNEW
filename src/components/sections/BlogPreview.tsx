@@ -19,7 +19,9 @@ export default function BlogPreview() {
     <Section background="light">
       <Container>
         <AnimateIn>
-          <Heading subtitle="Ze světa nemovitostí a investic">Blog</Heading>
+          <Heading subtitle="Zajímavé tipy, novinky a aktuální informace z oblasti nemovitostí, stavebnictví a investic.">
+            Blog
+          </Heading>
         </AnimateIn>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {blogPosts.map((post, i) => (

@@ -1,24 +1,24 @@
 export const investmentModels = [
   {
-    title: "Krátkodobé pronájmy",
-    minInvestment: "500 000 Kč",
-    avgReturn: "10–15% ročně",
-    description: "Podíly ve více investičních bytech. Diverzifikace rizika a celoroční příjem z krátkodobých pronájmů v Praze.",
+    title: "Investiční apartmány",
+    minInvestment: "od 490 000 Kč",
+    avgReturn: "10–15 % p.a.",
+    description: "Podíly v investičních apartmánech v Praze. Diverzifikace rizika a celoroční příjem z krátkodobých pronájmů.",
     features: [
-      "Diverzifikace do více nemovitostí",
+      "Vlastní apartmán již od 490 000 Kč",
       "Celoroční příjem z pronájmů",
       "Profesionální správa nemovitostí",
-      "Nízký vstupní práh",
+      "Diverzifikace do více nemovitostí",
     ],
   },
   {
     title: "Developerské projekty",
-    minInvestment: "5 000 000 Kč",
-    avgReturn: "20–30% ročně",
+    minInvestment: "od 5 000 000 Kč",
+    avgReturn: "20–30 % p.a.",
     description: "Účast na developerských projektech s vysokým potenciálem zhodnocení. Kompletní servis od návrhu po realizaci.",
     features: [
       "Vysoký potenciál zhodnocení",
-      "Účast na prémiových projektech",
+      "Účast na prémiových projektech v Praze",
       "Kompletní projektový management",
       "Transparentní reporting",
     ],

@@ -12,17 +12,18 @@ export default function AboutPreview() {
               O nás
             </p>
             <h2 className="font-heading text-3xl md:text-4xl font-bold text-primary-900 mb-6">
-              Od staveb k investicím
+              Puskin and Partners
             </h2>
             <p className="text-neutral-600 leading-relaxed mb-4">
-              Více než 20 let zkušeností ve stavebnictví. Začínali jsme v roce 2004
-              rekonstrukcemi na Starém Městě. Dnes řídíme developerské projekty
-              a spravujeme nemovitosti v celé Praze.
+              Společnost Puskin and Partners vznikla propojením profesionálů s více než
+              20letými zkušenostmi z oblasti stavebnictví, nemovitostí a investic
+              s hlavním cílem poskytovat co nejkomplexnější služby na realitním
+              a developerském trhu.
             </p>
             <p className="text-neutral-600 leading-relaxed mb-8">
-              Od roku 2023 fungujeme jako investiční společnost — spojujeme stavební
-              know-how s investičními příležitostmi. Za dvě dekády jsme dokončili přes
-              230 projektů s vlastním týmem řemeslníků a osvědčenými subdodavateli.
+              Od roku 2004 stavíme v Praze. Od roku 2023 fungujeme jako investiční
+              společnost — stavební know-how nám dává unikátní schopnost posoudit
+              rizika i příležitosti, které jiní nemají.
             </p>
             <Link
               href="/o-nas"

@@ -15,7 +15,9 @@ export default function TeamGrid({ team }: TeamGridProps) {
     <Section>
       <Container>
         <AnimateIn>
-          <Heading subtitle="Lidé za projekty">Tým</Heading>
+          <Heading subtitle="Odkryjte tváře, které stojí za naším úspěchem. Seznamte se s týmem profesionálů.">
+            Náš tým
+          </Heading>
         </AnimateIn>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
           {team.map((member, i) => (

@@ -1,6 +1,13 @@
 import Link from "next/link";
 import { Container } from "@/components/ui";
 
+const offers = [
+  { label: "Investice — zhodnocení až 15 % ročně p.a.", href: "/sluzby/investice" },
+  { label: "Rekonstrukce od 9 500 Kč/m² s DPH", href: "/sluzby/rekonstrukce" },
+  { label: "Stavba od 29 500 Kč/m² s DPH", href: "/sluzby/development" },
+  { label: "Vlastní apartmán již od 490 000 Kč", href: "/sluzby/investice" },
+];
+
 export default function Hero() {
   return (
     <section className="relative min-h-screen flex items-center bg-primary-900">
@@ -9,29 +16,32 @@ export default function Hero() {
         <div className="absolute inset-0 bg-primary-900/40" />
       </div>
       <Container className="relative z-10 text-white">
-        <p className="text-accent-400 font-medium uppercase tracking-widest text-sm mb-4">
-          Praha &bull; Stavby &bull; Reality &bull; Investice
-        </p>
         <h1 className="font-heading text-5xl md:text-6xl lg:text-7xl font-bold max-w-4xl leading-tight">
-          20 let stavíme,{" "}
-          <span className="text-accent-400">teď i investujeme</span>
+          S námi roste{" "}
+          <span className="text-accent-400">hodnota</span>
         </h1>
         <p className="mt-6 text-lg md:text-xl text-primary-200 max-w-2xl">
-          Stavíme od roku 2004. Od roku 2023 spojujeme stavební know-how
-          s investičními příležitostmi v pražských nemovitostech.
+          Stavíme od roku 2004. Od roku 2023 spojujeme více než 20 let stavebních
+          zkušeností s investičními příležitostmi v pražských nemovitostech.
         </p>
-        <div className="mt-10 flex flex-wrap gap-4">
-          <Link
-            href="/sluzby/development"
-            className="inline-flex items-center justify-center px-8 py-4 text-lg font-medium bg-accent-500 text-white rounded-md hover:bg-accent-600 transition-colors"
-          >
-            Naše služby
-          </Link>
+        <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-2xl">
+          {offers.map((offer) => (
+            <Link
+              key={offer.href + offer.label}
+              href={offer.href}
+              className="flex items-center gap-3 px-5 py-3.5 bg-white/10 border border-white/20 rounded-lg text-sm font-medium text-white hover:bg-white/20 transition-colors"
+            >
+              <span className="w-2 h-2 rounded-full bg-accent-400 shrink-0" />
+              {offer.label}
+            </Link>
+          ))}
+        </div>
+        <div className="mt-8">
           <Link
             href="/kontakt"
-            className="inline-flex items-center justify-center px-8 py-4 text-lg font-medium border-2 border-white text-white rounded-md hover:bg-white hover:text-primary-900 transition-colors"
+            className="inline-flex items-center justify-center px-8 py-4 text-lg font-medium bg-accent-500 text-white rounded-md hover:bg-accent-600 transition-colors"
           >
-            Kontaktujte nás
+            Nezávazná konzultace
           </Link>
         </div>
       </Container>

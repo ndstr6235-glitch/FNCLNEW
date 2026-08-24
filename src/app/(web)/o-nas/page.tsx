@@ -23,36 +23,41 @@ export default function AboutPage() {
     <>
       <PageHero title="O nás" subtitle="20+ let ve stavebnictví. Od roku 2023 investiční společnost." />
 
-      {/* Company story */}
+      {/* Personal intro from owner */}
       <Section>
         <Container>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <AnimateIn>
               <p className="text-accent-600 font-medium uppercase tracking-wider text-sm mb-4">
-                Naše cesta
+                Slovo zakladatele
               </p>
               <h2 className="font-heading text-3xl md:text-4xl font-bold text-primary-900 mb-6">
-                Od rekonstrukcí k investicím
+                Vítám vás v&nbsp;Puskin&nbsp;and&nbsp;Partners
               </h2>
               <p className="text-neutral-600 leading-relaxed mb-4">
-                Společnost Alexandr Puškin, s.r.o. byla založena 9. prosince 2002. Od roku 2004
-                stavíme v Praze — začínali jsme rekonstrukcemi bytů na Starém Městě a postupně
-                jsme se rozrostli v developerskou firmu s vlastním týmem řemeslníků.
+                Jmenuji se Lukáš Salamánek a jsem zakladatelem společnosti. Od roku 2004
+                stavíme v Praze — začínali jsme rekonstrukcemi bytů na Starém Městě
+                a postupně jsme se rozrostli v developerskou firmu s vlastním týmem
+                řemeslníků a profesionálů.
               </p>
               <p className="text-neutral-600 leading-relaxed mb-4">
                 V roce 2023 jsme přidali nový pilíř: investice do nemovitostí. Dvě dekády
                 stavebních zkušeností nám dávají jedinečnou schopnost posoudit rizika
-                a příležitosti, které jiné investiční společnosti nemají.
+                i příležitosti, které jiné investiční společnosti nemají.
               </p>
               <p className="text-neutral-600 leading-relaxed">
-                Pod vedením Lukáše Salamánka dnes spojujeme stavební know-how s investičním
-                poradenstvím. Za 20+ let jsme dokončili přes 230 projektů — od kompletních
-                přestaveb historických budov po novostavby rezidenčních vil.
+                Za 20+ let jsme dokončili přes 230 projektů — od kompletních přestaveb
+                historických budov po novostavby rezidenčních vil. Naším cílem je
+                poskytovat co nejkomplexnější služby na realitním a developerském trhu.
               </p>
             </AnimateIn>
             <AnimateIn delay={200}>
-              <div className="aspect-[4/3] bg-gradient-to-br from-primary-200 to-primary-300 rounded-2xl flex items-center justify-center">
-                <p className="text-primary-600 font-medium">Fotografie kanceláře</p>
+              <div className="aspect-[4/3] bg-gradient-to-br from-neutral-100 via-primary-100 to-accent-50 rounded-2xl flex flex-col items-center justify-center p-8">
+                <div className="w-24 h-24 rounded-full bg-primary-200/60 flex items-center justify-center mb-4">
+                  <span className="text-primary-500 font-heading font-bold text-2xl">LS</span>
+                </div>
+                <p className="text-primary-800 font-heading font-bold">Lukáš Salamánek</p>
+                <p className="text-neutral-500 text-sm">Zakladatel &amp; jednatel</p>
               </div>
             </AnimateIn>
           </div>
@@ -86,8 +91,9 @@ export default function AboutPage() {
       <TeamGrid team={team} />
 
       <CTASection
-        title="Chcete se s námi spojit?"
-        description="Rádi vám odpovíme na jakékoliv dotazy."
+        title="Nezávazná konzultace"
+        description="Bez jakýchkoliv závazků Vám poskytneme individuální poradenství a podporu, abychom Vám pomohli realizovat Vaše budoucí plány."
+        phone
       />
     </>
   );

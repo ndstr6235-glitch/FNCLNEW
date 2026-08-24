@@ -7,8 +7,8 @@ export default function FeaturedProject() {
     <Section background="light">
       <Container>
         <AnimateIn>
-          <Heading subtitle="Podívejte se na naši nejnovější realizaci">
-            Vybraný projekt
+          <Heading subtitle="Podívejte se na námi dokončené, probíhající a připravované projekty.">
+            Projekty
           </Heading>
         </AnimateIn>
         <AnimateIn delay={200}>

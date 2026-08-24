@@ -7,6 +7,7 @@ import FeaturedProject from "@/components/sections/FeaturedProject";
 import Testimonials from "@/components/sections/Testimonials";
 import BlogPreview from "@/components/sections/BlogPreview";
 import Newsletter from "@/components/sections/Newsletter";
+import CTASection from "@/components/sections/CTASection";
 import { team } from "@/data/team";
 
 export default function HomePage() {
@@ -20,6 +21,13 @@ export default function HomePage() {
       <FeaturedProject />
       <Testimonials />
       <BlogPreview />
+      <CTASection
+        title="Nezávazná konzultace"
+        description="Bez jakýchkoliv závazků Vám poskytneme individuální poradenství a podporu, abychom Vám pomohli realizovat Vaše budoucí plány."
+        primaryLabel="Kontaktujte nás"
+        primaryHref="/kontakt"
+        phone
+      />
       <Newsletter />
     </>
   );

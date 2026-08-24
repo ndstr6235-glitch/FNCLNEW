@@ -5,30 +5,26 @@ import Link from "next/link";
 
 const services = [
   {
-    title: "Development",
-    description:
-      "Rezidenční a komerční projekty v Praze a okolí. Od vyhledání pozemku přes projektovou dokumentaci po kolaudaci.",
+    title: "Projekty",
+    description: "Development rezidenčních a komerčních nemovitostí v Praze a okolí.",
     href: "/sluzby/development",
     icon: "building" as const,
   },
   {
-    title: "Rekonstrukce",
-    description:
-      "Rekonstrukce bytů, domů i historických budov. Řídíme celý proces — stavbu, řemesla, interiér.",
+    title: "Stavba a rekonstrukce",
+    description: "Stavba domů a rekonstrukce bytů. Od 9 500 Kč/m² s DPH.",
     href: "/sluzby/rekonstrukce",
     icon: "hammer" as const,
   },
   {
-    title: "Nemovitosti",
-    description:
-      "Pomůžeme vám prodat, koupit nebo pronajmout nemovitost v Praze. Osobní přístup, ne call centrum.",
+    title: "Reality",
+    description: "Prodej, výkup a aktivní vyhledávání nemovitostí.",
     href: "/sluzby/nemovitosti",
     icon: "key" as const,
   },
   {
     title: "Investice",
-    description:
-      "Vstupte do developerských projektů jako investor. Dva modely spolupráce podle výše vkladu.",
+    description: "Zhodnocení až 15 % p.a. Dva investiční modely od 500 000 Kč.",
     href: "/sluzby/investice",
     icon: "chart" as const,
   },
@@ -39,7 +35,9 @@ export default function Services() {
     <Section background="light">
       <Container>
         <AnimateIn>
-          <Heading subtitle="Čtyři pilíře naší práce">Služby</Heading>
+          <Heading subtitle="Jsme spolehlivým partnerem s více než 20 lety zkušeností. Poskytujeme nejkomplexnější služby na realitním a developerském trhu.">
+            Služby
+          </Heading>
         </AnimateIn>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {services.map((service, i) => (
