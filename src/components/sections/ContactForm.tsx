@@ -1,16 +1,33 @@
 "use client";
-import { useState } from "react";
+import { useActionState, useState } from "react";
+import { submitContactForm } from "@/app/actions/contact";
 
 export default function ContactForm() {
   const [agreed, setAgreed] = useState(false);
+  const [state, formAction, isPending] = useActionState(submitContactForm, {
+    success: false,
+    error: null,
+  });
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // TODO: Implement form submission
-  };
+  if (state.success) {
+    return (
+      <div className="rounded-lg bg-green-50 border border-green-200 p-8 text-center">
+        <div className="text-4xl mb-4">&#10003;</div>
+        <h3 className="text-xl font-bold text-green-800 mb-2">Zpráva odeslána</h3>
+        <p className="text-green-700">
+          Děkujeme za Vaši zprávu. Ozveme se Vám co nejdříve.
+        </p>
+      </div>
+    );
+  }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-5">
+    <form action={formAction} className="space-y-5">
+      {state.error && (
+        <div className="rounded-md bg-red-50 border border-red-200 p-4 text-sm text-red-700">
+          {state.error}
+        </div>
+      )}
       <div>
         <label htmlFor="name" className="block text-sm font-medium text-neutral-700 mb-1">
           Jméno a příjmení *
@@ -80,6 +97,8 @@ export default function ContactForm() {
       <label className="flex items-start gap-2 cursor-pointer">
         <input
           type="checkbox"
+          name="gdpr"
+          value="yes"
           checked={agreed}
           onChange={(e) => setAgreed(e.target.checked)}
           className="mt-1 rounded border-neutral-300 text-primary-800 focus:ring-primary-500"
@@ -90,10 +109,10 @@ export default function ContactForm() {
       </label>
       <button
         type="submit"
-        disabled={!agreed}
+        disabled={!agreed || isPending}
         className="w-full px-8 py-4 bg-primary-800 text-white font-medium rounded-md hover:bg-primary-900 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        Odeslat zprávu
+        {isPending ? "Odesílám..." : "Odeslat zprávu"}
       </button>
     </form>
   );
