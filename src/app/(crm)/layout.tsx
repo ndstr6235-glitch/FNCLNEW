@@ -1,15 +1,40 @@
-export default function CrmLayout({
+import { getSession } from "@/lib/crm/auth";
+import { redirect } from "next/navigation";
+import { SidebarProvider } from "@/components/crm/layout/sidebar-context";
+import Sidebar from "@/components/crm/layout/sidebar";
+import DashboardMain from "@/components/crm/layout/dashboard-main";
+
+export default async function CrmLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const session = await getSession();
+
+  // Allow login page without auth
+  if (!session) {
+    return <>{children}</>;
+  }
+
+  const user = {
+    id: session.id,
+    firstName: session.firstName,
+    lastName: session.lastName,
+    email: session.email,
+    role: session.role,
+  };
+
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="p-8 text-center">
-        <h1 className="text-2xl font-bold">CRM — Fáze 2</h1>
-        <p className="text-gray-500 mt-2">Tato sekce bude dostupná v budoucí verzi.</p>
+    <SidebarProvider>
+      <div className="flex min-h-dvh overflow-x-hidden max-w-[100dvw]">
+        <Sidebar user={user} />
+        <DashboardMain
+          firstName={user.firstName}
+          lastName={user.lastName}
+        >
+          {children}
+        </DashboardMain>
       </div>
-      {children}
-    </div>
+    </SidebarProvider>
   );
 }

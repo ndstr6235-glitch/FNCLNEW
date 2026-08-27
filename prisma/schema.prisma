@@ -1,0 +1,317 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMINISTRATOR
+  SUPERVISOR
+  BROKER
+}
+
+enum TicketStatus {
+  OPEN
+  IN_PROGRESS
+  DONE
+  CANCELLED
+}
+
+enum TicketPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum EventType {
+  CALL
+  PAYMENT
+  REMINDER
+  INTEREST
+  MEETING
+}
+
+model User {
+  id             String   @id @default(cuid())
+  firstName      String
+  lastName       String
+  email          String   @unique
+  password       String
+  role           Role
+  active         Boolean  @default(true)
+  signature      String?
+  dailyLeadQuota Int      @default(150)
+  createdAt      DateTime @default(now())
+
+  clients         Client[]
+  events          CalEvent[]
+  activities      Activity[]
+  documents       Document[] @relation("DocumentUploader")
+  notifications   Notification[]
+  auditLogs       AuditLog[] @relation("AuditLogs")
+  sentEmails      SentEmail[] @relation("SentEmails")
+  leadAssignments LeadAssignment[]
+  calls           Call[]
+  ticketsCreated  Ticket[]      @relation("TicketsCreated")
+  ticketsAssigned Ticket[]      @relation("TicketsAssigned")
+  ticketMessages  TicketMessage[]
+}
+
+model Client {
+  id              String   @id @default(cuid())
+  firstName       String
+  lastName        String
+  phone           String
+  email           String
+  birthDate       String   @default("")
+  street          String   @default("")
+  city            String   @default("")
+  zip             String   @default("")
+  bankAccount     String   @default("")
+  dnc             Boolean  @default(false)
+  lastCallOutcome String   @default("")
+  lastCalledAt    String   @default("")
+  callDate        String   @default("")
+  nextPaymentDate String   @default("")
+  paymentFreq     Int      @default(30)
+  note            String   @default("")
+  stage           String   @default("NEW")
+  source          String   @default("")
+  metadata        String   @default("{}")
+  assignedTo      String
+  createdAt       DateTime @default(now())
+
+  user            User             @relation(fields: [assignedTo], references: [id])
+  payments        Payment[]
+  events          CalEvent[]
+  activities      Activity[]
+  documents       Document[]
+  sentEmails      SentEmail[]
+  leadAssignments LeadAssignment[]
+  calls           Call[]
+  tickets         Ticket[]
+
+  @@index([assignedTo])
+  @@index([assignedTo, lastCallOutcome])
+  @@index([assignedTo, createdAt])
+  @@index([assignedTo, source])
+  @@index([stage])
+  @@index([nextPaymentDate])
+  @@index([phone])
+  @@index([email])
+  @@index([source])
+  @@index([createdAt])
+  @@index([dnc])
+}
+
+model LeadAssignment {
+  id         String   @id @default(cuid())
+  clientId   String
+  userId     String
+  assignedBy String
+  reason     String   @default("cron")
+  createdAt  DateTime @default(now())
+
+  client Client @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id])
+
+  @@index([userId, createdAt])
+  @@index([clientId])
+}
+
+model Payment {
+  id              String   @id @default(cuid())
+  amount          Float
+  percent         Float
+  profit          Float
+  date            String
+  note            String   @default("")
+  duration        Int      @default(12)
+  monthlyPayout   Float    @default(0)
+  payoutFrequency String   @default("monthly")
+  paid            Boolean  @default(false)
+  paidAt          String   @default("")
+  clientId        String
+  variableSymbol  String?  @unique
+
+  client Client @relation(fields: [clientId], references: [id], onDelete: Cascade)
+
+  @@index([paid])
+  @@index([clientId, paid])
+  @@index([variableSymbol])
+}
+
+model CalEvent {
+  id        String    @id @default(cuid())
+  clientId  String?
+  userId    String
+  paymentId String?
+  type      EventType
+  title     String
+  date      String
+  time      String
+  note      String    @default("")
+  createdAt DateTime  @default(now())
+
+  client Client? @relation(fields: [clientId], references: [id], onDelete: SetNull)
+  user   User    @relation(fields: [userId], references: [id])
+
+  @@index([paymentId])
+  @@index([userId, date])
+}
+
+model EmailTemplate {
+  id           String @id @default(cuid())
+  label        String
+  subject      String
+  body         String
+  allowedRoles String @default("ADMINISTRATOR,SUPERVISOR,BROKER")
+}
+
+model Document {
+  id         String   @id @default(cuid())
+  clientId   String
+  name       String
+  fileName   String
+  fileUrl    String
+  fileSize   Int
+  mimeType   String
+  uploadedBy String
+  createdAt  DateTime @default(now())
+
+  client Client @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  user   User   @relation("DocumentUploader", fields: [uploadedBy], references: [id])
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  type      String
+  title     String
+  message   String
+  read      Boolean  @default(false)
+  link      String?
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Activity {
+  id          String   @id @default(cuid())
+  clientId    String
+  userId      String
+  type        String
+  description String
+  metadata    String   @default("{}")
+  createdAt   DateTime @default(now())
+
+  client Client @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id])
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String
+  action    String
+  entity    String
+  entityId  String?
+  details   String?
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+
+  user User @relation("AuditLogs", fields: [userId], references: [id])
+
+  @@index([userId, createdAt])
+  @@index([action])
+}
+
+model SentEmail {
+  id            String   @id @default(cuid())
+  clientId      String
+  userId        String
+  to            String
+  subject       String
+  body          String
+  templateLabel String?
+  createdAt     DateTime @default(now())
+
+  client Client @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  user   User   @relation("SentEmails", fields: [userId], references: [id])
+}
+
+model SystemSetting {
+  key   String @id
+  value String
+}
+
+model Call {
+  id          String   @id @default(cuid())
+  clientId    String
+  userId      String
+  outcome     String
+  note        String   @default("")
+  durationSec Int      @default(0)
+  callbackAt  String   @default("")
+  createdAt   DateTime @default(now())
+
+  client Client @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id])
+
+  @@index([clientId, createdAt])
+  @@index([userId, createdAt])
+  @@index([outcome])
+}
+
+model LoginAttempt {
+  id        String   @id @default(cuid())
+  email     String
+  ipAddress String?
+  success   Boolean
+  createdAt DateTime @default(now())
+
+  @@index([ipAddress, createdAt])
+  @@index([email, createdAt])
+}
+
+model Ticket {
+  id          String         @id @default(cuid())
+  title       String
+  description String         @default("")
+  status      TicketStatus   @default(OPEN)
+  priority    TicketPriority @default(MEDIUM)
+  fromUserId  String
+  assigneeId  String?
+  clientId    String?
+  resolvedAt  String         @default("")
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  from     User             @relation("TicketsCreated", fields: [fromUserId], references: [id])
+  assignee User?            @relation("TicketsAssigned", fields: [assigneeId], references: [id])
+  client   Client?          @relation(fields: [clientId], references: [id], onDelete: SetNull)
+  messages TicketMessage[]
+
+  @@index([status, priority])
+  @@index([assigneeId, status])
+  @@index([fromUserId])
+  @@index([clientId])
+}
+
+model TicketMessage {
+  id        String   @id @default(cuid())
+  ticketId  String
+  userId    String
+  message   String
+  createdAt DateTime @default(now())
+
+  ticket Ticket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id])
+
+  @@index([ticketId, createdAt])
+}
