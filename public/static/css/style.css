@@ -209,7 +209,7 @@ ul, ol {
 .section-header {
   display: flex;
   justify-content: space-between;
-  align-items: baseline;
+  align-items: flex-end;
   margin-bottom: 64px;
 }
 
@@ -590,7 +590,8 @@ ul, ol {
 }
 
 .process-photo {
-  min-height: 0;
+  min-height: 500px;
+  height: 100%;
 }
 
 /* ========================================
