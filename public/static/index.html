@@ -12,6 +12,25 @@
 </head>
 <body>
 
+  <!-- Disclaimer overlay — kvalifikovaní investoři -->
+  <div id="disclaimer" style="position:fixed;inset:0;z-index:999;background:rgba(22,33,29,.85);display:flex;align-items:center;justify-content:center;padding:24px;">
+    <div style="background:#F2EEE6;max-width:520px;width:100%;padding:48px;text-align:center;">
+      <span style="font-family:'Libre Franklin',system-ui,sans-serif;font-size:11.5px;letter-spacing:.28em;text-transform:uppercase;color:#A9884E;font-weight:500;">Upozornění</span>
+      <h2 style="font-family:'Libre Caslon Display',Georgia,serif;font-size:28px;font-weight:400;color:#16211D;margin:20px 0 16px 0;line-height:1.25;">Tento web je určen pouze pro&nbsp;kvalifikované investory</h2>
+      <p style="font-family:'Libre Franklin',system-ui,sans-serif;font-size:15.5px;color:#3B4842;line-height:1.6;margin:0 0 36px 0;">Nejste-li kvalifikovaným investorem dle zákona č.&nbsp;240/2013&nbsp;Sb., stránky prosím opusťte.</p>
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+        <button onclick="document.getElementById('disclaimer').style.display='none';document.getElementById('cookie-bar').style.display='flex'" style="font-family:'Libre Franklin',system-ui,sans-serif;font-size:13px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;background:#16211D;color:#F2EEE6;border:none;padding:14px 28px;cursor:pointer;transition:background .15s ease;" onmouseover="this.style.background='#0E1614'" onmouseout="this.style.background='#16211D'">Jsem kvalifikovaný investor</button>
+        <a href="https://google.cz" style="font-family:'Libre Franklin',system-ui,sans-serif;font-size:13px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;background:transparent;color:#16211D;border:1px solid #16211D;padding:14px 28px;text-decoration:none;cursor:pointer;transition:background .15s ease;" onmouseover="this.style.background='rgba(22,33,29,.06)'" onmouseout="this.style.background='transparent'">Opustit stránky</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cookie consent bar — zobrazí se až po zavření disclaimeru -->
+  <div id="cookie-bar" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:998;background:#16211D;padding:16px 24px;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;font-family:'Libre Franklin',system-ui,sans-serif;font-size:13px;color:#EFEAE1;line-height:1.5;border-top:1px solid #A9884E;">
+    <p style="margin:0;flex:1;min-width:240px;">Tento web používá cookies pro zajištění funkčnosti a analýzu návštěvnosti. Používáním webu souhlasíte s jejich využitím. <a href="#" style="color:#A9884E;text-decoration:none;border-bottom:1px solid rgba(169,136,78,.4);transition:border-color .15s ease;" onmouseover="this.style.borderBottomColor='#A9884E'" onmouseout="this.style.borderBottomColor='rgba(169,136,78,.4)'">Více informací</a></p>
+    <button onclick="document.getElementById('cookie-bar').style.display='none'" style="font-family:'Libre Franklin',system-ui,sans-serif;font-size:12px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;background:#EFEAE1;color:#16211D;border:none;padding:10px 24px;cursor:pointer;white-space:nowrap;transition:background .15s ease;" onmouseover="this.style.background='#F2EEE6'" onmouseout="this.style.background='#EFEAE1'">Rozumím</button>
+  </div>
+
   <a href="#main" class="skip-link">Přeskočit na obsah</a>
 
   <!-- 01 — Header -->
