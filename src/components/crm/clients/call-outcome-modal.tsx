@@ -100,7 +100,7 @@ export default function CallOutcomeModal({
                   key={o.code}
                   type="button"
                   onClick={() => setOutcome(o.code)}
-                  className={`text-left p-3 rounded-[10px] border transition-all ${
+                  className={`text-left p-3 border transition-all ${
                     TONE[o.badgeColor] ?? ""
                   } ${active ? TONE_ACTIVE[o.badgeColor] ?? "" : ""}`}
                 >
@@ -126,7 +126,7 @@ export default function CallOutcomeModal({
               type="datetime-local"
               value={callbackAt}
               onChange={(e) => setCallbackAt(e.target.value)}
-              className="w-full px-3 py-2.5 rounded-[10px] border border-border bg-surface text-sm text-text focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
+              className="w-full px-3 py-2.5 border border-border bg-surface text-sm text-text focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
             />
           </div>
         )}
@@ -140,7 +140,7 @@ export default function CallOutcomeModal({
             onChange={(e) => setNote(e.target.value)}
             placeholder="Co řekl? Co domluveno?"
             rows={3}
-            className="w-full px-3 py-2.5 rounded-[10px] border border-border bg-surface text-sm text-text placeholder:text-text-faint focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition resize-none"
+            className="w-full px-3 py-2.5 border border-border bg-surface text-sm text-text placeholder:text-text-faint focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition resize-none"
           />
         </div>
 
@@ -149,7 +149,7 @@ export default function CallOutcomeModal({
             type="button"
             onClick={handleClose}
             disabled={pending}
-            className="flex-1 px-4 py-2.5 rounded-[10px] border border-border text-sm font-medium text-text-mid hover:bg-surface-hover transition-colors"
+            className="flex-1 px-4 py-2.5 border border-border text-sm font-medium text-text-mid hover:bg-surface-hover transition-colors"
           >
             Zrušit
           </button>
@@ -157,7 +157,7 @@ export default function CallOutcomeModal({
             type="button"
             onClick={handleSubmit}
             disabled={pending || !outcome}
-            className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-[10px] bg-gradient-to-r from-gold to-gold-light text-white text-sm font-semibold shadow-md hover:shadow-lg transition-shadow disabled:opacity-60 disabled:cursor-not-allowed"
+            className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-brass text-white text-sm font-semibold disabled:opacity-60 disabled:cursor-not-allowed"
           >
             {pending ? <Loader2 size={14} className="animate-spin" /> : <Phone size={14} />}
             Zaznamenat

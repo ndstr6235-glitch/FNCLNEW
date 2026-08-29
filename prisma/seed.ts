@@ -25,24 +25,24 @@ async function main() {
   });
   console.log("  Admin user seeded.");
 
-  // Lukas user
-  const lukasPassword = await bcrypt.hash("Lukas123456", 10);
+  // Fencl user
+  const fenclPassword = await bcrypt.hash("Fencl123456", 10);
   await prisma.user.upsert({
-    where: { email: "lukas@puskinpartners.cz" },
+    where: { email: "fencl@puskinpartners.cz" },
     update: {},
     create: {
       id: "u2",
-      firstName: "Lukas",
-      lastName: "Salamanek",
-      email: "lukas@puskinpartners.cz",
-      password: lukasPassword,
+      firstName: "Miroslav",
+      lastName: "Fencl",
+      email: "fencl@puskinpartners.cz",
+      password: fenclPassword,
       role: "ADMINISTRATOR",
       active: true,
       signature:
-        "S pozdravem,\nLukas Salamanek | Puskin and Partners\nwww.puskinpartners.cz",
+        "S pozdravem,\nMiroslav Fencl | Puskin and Partners\nwww.puskinpartners.cz",
     },
   });
-  console.log("  Lukas user seeded.");
+  console.log("  Fencl user seeded.");
 
   // Email Templates
   const templates = [

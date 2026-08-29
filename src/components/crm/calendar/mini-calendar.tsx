@@ -72,7 +72,7 @@ export default function MiniCalendar({
       <div className="flex items-center justify-between mb-4">
         <button
           onClick={prevMonth}
-          className="w-11 h-11 min-h-[44px] flex items-center justify-center rounded-[8px] text-text-dim hover:text-text hover:bg-surface-hover transition-colors"
+          className="w-11 h-11 min-h-[44px] flex items-center justify-center text-text-dim hover:text-text hover:bg-surface-hover transition-colors"
         >
           <ChevronLeft size={16} />
         </button>
@@ -81,7 +81,7 @@ export default function MiniCalendar({
         </span>
         <button
           onClick={nextMonth}
-          className="w-11 h-11 min-h-[44px] flex items-center justify-center rounded-[8px] text-text-dim hover:text-text hover:bg-surface-hover transition-colors"
+          className="w-11 h-11 min-h-[44px] flex items-center justify-center text-text-dim hover:text-text hover:bg-surface-hover transition-colors"
         >
           <ChevronRight size={16} />
         </button>
@@ -116,9 +116,9 @@ export default function MiniCalendar({
               key={dateStr}
               onClick={() => onDateSelect(dateStr)}
               className={cn(
-                "relative flex flex-col items-center justify-center min-w-[36px] min-h-[44px] rounded-[8px] text-sm transition-all",
+                "relative flex flex-col items-center justify-center min-w-[36px] min-h-[44px] text-sm transition-all",
                 isToday && !isSelected &&
-                  "bg-gradient-to-br from-gold to-gold-light text-white font-bold",
+                  "bg-brass text-white font-bold",
                 isSelected && "ring-2 ring-gold ring-offset-1 font-bold text-gold",
                 !isToday && !isSelected && "text-text hover:bg-surface-hover"
               )}
@@ -135,7 +135,7 @@ export default function MiniCalendar({
                         className="w-1 h-1 rounded-full"
                         style={{
                           backgroundColor:
-                            EVENT_TYPES[type as EventType]?.color || "#8892aa",
+                            EVENT_TYPES[type as EventType]?.color || "#6E6A61",
                         }}
                       />
                     ))}

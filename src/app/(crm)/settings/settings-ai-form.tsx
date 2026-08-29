@@ -10,7 +10,7 @@ export function SettingsAIForm({ hasKey }: Props) {
   return (
     <div className="space-y-3">
       {hasKey ? (
-        <div className="flex items-center gap-3 p-3 rounded-[10px] bg-emerald-pale border border-emerald-border">
+        <div className="flex items-center gap-3 p-3 bg-emerald-pale border border-emerald-border">
           <Check size={16} className="text-emerald shrink-0" />
           <div className="flex-1 min-w-0">
             <p className="text-sm font-medium text-emerald">Google Gemini je aktivní</p>
@@ -18,7 +18,7 @@ export function SettingsAIForm({ hasKey }: Props) {
           </div>
         </div>
       ) : (
-        <div className="flex items-center gap-3 p-3 rounded-[10px] bg-amber-pale border border-gold-border">
+        <div className="flex items-center gap-3 p-3 bg-amber-pale border border-gold-border">
           <AlertTriangle size={16} className="text-gold shrink-0" />
           <div className="flex-1 min-w-0">
             <p className="text-sm font-medium text-gold">AI není aktivní</p>

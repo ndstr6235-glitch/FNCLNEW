@@ -64,7 +64,7 @@ export default function DrawerTabTickets({ clientId, clientName, userRole }: Pro
         <h3 className="text-sm font-semibold text-text">Požadavky ({tickets.length})</h3>
         <button
           onClick={() => setShowModal(true)}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-[8px] bg-gold text-white text-xs font-medium hover:bg-gold-light transition-colors"
+          className="flex items-center gap-1.5 px-3 py-1.5 bg-gold text-white text-xs font-medium hover:bg-gold-light transition-colors"
         >
           <Plus size={12} />
           Nový požadavek
@@ -74,7 +74,7 @@ export default function DrawerTabTickets({ clientId, clientName, userRole }: Pro
       {tickets.length === 0 ? (
         <p className="text-sm text-text-dim text-center py-8">Žádné požadavky pro tohoto klienta</p>
       ) : (
-        <div className="border border-border rounded-[12px] overflow-hidden">
+        <div className="border border-border overflow-hidden">
           {tickets.map((t) => {
             const status = STATUS_STYLE[t.status];
             return (

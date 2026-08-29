@@ -129,10 +129,10 @@ export default function MyDay({ tasks: initialTasks, followUps, isCompanyView }:
   if (totalCount === 0 && followUps.length === 0) return null;
 
   return (
-    <div className="bg-surface rounded-[16px] border border-border p-4 md:p-6 transition-colors duration-200">
+    <div className="bg-surface border border-border p-4 md:p-6 transition-colors duration-200">
       {/* Header */}
       <div className="flex items-center gap-3 mb-4">
-        <div className="w-9 h-9 rounded-[10px] bg-gold-pale flex items-center justify-center">
+        <div className="w-9 h-9 bg-gold-pale flex items-center justify-center">
           <Sunrise size={18} className="text-gold" />
         </div>
         <div>
@@ -151,7 +151,7 @@ export default function MyDay({ tasks: initialTasks, followUps, isCompanyView }:
       {totalCount > 0 && (
         <div className="h-2 bg-border rounded-full mb-4 overflow-hidden">
           <div
-            className="h-full bg-gradient-to-r from-gold to-gold-light rounded-full transition-all duration-500"
+            className="h-full bg-brass rounded-full transition-all duration-500"
             style={{ width: `${progress}%` }}
           />
         </div>
@@ -166,7 +166,7 @@ export default function MyDay({ tasks: initialTasks, followUps, isCompanyView }:
               <div
                 key={task.id}
                 className={cn(
-                  "flex items-center gap-3 p-3 rounded-[10px] transition-all",
+                  "flex items-center gap-3 p-3 transition-all",
                   task.done
                     ? "bg-emerald-pale opacity-70"
                     : "bg-surface-hover hover:bg-border/30"
@@ -223,7 +223,7 @@ export default function MyDay({ tasks: initialTasks, followUps, isCompanyView }:
                     {/* Mobile: tel: link */}
                     <a
                       href={`tel:${task.clientPhone}`}
-                      className="md:hidden w-[44px] h-[44px] flex items-center justify-center rounded-[8px] bg-sapphire-pale text-sapphire shrink-0"
+                      className="md:hidden w-[44px] h-[44px] flex items-center justify-center bg-sapphire-pale text-sapphire shrink-0"
                       aria-label="Zavolat"
                     >
                       <Phone size={16} />
@@ -231,7 +231,7 @@ export default function MyDay({ tasks: initialTasks, followUps, isCompanyView }:
                     {/* Desktop: copy */}
                     <button
                       onClick={() => copyPhone(task.clientPhone!, task.id)}
-                      className="hidden md:flex w-8 h-8 items-center justify-center rounded-[8px] hover:bg-sapphire-pale text-text-dim hover:text-sapphire transition-colors shrink-0"
+                      className="hidden md:flex w-8 h-8 items-center justify-center hover:bg-sapphire-pale text-text-dim hover:text-sapphire transition-colors shrink-0"
                       title={task.clientPhone}
                     >
                       {copied === task.id ? (
@@ -261,7 +261,7 @@ export default function MyDay({ tasks: initialTasks, followUps, isCompanyView }:
             {followUps.map((fu) => (
               <div
                 key={fu.id}
-                className="flex items-center gap-3 p-3 rounded-[10px] bg-amber-pale/50 hover:bg-amber-pale transition-colors"
+                className="flex items-center gap-3 p-3 bg-amber-pale/50 hover:bg-amber-pale transition-colors"
               >
                 <Clock size={16} className="text-amber shrink-0" />
                 <a
@@ -292,14 +292,14 @@ export default function MyDay({ tasks: initialTasks, followUps, isCompanyView }:
                 {/* Phone */}
                 <a
                   href={`tel:${fu.phone}`}
-                  className="md:hidden w-[44px] h-[44px] flex items-center justify-center rounded-[8px] bg-sapphire-pale text-sapphire shrink-0"
+                  className="md:hidden w-[44px] h-[44px] flex items-center justify-center bg-sapphire-pale text-sapphire shrink-0"
                   aria-label="Zavolat"
                 >
                   <Phone size={16} />
                 </a>
                 <button
                   onClick={() => copyPhone(fu.phone, fu.id)}
-                  className="hidden md:flex w-8 h-8 items-center justify-center rounded-[8px] hover:bg-sapphire-pale text-text-dim hover:text-sapphire transition-colors shrink-0"
+                  className="hidden md:flex w-8 h-8 items-center justify-center hover:bg-sapphire-pale text-text-dim hover:text-sapphire transition-colors shrink-0"
                   title={fu.phone}
                 >
                   {copied === fu.id ? (
@@ -321,7 +321,7 @@ export default function MyDay({ tasks: initialTasks, followUps, isCompanyView }:
             className="absolute inset-0 bg-black/40 backdrop-blur-sm"
             onClick={skipNote}
           />
-          <div className="relative bg-surface rounded-[16px] border border-border shadow-lg w-full max-w-sm p-5 animate-fade-in">
+          <div className="relative bg-surface border border-border w-full max-w-sm p-5 animate-fade-in">
             <h3 className="font-display text-base font-bold text-text mb-2">
               Jak to dopadlo?
             </h3>
@@ -329,20 +329,20 @@ export default function MyDay({ tasks: initialTasks, followUps, isCompanyView }:
               value={noteText}
               onChange={(e) => setNoteText(e.target.value)}
               placeholder="Krátká poznámka (nepovinné)..."
-              className="w-full px-3 py-2.5 rounded-[10px] border border-border bg-surface-hover text-sm text-text placeholder:text-text-faint focus:outline-none focus:ring-2 focus:ring-gold/40 resize-none transition-colors"
+              className="w-full px-3 py-2.5 border border-border bg-surface-hover text-sm text-text placeholder:text-text-faint focus:outline-none focus:ring-2 focus:ring-gold/40 resize-none transition-colors"
               rows={3}
               autoFocus
             />
             <div className="flex gap-2 mt-3">
               <button
                 onClick={skipNote}
-                className="flex-1 px-4 py-2.5 min-h-[44px] rounded-[10px] border border-border text-sm font-medium text-text-mid hover:bg-surface-hover transition-colors"
+                className="flex-1 px-4 py-2.5 min-h-[44px] border border-border text-sm font-medium text-text-mid hover:bg-surface-hover transition-colors"
               >
                 Přeskočit
               </button>
               <button
                 onClick={submitNote}
-                className="flex-1 px-4 py-2.5 min-h-[44px] rounded-[10px] bg-gold text-white text-sm font-medium hover:bg-gold-light transition-colors"
+                className="flex-1 px-4 py-2.5 min-h-[44px] bg-gold text-white text-sm font-medium hover:bg-gold-light transition-colors"
                 disabled={isPending}
               >
                 Uložit

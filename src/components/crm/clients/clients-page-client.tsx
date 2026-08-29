@@ -178,7 +178,7 @@ export default function ClientsPageClient({
         </div>
         <div className="flex items-center gap-2">
           {/* View toggle */}
-          <div className="flex rounded-[8px] border border-border overflow-hidden">
+          <div className="flex border border-border overflow-hidden">
             <button
               onClick={() => setView("list")}
               className={cn(
@@ -202,7 +202,7 @@ export default function ClientsPageClient({
           </div>
           <button
             onClick={() => setShowCreateForm(true)}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-[10px] bg-gradient-to-r from-gold to-gold-light text-white text-sm font-semibold shadow-md hover:shadow-lg transition-shadow"
+            className="flex items-center gap-2 px-4 py-2.5 bg-brass text-white text-sm font-semibold"
           >
             <UserPlus size={16} />
             <span className="hidden sm:inline">Pridat klienta</span>
@@ -334,7 +334,7 @@ function PaginationBar({
     <div className="flex items-center justify-center gap-1 flex-wrap pt-2">
       <a
         href={buildHref(1)}
-        className={`px-3 py-2 rounded-[8px] text-xs font-medium ${
+        className={`px-3 py-2 text-xs font-medium ${
           currentPage === 1
             ? "pointer-events-none opacity-40 bg-surface border border-border"
             : "bg-surface border border-border text-text-mid hover:bg-surface-hover hover:text-text"
@@ -344,7 +344,7 @@ function PaginationBar({
       </a>
       <a
         href={buildHref(Math.max(1, currentPage - 1))}
-        className={`px-3 py-2 rounded-[8px] text-xs font-medium ${
+        className={`px-3 py-2 text-xs font-medium ${
           currentPage === 1
             ? "pointer-events-none opacity-40 bg-surface border border-border"
             : "bg-surface border border-border text-text-mid hover:bg-surface-hover hover:text-text"
@@ -364,9 +364,9 @@ function PaginationBar({
           <a
             key={p}
             href={buildHref(p)}
-            className={`px-3 py-2 min-w-[36px] text-center rounded-[8px] text-xs font-medium ${
+            className={`px-3 py-2 min-w-[36px] text-center text-xs font-medium ${
               p === currentPage
-                ? "bg-gold text-white shadow-sm"
+                ? "bg-gold text-white"
                 : "bg-surface border border-border text-text-mid hover:bg-surface-hover hover:text-text"
             }`}
           >
@@ -376,7 +376,7 @@ function PaginationBar({
       )}
       <a
         href={buildHref(Math.min(totalPages, currentPage + 1))}
-        className={`px-3 py-2 rounded-[8px] text-xs font-medium ${
+        className={`px-3 py-2 text-xs font-medium ${
           currentPage === totalPages
             ? "pointer-events-none opacity-40 bg-surface border border-border"
             : "bg-surface border border-border text-text-mid hover:bg-surface-hover hover:text-text"
@@ -386,7 +386,7 @@ function PaginationBar({
       </a>
       <a
         href={buildHref(totalPages)}
-        className={`px-3 py-2 rounded-[8px] text-xs font-medium ${
+        className={`px-3 py-2 text-xs font-medium ${
           currentPage === totalPages
             ? "pointer-events-none opacity-40 bg-surface border border-border"
             : "bg-surface border border-border text-text-mid hover:bg-surface-hover hover:text-text"

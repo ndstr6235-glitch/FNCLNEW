@@ -33,11 +33,11 @@ export default function DepositsChart({ data }: Props) {
   const hasData = data.some((d) => d.amount > 0);
   const { resolved } = useTheme();
   const isDark = resolved === "dark";
-  const gridColor = isDark ? "#2a3040" : "#e4e8f0";
-  const tickColor = isDark ? "#6b7590" : "#8892aa";
+  const gridColor = isDark ? "#2a3040" : "rgba(22,33,29,0.14)";
+  const tickColor = isDark ? "#6b7590" : "#6E6A61";
 
   return (
-    <div className="bg-surface rounded-[16px] border border-border p-4 md:p-6 transition-colors duration-200">
+    <div className="bg-surface border border-border p-4 md:p-6 transition-colors duration-200">
       <h3 className="font-display text-sm md:text-base font-bold text-text mb-4">
         Vklady za posledních 6 měsíců
       </h3>
@@ -70,8 +70,8 @@ export default function DepositsChart({ data }: Props) {
                 borderRadius: 8,
                 border: `1px solid ${gridColor}`,
                 fontSize: 13,
-                backgroundColor: isDark ? "#1a1f2e" : "#ffffff",
-                color: isDark ? "#e4e8f0" : "#0f1117",
+                backgroundColor: isDark ? "#16211D" : "#ffffff",
+                color: isDark ? "rgba(22,33,29,0.14)" : "#16211D",
               }}
             />
             <defs>

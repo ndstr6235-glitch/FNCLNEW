@@ -5,20 +5,20 @@ import type { Role, EmailTemplate, EventType, ClientStage, ClientScore } from ".
 // ---------------------------------------------------------------------------
 export const COLORS = {
   // Backgrounds
-  bg: "#f0f2f7",
-  sidebar: "#0f1117",
+  bg: "#F2EEE6",
+  sidebar: "#16211D",
   surface: "#ffffff",
-  surfaceHover: "#f8f9fc",
+  surfaceHover: "#F2EEE6",
 
   // Borders
-  border: "#e4e8f0",
-  borderDark: "#d0d6e4",
+  border: "rgba(22,33,29,0.14)",
+  borderDark: "rgba(22,33,29,0.25)",
 
   // Brand accents
-  gold: "#b8912a",
-  goldLight: "#f5c842",
-  goldPale: "#fef9ec",
-  goldBorder: "#f0d97a",
+  gold: "#A9884E",
+  goldLight: "#C2A468",
+  goldPale: "#F2EEE6",
+  goldBorder: "rgba(169,136,78,0.3)",
 
   // Semantic
   emerald: "#1a9e6a",
@@ -37,10 +37,10 @@ export const COLORS = {
   amberPale: "#fef5ec",
 
   // Text
-  text: "#0f1117",
-  textMid: "#4a5578",
-  textDim: "#8892aa",
-  textFaint: "#c0c8d8",
+  text: "#16211D",
+  textMid: "#3B4842",
+  textDim: "#6E6A61",
+  textFaint: "#B0ADA6",
 } as const;
 
 // ---------------------------------------------------------------------------

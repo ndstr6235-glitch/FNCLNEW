@@ -111,7 +111,7 @@ export default function BulkActionBar({
   return (
     <>
       <div className="fixed bottom-0 left-0 right-0 z-[55] p-3 md:p-4 pb-[max(1rem,env(safe-area-inset-bottom))] pl-[max(0.75rem,env(safe-area-inset-left))] pr-[max(0.75rem,env(safe-area-inset-right))]">
-        <div className="max-w-4xl mx-auto bg-sidebar text-white rounded-[14px] shadow-lg border border-white/10 px-4 py-3 flex items-center gap-3 flex-wrap">
+        <div className="max-w-4xl mx-auto bg-sidebar text-white border border-white/10 px-4 py-3 flex items-center gap-3 flex-wrap">
           {/* Count + close */}
           <div className="flex items-center gap-2 shrink-0">
             <span className="text-sm font-semibold">
@@ -120,7 +120,7 @@ export default function BulkActionBar({
             </span>
             <button
               onClick={onClear}
-              className="w-11 h-11 md:w-7 md:h-7 flex items-center justify-center rounded-full hover:bg-white/10 transition-colors"
+              className="w-11 h-11 md:w-7 md:h-7 flex items-center justify-center rounded-full hover:bg-paper/10 transition-colors"
             >
               <X size={14} />
             </button>
@@ -136,7 +136,7 @@ export default function BulkActionBar({
             <button
               onClick={handleEmailClick}
               disabled={loading}
-              className="flex items-center gap-1.5 px-3 py-2 min-h-[44px] md:min-h-0 rounded-[8px] text-xs font-medium hover:bg-white/10 transition-colors disabled:opacity-50"
+              className="flex items-center gap-1.5 px-3 py-2 min-h-[44px] md:min-h-0 text-xs font-medium hover:bg-paper/10 transition-colors disabled:opacity-50"
             >
               <Mail size={14} />
               <span className="hidden sm:inline">Email</span>
@@ -150,13 +150,13 @@ export default function BulkActionBar({
                   setShowStageDropdown(false);
                 }}
                 disabled={loading}
-                className="flex items-center gap-1.5 px-3 py-2 min-h-[44px] md:min-h-0 rounded-[8px] text-xs font-medium hover:bg-white/10 transition-colors disabled:opacity-50"
+                className="flex items-center gap-1.5 px-3 py-2 min-h-[44px] md:min-h-0 text-xs font-medium hover:bg-paper/10 transition-colors disabled:opacity-50"
               >
                 <UserCog size={14} />
                 <span className="hidden sm:inline">Broker</span>
               </button>
               {showBrokerDropdown && (
-                <div className="absolute bottom-full mb-2 left-0 w-48 bg-surface border border-border rounded-[10px] shadow-lg overflow-hidden z-10">
+                <div className="absolute bottom-full mb-2 left-0 w-48 bg-surface border border-border overflow-hidden z-10">
                   {brokers.map((b) => (
                     <button
                       key={b.id}
@@ -178,13 +178,13 @@ export default function BulkActionBar({
                   setShowBrokerDropdown(false);
                 }}
                 disabled={loading}
-                className="flex items-center gap-1.5 px-3 py-2 min-h-[44px] md:min-h-0 rounded-[8px] text-xs font-medium hover:bg-white/10 transition-colors disabled:opacity-50"
+                className="flex items-center gap-1.5 px-3 py-2 min-h-[44px] md:min-h-0 text-xs font-medium hover:bg-paper/10 transition-colors disabled:opacity-50"
               >
                 <ArrowRightLeft size={14} />
                 <span className="hidden sm:inline">Stage</span>
               </button>
               {showStageDropdown && (
-                <div className="absolute bottom-full mb-2 left-0 w-48 bg-surface border border-border rounded-[10px] shadow-lg overflow-hidden z-10">
+                <div className="absolute bottom-full mb-2 left-0 w-48 bg-surface border border-border overflow-hidden z-10">
                   {PIPELINE_STAGES.map((s) => (
                     <button
                       key={s.key}
@@ -206,7 +206,7 @@ export default function BulkActionBar({
             <button
               onClick={handleExportCSV}
               disabled={loading}
-              className="flex items-center gap-1.5 px-3 py-2 min-h-[44px] md:min-h-0 rounded-[8px] text-xs font-medium hover:bg-white/10 transition-colors disabled:opacity-50"
+              className="flex items-center gap-1.5 px-3 py-2 min-h-[44px] md:min-h-0 text-xs font-medium hover:bg-paper/10 transition-colors disabled:opacity-50"
             >
               <Download size={14} />
               <span className="hidden sm:inline">CSV</span>
@@ -217,7 +217,7 @@ export default function BulkActionBar({
               <button
                 onClick={() => setShowDeleteConfirm(true)}
                 disabled={loading}
-                className="flex items-center gap-1.5 px-3 py-2 min-h-[44px] md:min-h-0 rounded-[8px] text-xs font-medium text-ruby hover:bg-ruby/10 transition-colors disabled:opacity-50"
+                className="flex items-center gap-1.5 px-3 py-2 min-h-[44px] md:min-h-0 text-xs font-medium text-ruby hover:bg-ruby/10 transition-colors disabled:opacity-50"
               >
                 <Trash2 size={14} />
                 <span className="hidden sm:inline">Smazat</span>

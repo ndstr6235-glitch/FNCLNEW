@@ -52,7 +52,7 @@ export default function UsersTable({
 
   return (
     <>
-      <div className="hidden md:block bg-surface rounded-[16px] border border-border overflow-hidden">
+      <div className="hidden md:block bg-surface border border-border overflow-hidden">
         <table className="w-full text-sm">
           <thead>
             <tr className="bg-surface-hover border-b border-border text-left">
@@ -145,7 +145,7 @@ export default function UsersTable({
                       <div className="flex items-center justify-end gap-1">
                         <button
                           onClick={() => onEdit(user)}
-                          className="w-10 h-10 flex items-center justify-center rounded-[8px] text-text-dim hover:text-gold hover:bg-gold/10 transition-colors"
+                          className="w-10 h-10 flex items-center justify-center text-text-dim hover:text-gold hover:bg-gold/10 transition-colors"
                           title="Upravit"
                         >
                           <Pencil size={14} />
@@ -155,7 +155,7 @@ export default function UsersTable({
                             <button
                               onClick={() => handleToggleActive(user.id)}
                               className={cn(
-                                "w-10 h-10 flex items-center justify-center rounded-[8px] transition-colors",
+                                "w-10 h-10 flex items-center justify-center transition-colors",
                                 user.active
                                   ? "text-text-dim hover:text-amber hover:bg-amber/10"
                                   : "text-text-dim hover:text-emerald hover:bg-emerald/10"
@@ -166,7 +166,7 @@ export default function UsersTable({
                             </button>
                             <button
                               onClick={() => setDeleteId(user.id)}
-                              className="w-10 h-10 flex items-center justify-center rounded-[8px] text-text-dim hover:text-ruby hover:bg-ruby/10 transition-colors"
+                              className="w-10 h-10 flex items-center justify-center text-text-dim hover:text-ruby hover:bg-ruby/10 transition-colors"
                               title="Smazat"
                             >
                               <Trash2 size={14} />

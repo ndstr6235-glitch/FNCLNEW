@@ -98,7 +98,7 @@ export default function CalendarPageClient({
         </div>
         <button
           onClick={() => setShowEventForm(true)}
-          className="flex items-center gap-2 px-4 py-2.5 rounded-[10px] bg-gradient-to-r from-gold to-gold-light text-white text-sm font-semibold shadow-md hover:shadow-lg transition-shadow"
+          className="flex items-center gap-2 px-4 py-2.5 bg-brass text-white text-sm font-semibold"
         >
           <CalendarPlus size={16} />
           <span className="hidden sm:inline">Přidat událost</span>
@@ -109,7 +109,7 @@ export default function CalendarPageClient({
       <div className="flex flex-col lg:flex-row gap-4 lg:gap-6">
         {/* Left panel: calendar + filters */}
         <div className="lg:w-[280px] shrink-0 space-y-4">
-          <div className="bg-surface rounded-[16px] border border-border shadow-card p-4">
+          <div className="bg-surface border border-border p-4">
             <MiniCalendar
               year={year}
               month={month}
@@ -120,7 +120,7 @@ export default function CalendarPageClient({
             />
           </div>
 
-          <div className="bg-surface rounded-[16px] border border-border shadow-card p-4 lg:p-3">
+          <div className="bg-surface border border-border p-4 lg:p-3">
             <EventTypeFilter
               events={events}
               activeTypes={activeTypes}
@@ -154,7 +154,7 @@ export default function CalendarPageClient({
               </p>
               <button
                 onClick={() => setShowEventForm(true)}
-                className="flex items-center gap-2 px-4 py-2.5 rounded-[10px] bg-gradient-to-r from-gold to-gold-light text-white text-sm font-semibold shadow-md hover:shadow-lg transition-shadow"
+                className="flex items-center gap-2 px-4 py-2.5 bg-brass text-white text-sm font-semibold"
               >
                 <CalendarPlus size={16} />
                 Přidat událost

@@ -69,7 +69,7 @@ export default function PipelineBoard({ clients: initial, onSelectClient }: Prop
             </div>
 
             {/* Cards */}
-            <div className="space-y-2 min-h-[100px] p-2 rounded-[12px] bg-surface-hover/50 border border-border/50 transition-colors">
+            <div className="space-y-2 min-h-[100px] p-2 bg-surface-hover/50 border border-border/50 transition-colors">
               {stageClients.length === 0 && (
                 <p className="text-xs text-text-faint text-center py-6">
                   Prazdne
@@ -83,7 +83,7 @@ export default function PipelineBoard({ clients: initial, onSelectClient }: Prop
                     draggable
                     onDragStart={() => handleDragStart(client.id)}
                     onClick={() => onSelectClient?.(client.id)}
-                    className={`bg-surface rounded-[10px] border border-border p-3 cursor-pointer hover:shadow-card transition-all ${
+                    className={`bg-surface border border-border p-3 cursor-pointer hover:bg-surface-hover transition-all ${
                       dragging === client.id ? "opacity-40" : ""
                     } ${isPending ? "pointer-events-none" : ""}`}
                   >

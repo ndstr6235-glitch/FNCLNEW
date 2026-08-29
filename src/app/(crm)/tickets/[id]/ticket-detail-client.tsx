@@ -105,7 +105,7 @@ export default function TicketDetailClient({ ticket: initial, currentUserId, use
       <div className="flex items-center gap-3">
         <button
           onClick={() => router.push("/tickets")}
-          className="w-9 h-9 flex items-center justify-center rounded-[8px] hover:bg-surface-hover transition-colors"
+          className="w-9 h-9 flex items-center justify-center hover:bg-surface-hover transition-colors"
         >
           <ArrowLeft size={18} className="text-text-dim" />
         </button>
@@ -120,7 +120,7 @@ export default function TicketDetailClient({ ticket: initial, currentUserId, use
         </span>
       </div>
 
-      <div className="bg-surface rounded-[16px] border border-border p-4 space-y-3">
+      <div className="bg-surface border border-border p-4 space-y-3">
         <div className="grid grid-cols-2 gap-3 text-sm">
           <div>
             <p className="text-text-dim text-xs">Autor</p>
@@ -164,7 +164,7 @@ export default function TicketDetailClient({ ticket: initial, currentUserId, use
             <button
               onClick={() => handleStatusChange("IN_PROGRESS")}
               disabled={isPending}
-              className="px-4 py-2 rounded-[10px] bg-amber-pale text-amber text-sm font-medium hover:bg-amber/20 transition-colors"
+              className="px-4 py-2 bg-amber-pale text-amber text-sm font-medium hover:bg-amber/20 transition-colors"
             >
               Začít řešit
             </button>
@@ -173,7 +173,7 @@ export default function TicketDetailClient({ ticket: initial, currentUserId, use
             <button
               onClick={() => handleStatusChange("DONE")}
               disabled={isPending}
-              className="px-4 py-2 rounded-[10px] bg-emerald-pale text-emerald text-sm font-medium hover:bg-emerald/20 transition-colors"
+              className="px-4 py-2 bg-emerald-pale text-emerald text-sm font-medium hover:bg-emerald/20 transition-colors"
             >
               Hotovo
             </button>
@@ -181,14 +181,14 @@ export default function TicketDetailClient({ ticket: initial, currentUserId, use
           <button
             onClick={() => handleStatusChange("CANCELLED")}
             disabled={isPending}
-            className="px-4 py-2 rounded-[10px] bg-surface-hover text-text-dim text-sm font-medium hover:bg-ruby-pale hover:text-ruby transition-colors"
+            className="px-4 py-2 bg-surface-hover text-text-dim text-sm font-medium hover:bg-ruby-pale hover:text-ruby transition-colors"
           >
             Zrušit
           </button>
           {userRole !== "broker" && (
             <button
               onClick={() => setShowAssign(!showAssign)}
-              className="ml-auto flex items-center gap-1.5 px-4 py-2 rounded-[10px] border border-border text-text-mid text-sm font-medium hover:bg-surface-hover transition-colors"
+              className="ml-auto flex items-center gap-1.5 px-4 py-2 border border-border text-text-mid text-sm font-medium hover:bg-surface-hover transition-colors"
             >
               <UserCheck size={14} />
               Přiřadit
@@ -198,9 +198,9 @@ export default function TicketDetailClient({ ticket: initial, currentUserId, use
       )}
 
       {showAssign && userRole !== "broker" && (
-        <div className="bg-surface border border-border rounded-[12px] p-3 flex gap-2">
+        <div className="bg-surface border border-border p-3 flex gap-2">
           <select
-            className="flex-1 px-3 py-2 rounded-[8px] border border-border bg-surface text-text text-sm focus:outline-none focus:border-gold"
+            className="flex-1 px-3 py-2 border border-border bg-surface text-text text-sm focus:outline-none focus:border-gold"
             value={assigneeId}
             onChange={(e) => setAssigneeId(e.target.value)}
           >
@@ -212,14 +212,14 @@ export default function TicketDetailClient({ ticket: initial, currentUserId, use
           <button
             onClick={handleAssign}
             disabled={!assigneeId || isPending}
-            className="px-4 py-2 rounded-[8px] bg-gold text-white text-sm font-medium hover:bg-gold-light transition-colors disabled:opacity-50"
+            className="px-4 py-2 bg-gold text-white text-sm font-medium hover:bg-gold-light transition-colors disabled:opacity-50"
           >
             Uložit
           </button>
         </div>
       )}
 
-      <div className="bg-surface rounded-[16px] border border-border p-4">
+      <div className="bg-surface border border-border p-4">
         <h2 className="text-sm font-semibold text-text mb-4">Konverzace</h2>
         <TicketThread
           ticketId={ticket.id}

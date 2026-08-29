@@ -76,7 +76,7 @@ export default function ClientsCards({
             onTouchEnd={handleTouchEnd}
             onTouchCancel={handleTouchEnd}
             className={cn(
-              "bg-surface rounded-[16px] border border-border shadow-card p-4 active:bg-surface-hover transition-colors cursor-pointer relative",
+              "bg-surface border border-border p-4 active:bg-surface-hover transition-colors cursor-pointer relative",
               isSelected && "border-gold bg-gold-pale/20"
             )}
           >

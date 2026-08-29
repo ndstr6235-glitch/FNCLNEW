@@ -28,7 +28,7 @@ export default function StatCard({
   return (
     <div
       className={cn(
-        "bg-surface rounded-[12px] sm:rounded-[16px] shadow-card border-l-4 p-3 sm:p-3.5 md:p-4 lg:p-5",
+        "bg-surface border-l-2 p-3 sm:p-3.5 md:p-4 lg:p-5 border border-border",
         accent.border
       )}
     >
@@ -38,7 +38,7 @@ export default function StatCard({
         </span>
         <div
           className={cn(
-            "w-8 h-8 rounded-[8px] flex items-center justify-center",
+            "w-8 h-8 flex items-center justify-center",
             accent.bg
           )}
         >

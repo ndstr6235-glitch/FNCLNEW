@@ -178,7 +178,7 @@ export default function DocumentsPageClient({
           <button
             onClick={handleBulkRegenerate}
             disabled={bulkPending}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-[10px] bg-gradient-to-r from-gold to-gold-light text-white text-sm font-semibold shadow-sm hover:shadow-md transition-shadow disabled:opacity-60"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-brass text-white text-sm font-semibold disabled:opacity-60"
             title="Pokusit se zregenerovat PDF pro všechny řádky 'Bez PDF' z uložených dat"
           >
             {bulkPending ? (
@@ -203,7 +203,7 @@ export default function DocumentsPageClient({
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Hledat klienta, e-mail příjemce, předmět…"
-            className="w-full pl-10 pr-3 py-2.5 min-h-[44px] rounded-[10px] border border-border bg-surface text-sm text-text placeholder:text-text-faint focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
+            className="w-full pl-10 pr-3 py-2.5 min-h-[44px] border border-border bg-surface text-sm text-text placeholder:text-text-faint focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
           />
         </div>
         <div className="flex gap-2">
@@ -217,9 +217,9 @@ export default function DocumentsPageClient({
               <button
                 key={opt.v}
                 onClick={() => setType(opt.v)}
-                className={`flex-1 sm:flex-none px-4 py-2 min-h-[44px] rounded-[10px] text-sm font-medium transition-colors ${
+                className={`flex-1 sm:flex-none px-4 py-2 min-h-[44px] text-sm font-medium transition-colors ${
                   active
-                    ? "bg-gold text-white shadow-sm"
+                    ? "bg-gold text-white"
                     : "bg-surface border border-border text-text-mid hover:bg-surface-hover"
                 }`}
               >
@@ -232,14 +232,14 @@ export default function DocumentsPageClient({
 
       {/* Empty */}
       {documents.length === 0 ? (
-        <div className="text-center py-16 bg-surface rounded-[12px] border border-border">
+        <div className="text-center py-16 bg-surface border border-border">
           <FileText size={36} className="mx-auto text-text-dim mb-3" />
           <p className="text-sm text-text-dim">Žádné dokumenty</p>
         </div>
       ) : (
         <>
           {/* Desktop table */}
-          <div className="hidden md:block bg-surface rounded-[12px] border border-border overflow-hidden">
+          <div className="hidden md:block bg-surface border border-border overflow-hidden">
             <table className="w-full">
               <thead className="bg-surface-hover">
                 <tr className="text-left text-[10px] uppercase tracking-wider text-text-dim">
@@ -327,7 +327,7 @@ export default function DocumentsPageClient({
                               href={d.fileUrl}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="inline-flex items-center justify-center w-8 h-8 rounded-[6px] text-text-mid hover:text-text hover:bg-surface transition-colors"
+                              className="inline-flex items-center justify-center w-8 h-8 text-text-mid hover:text-text hover:bg-surface transition-colors"
                               title="Otevřít"
                             >
                               <ExternalLink size={14} />
@@ -335,7 +335,7 @@ export default function DocumentsPageClient({
                             <a
                               href={d.fileUrl}
                               download={d.fileName}
-                              className="inline-flex items-center gap-1 px-3 py-1.5 rounded-[8px] bg-gold text-white text-xs font-medium hover:bg-gold/90 transition-colors"
+                              className="inline-flex items-center gap-1 px-3 py-1.5 bg-gold text-white text-xs font-medium hover:bg-gold/90 transition-colors"
                             >
                               <Download size={12} />
                               Stáhnout
@@ -346,7 +346,7 @@ export default function DocumentsPageClient({
                             <button
                               onClick={() => handlePickFile(d.id)}
                               disabled={regenerating.has(d.id)}
-                              className="inline-flex items-center gap-1 px-3 py-1.5 rounded-[8px] border border-sapphire-border bg-sapphire-pale text-sapphire text-xs font-medium hover:bg-sapphire/10 transition-colors disabled:opacity-60"
+                              className="inline-flex items-center gap-1 px-3 py-1.5 border border-sapphire-border bg-sapphire-pale text-sapphire text-xs font-medium hover:bg-sapphire/10 transition-colors disabled:opacity-60"
                               title="Nahrát originální PDF (např. z odchozí pošty)"
                             >
                               <Upload size={11} />
@@ -355,7 +355,7 @@ export default function DocumentsPageClient({
                             <button
                               onClick={() => handleRegenerate(d.id)}
                               disabled={regenerating.has(d.id)}
-                              className="inline-flex items-center gap-1 px-3 py-1.5 rounded-[8px] border border-amber-border bg-amber-pale text-amber text-xs font-medium hover:bg-amber/10 transition-colors disabled:opacity-60"
+                              className="inline-flex items-center gap-1 px-3 py-1.5 border border-amber-border bg-amber-pale text-amber text-xs font-medium hover:bg-amber/10 transition-colors disabled:opacity-60"
                               title="Zregenerovat PDF z uložených dat klienta + audit logu"
                             >
                               {regenerating.has(d.id) ? (
@@ -384,7 +384,7 @@ export default function DocumentsPageClient({
               return (
                 <div
                   key={d.id}
-                  className="bg-surface rounded-[12px] border border-border p-4 space-y-2"
+                  className="bg-surface border border-border p-4 space-y-2"
                 >
                   <div className="flex items-start justify-between gap-2">
                     <a
@@ -431,7 +431,7 @@ export default function DocumentsPageClient({
                       <a
                         href={d.fileUrl}
                         download={d.fileName}
-                        className="inline-flex items-center gap-1 px-3 py-1.5 rounded-[8px] bg-gold text-white text-xs font-medium"
+                        className="inline-flex items-center gap-1 px-3 py-1.5 bg-gold text-white text-xs font-medium"
                       >
                         <Download size={12} />
                         Stáhnout

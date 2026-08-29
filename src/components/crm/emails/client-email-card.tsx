@@ -29,7 +29,7 @@ export default function ClientEmailCard({
   const hasEmail = !!client.email;
 
   return (
-    <div className="bg-surface rounded-[16px] border border-border p-4 space-y-3 hover:shadow-md transition-shadow">
+    <div className="bg-surface border border-border p-4 space-y-3">
       {/* Client info row */}
       <div className="flex items-center gap-3">
         {/* Avatar */}

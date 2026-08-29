@@ -43,9 +43,9 @@ export default function Modal({ open, onClose, title, children }: ModalProps) {
         className={cn(
           "relative z-10 bg-surface flex flex-col overflow-hidden",
           // Mobile: bottom sheet
-          "w-full max-h-[90dvh] rounded-t-[20px]",
+          "w-full max-h-[90dvh]",
           // Desktop: centered modal
-          "md:max-w-[520px] md:rounded-[16px] md:max-h-[85dvh] md:shadow-lg"
+          "md:max-w-[520px] md:max-h-[85dvh] md:border md:border-border"
         )}
         style={{
           animation: "modal-in 0.25s ease-out",
@@ -62,7 +62,7 @@ export default function Modal({ open, onClose, title, children }: ModalProps) {
           <h2 className="font-display text-lg font-bold text-text">{title}</h2>
           <button
             onClick={onClose}
-            className="w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-[8px] text-text-dim hover:text-text hover:bg-surface-hover transition-colors"
+            className="w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center text-text-dim hover:text-text hover:bg-surface-hover transition-colors"
             aria-label="Zavřít"
           >
             <X size={18} />

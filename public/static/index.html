@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Puskin Partners — Investice do nemovitostí</title>
+  <meta name="description" content="Investiční a developerská skupina Puskin Partners. Stavíme a rekonstruujeme nemovitosti v Praze a okolí. Dluhopisové emise zajištěné reálnými nemovitostmi.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Display&family=Libre+Franklin:wght@300;400;500&display=swap">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <a href="#main" class="skip-link">Přeskočit na obsah</a>
+
+  <!-- 01 — Header -->
+  <header class="site-header">
+    <a href="/" class="logo">
+      <span class="logo-primary">PUSKIN</span>
+      <span class="logo-secondary">PARTNERS</span>
+    </a>
+
+    <nav class="nav" aria-label="Hlavní navigace">
+      <a href="#emise">Investice</a>
+      <a href="#projekty">Projekty</a>
+      <a href="#tym">O skupině</a>
+      <a href="#kontakt">Kontakt</a>
+    </nav>
+
+    <div class="header-right">
+      <span class="lang-switch">
+        <a href="#" class="lang-active">CZ</a> / <a href="#" class="lang-inactive">EN</a>
+      </span>
+      <a href="#kontakt" class="btn btn-outline">SJEDNAT SCHŮZKU</a>
+
+      <!-- Mobile nav (checkbox toggle) -->
+      <input type="checkbox" id="mobile-nav-toggle" aria-hidden="true">
+      <label class="menu-toggle" for="mobile-nav-toggle" aria-label="Otevřít menu">
+        <span></span>
+      </label>
+      <nav class="mobile-nav" aria-label="Mobilní navigace">
+        <a href="#emise" onclick="document.getElementById('mobile-nav-toggle').checked=false">Investice</a>
+        <a href="#projekty" onclick="document.getElementById('mobile-nav-toggle').checked=false">Projekty</a>
+        <a href="#tym" onclick="document.getElementById('mobile-nav-toggle').checked=false">O skupině</a>
+        <a href="#kontakt" onclick="document.getElementById('mobile-nav-toggle').checked=false">Kontakt</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- 02 — Hero -->
+    <section class="hero">
+      <div class="hero-text">
+        <div class="eyebrow">INVESTICE DO NEMOVITOSTÍ</div>
+
+        <h1>Kapitál, který stojí na základech</h1>
+
+        <p class="hero-perex">Stavíme a rekonstruujeme nemovitosti v Praze a okolí. Investorům otevíráme pouze projekty, které vedeme vlastními kapacitami — od výkupu pozemku po předání klíčů.</p>
+
+        <div class="hero-cta">
+          <a href="#emise" class="btn btn-dark">AKTUÁLNÍ EMISE</a>
+          <a href="#projekty" class="btn-text">PORTFOLIO PROJEKTŮ</a>
+        </div>
+
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <div class="hero-stat-value">350+</div>
+            <div class="hero-stat-label">DOKONČENÝCH PROJEKTŮ</div>
+          </div>
+          <div class="hero-stat">
+            <div class="hero-stat-value">20 let</div>
+            <div class="hero-stat-label">NA TRHU</div>
+          </div>
+          <div class="hero-stat">
+            <div class="hero-stat-value">80</div>
+            <div class="hero-stat-label">JEDNOTEK ROČNĚ</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-photo photo" role="img" aria-label="Villa dům nebo interiér" aria-hidden="true"></div>
+    </section>
+
+    <!-- 03 — Trust block (dark) -->
+    <section class="trust">
+      <div class="trust-grid">
+        <div class="trust-claim-col">
+          <p class="trust-claim">Každá emise je vázaná na konkrétní stavbu — na tu, kterou si můžete přijít prohlédnout.</p>
+        </div>
+        <div class="trust-points">
+          <div class="trust-point">
+            <span class="trust-point-num">01</span>
+            <p class="trust-point-text">Zajištění reálnou nemovitostí, ne portfoliem cizích aktiv.</p>
+          </div>
+          <div class="trust-point">
+            <span class="trust-point-num">02</span>
+            <p class="trust-point-text">Fixní úrok vyplácený kvartálně po celou dobu emise.</p>
+          </div>
+          <div class="trust-point">
+            <span class="trust-point-num">03</span>
+            <p class="trust-point-text">Horizont tří až pěti let, splacení jistiny v termínu emise.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 04 — Emissions -->
+    <section class="section" id="emise">
+      <div class="section-header">
+        <h2>Aktuální emise</h2>
+        <span class="section-label">I — PŘÍLEŽITOSTI</span>
+      </div>
+
+      <!-- Desktop table -->
+      <table class="emissions-table" aria-label="Přehled aktuálních emisí">
+        <thead>
+          <tr class="emissions-table-head">
+            <th scope="col">PROJEKT</th>
+            <th scope="col">LOKALITA</th>
+            <th scope="col">VÝNOS P.A.</th>
+            <th scope="col">SPLATNOST</th>
+            <th scope="col">MINIMÁLNÍ VSTUP</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="emissions-row">
+            <td class="emission-name">Villa Uhříněves</td>
+            <td>Praha 10</td>
+            <td class="emission-yield">9,0 %</td>
+            <td>2029</td>
+            <td>500 000 Kč</td>
+          </tr>
+          <tr class="emissions-row">
+            <td class="emission-name">Villa Chýně</td>
+            <td>Praha-západ</td>
+            <td class="emission-yield">8,5 %</td>
+            <td>2029</td>
+            <td>500 000 Kč</td>
+          </tr>
+          <tr class="emissions-row">
+            <td class="emission-name">Villa Brandýsek</td>
+            <td>Kladno</td>
+            <td class="emission-yield">8,0 %</td>
+            <td>2028</td>
+            <td>300 000 Kč</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Mobile cards -->
+      <div class="emissions-cards">
+        <div class="emission-card">
+          <div class="emission-card-name">Villa Uhříněves</div>
+          <div class="emission-card-rows">
+            <div class="emission-card-row">
+              <span class="emission-card-label">LOKALITA</span>
+              <span class="emission-card-value">Praha 10</span>
+            </div>
+            <div class="emission-card-row">
+              <span class="emission-card-label">VÝNOS P.A.</span>
+              <span class="emission-card-value">9,0 %</span>
+            </div>
+            <div class="emission-card-row">
+              <span class="emission-card-label">SPLATNOST</span>
+              <span class="emission-card-value">2029</span>
+            </div>
+            <div class="emission-card-row">
+              <span class="emission-card-label">MINIMÁLNÍ VSTUP</span>
+              <span class="emission-card-value">500 000 Kč</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="emission-card">
+          <div class="emission-card-name">Villa Chýně</div>
+          <div class="emission-card-rows">
+            <div class="emission-card-row">
+              <span class="emission-card-label">LOKALITA</span>
+              <span class="emission-card-value">Praha-západ</span>
+            </div>
+            <div class="emission-card-row">
+              <span class="emission-card-label">VÝNOS P.A.</span>
+              <span class="emission-card-value">8,5 %</span>
+            </div>
+            <div class="emission-card-row">
+              <span class="emission-card-label">SPLATNOST</span>
+              <span class="emission-card-value">2029</span>
+            </div>
+            <div class="emission-card-row">
+              <span class="emission-card-label">MINIMÁLNÍ VSTUP</span>
+              <span class="emission-card-value">500 000 Kč</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="emission-card">
+          <div class="emission-card-name">Villa Brandýsek</div>
+          <div class="emission-card-rows">
+            <div class="emission-card-row">
+              <span class="emission-card-label">LOKALITA</span>
+              <span class="emission-card-value">Kladno</span>
+            </div>
+            <div class="emission-card-row">
+              <span class="emission-card-label">VÝNOS P.A.</span>
+              <span class="emission-card-value">8,0 %</span>
+            </div>
+            <div class="emission-card-row">
+              <span class="emission-card-label">SPLATNOST</span>
+              <span class="emission-card-value">2028</span>
+            </div>
+            <div class="emission-card-row">
+              <span class="emission-card-label">MINIMÁLNÍ VSTUP</span>
+              <span class="emission-card-value">300 000 Kč</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <p class="emissions-note">Ilustrativní údaje k doplnění z prospektu a konečných podmínek jednotlivých emisí.</p>
+    </section>
+
+    <!-- 05 — Process -->
+    <section class="section process">
+      <div class="process-grid">
+        <div class="process-content">
+          <span class="section-label">II — PROCES</span>
+          <h2>Jak investice probíhá</h2>
+
+          <div class="process-steps">
+            <div class="process-step">
+              <span class="process-step-num">01</span>
+              <div class="process-step-body">
+                <h3>Konzultace</h3>
+                <p>Projdeme objem, horizont a míru rizika, která vám vyhovuje.</p>
+              </div>
+            </div>
+            <div class="process-step">
+              <span class="process-step-num">02</span>
+              <div class="process-step-body">
+                <h3>Výběr projektu</h3>
+                <p>Ukážeme rozpočet, harmonogram a aktuální stav stavby.</p>
+              </div>
+            </div>
+            <div class="process-step">
+              <span class="process-step-num">03</span>
+              <div class="process-step-body">
+                <h3>Úpis a smlouva</h3>
+                <p>Podpis s prospektem a konečnými podmínkami na stole.</p>
+              </div>
+            </div>
+            <div class="process-step">
+              <span class="process-step-num">04</span>
+              <div class="process-step-body">
+                <h3>Výplata a splacení</h3>
+                <p>Úrok kvartálně, jistina zpět v termínu splatnosti emise.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="process-photo photo" role="img" aria-label="Detail materiálu nebo interiéru" aria-hidden="true"></div>
+      </div>
+    </section>
+
+    <!-- 06 — Portfolio -->
+    <section class="section" id="projekty">
+      <div class="section-header">
+        <h2>Portfolio</h2>
+        <span class="section-label">III — PROJEKTY</span>
+      </div>
+
+      <div class="portfolio-grid">
+        <div class="portfolio-item-large">
+          <div class="photo" style="height:460px" role="img" aria-label="Villa Uhříněves, exteriér" aria-hidden="true"></div>
+          <div class="portfolio-caption">
+            <span class="portfolio-caption-name">Villa Uhříněves</span>
+            <span class="portfolio-caption-meta">PRAHA 10 · 2026</span>
+          </div>
+        </div>
+        <div class="portfolio-item-small-group">
+          <div class="portfolio-item-small">
+            <div class="photo" style="height:214px" role="img" aria-label="Villa Chýně, exteriér" aria-hidden="true"></div>
+            <div class="portfolio-caption">
+              <span class="portfolio-caption-name">Villa Chýně</span>
+              <span class="portfolio-caption-meta">PRAHA-ZÁPAD</span>
+            </div>
+          </div>
+          <div class="portfolio-item-small">
+            <div class="photo" style="height:214px" role="img" aria-label="Xaveriova, interiér" aria-hidden="true"></div>
+            <div class="portfolio-caption">
+              <span class="portfolio-caption-name">Xaveriova</span>
+              <span class="portfolio-caption-meta">PRAHA 10</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 07 — Team -->
+    <section class="section" id="tym">
+      <div class="section-header">
+        <h2>Lidé za skupinou</h2>
+        <span class="section-label">IV — TÝM</span>
+      </div>
+
+      <div class="team-grid">
+        <div class="team-member">
+          <div class="photo" style="height:360px" role="img" aria-label="Portrét Martin Kozák" aria-hidden="true"></div>
+          <div class="team-member-name">Martin Kozák</div>
+          <div class="team-member-role">JEDNATEL</div>
+        </div>
+        <div class="team-member">
+          <div class="photo" style="height:360px" role="img" aria-label="Portrét — investiční divize" aria-hidden="true"></div>
+          <div class="team-member-name" style="font-style:italic">Jméno k doplnění</div>
+          <div class="team-member-role">INVESTIČNÍ DIVIZE</div>
+        </div>
+        <div class="team-member">
+          <div class="photo" style="height:360px" role="img" aria-label="Portrét — výstavba a realizace" aria-hidden="true"></div>
+          <div class="team-member-name" style="font-style:italic">Jméno k doplnění</div>
+          <div class="team-member-role">VÝSTAVBA A REALIZACE</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 08 — References & News -->
+    <section class="ref-news">
+      <div class="ref-news-grid">
+        <div class="ref-side">
+          <span class="section-label">V — REFERENCE</span>
+          <blockquote class="ref-quote">„Dohodnuté termíny platily, rekonstrukce byla provedena dle požadavků a ve výborné kvalitě."</blockquote>
+          <span class="ref-source">ROMAN UNZEITIG · REKONSTRUKCE BYTU, PRAHA</span>
+        </div>
+        <div class="news-side">
+          <span class="section-label">NOVINKY</span>
+          <div class="news-item">
+            <span class="news-item-title">Villa Uhříněves: hrubá stavba dokončena</span>
+            <span class="news-item-date">08 / 2026</span>
+          </div>
+          <div class="news-item">
+            <span class="news-item-title">Trendy v interiérovém designu pro rok 2026</span>
+            <span class="news-item-date">02 / 2026</span>
+          </div>
+          <div class="news-item">
+            <span class="news-item-title">Jak nemovitosti posilují investiční portfolio</span>
+            <span class="news-item-date">05 / 2025</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 09 — Contact (dark) -->
+    <section class="contact" id="kontakt">
+      <div class="contact-grid">
+        <div class="contact-left">
+          <span class="section-label section-label-dark">KONTAKT</span>
+          <h2>Projdeme si emisi i stavbu osobně</h2>
+          <a href="#kontakt" class="btn btn-light">DOMLUVIT KONZULTACI</a>
+        </div>
+        <div class="contact-right">
+          <div>Čerčanská 2053/18, Praha 4 — Krč, 140 00</div>
+          <div>info@puskinpartners.cz</div>
+          <div>+420 602 674 143</div>
+          <div class="contact-hours">Po—Pá / 9:00—18:00</div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="contact-disclaimer">
+    <p>Toto je propagační sdělení. Prospekt a konečné podmínky emisí jsou k dispozici na vyžádání. Doporučujeme, aby si potenciální investoři přečetli prospekt, než učiní investiční rozhodnutí.</p>
+    <p>Alexandr Puškin, s.r.o. · IČO: 26740788 · Rybná 716/24, Staré Město, 110 00 Praha 1 · Spisová značka: C 90827, Městský soud v Praze</p>
+  </footer>
+
+</body>
+</html>

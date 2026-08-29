@@ -102,7 +102,7 @@ export default function PaymentForm({
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
             placeholder="500000"
-            className="w-full px-3 py-2.5 min-h-[44px] rounded-[10px] border border-border bg-surface text-sm text-text placeholder:text-text-faint focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
+            className="w-full px-3 py-2.5 min-h-[44px] border border-border bg-surface text-sm text-text placeholder:text-text-faint focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
             required
           />
         </div>
@@ -120,7 +120,7 @@ export default function PaymentForm({
             value={percent}
             onChange={(e) => setPercent(e.target.value)}
             placeholder="10"
-            className="w-full px-3 py-2.5 min-h-[44px] rounded-[10px] border border-border bg-surface text-sm text-text placeholder:text-text-faint focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
+            className="w-full px-3 py-2.5 min-h-[44px] border border-border bg-surface text-sm text-text placeholder:text-text-faint focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
             required
           />
         </div>
@@ -133,7 +133,7 @@ export default function PaymentForm({
           <select
             value={duration}
             onChange={(e) => setDuration(e.target.value)}
-            className="w-full px-3 py-2.5 min-h-[44px] rounded-[10px] border border-border bg-surface text-sm text-text focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
+            className="w-full px-3 py-2.5 min-h-[44px] border border-border bg-surface text-sm text-text focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
           >
             <option value="6">6 měsíců</option>
             <option value="12">12 měsíců</option>
@@ -150,7 +150,7 @@ export default function PaymentForm({
           <select
             value={payoutFrequency}
             onChange={(e) => setPayoutFrequency(e.target.value)}
-            className="w-full px-3 py-2.5 min-h-[44px] rounded-[10px] border border-border bg-surface text-sm text-text focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
+            className="w-full px-3 py-2.5 min-h-[44px] border border-border bg-surface text-sm text-text focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
           >
             <option value="monthly">Měsíčně</option>
             <option value="quarterly">Čtvrtletně</option>
@@ -166,13 +166,13 @@ export default function PaymentForm({
             type="text"
             value={monthlyPayout > 0 ? fmtCZK(monthlyPayout) : "—"}
             readOnly
-            className="w-full px-3 py-2.5 min-h-[44px] rounded-[10px] border border-border bg-surface/50 text-sm text-text-mid font-medium cursor-default focus:outline-none"
+            className="w-full px-3 py-2.5 min-h-[44px] border border-border bg-surface/50 text-sm text-text-mid font-medium cursor-default focus:outline-none"
           />
         </div>
 
         {/* Live profit preview */}
         {amountNum > 0 && percentNum > 0 && (
-          <div className="flex items-center gap-3 p-3 rounded-[10px] bg-emerald-pale border border-emerald-border">
+          <div className="flex items-center gap-3 p-3 bg-emerald-pale border border-emerald-border">
             <TrendingUp size={18} className="text-emerald shrink-0" />
             <div>
               <span className="text-xs text-emerald/70">Váš výdělek:</span>
@@ -192,7 +192,7 @@ export default function PaymentForm({
             type="date"
             value={date}
             onChange={(e) => setDate(e.target.value)}
-            className="w-full px-3 py-2.5 min-h-[44px] rounded-[10px] border border-border bg-surface text-sm text-text focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
+            className="w-full px-3 py-2.5 min-h-[44px] border border-border bg-surface text-sm text-text focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
           />
         </div>
 
@@ -206,7 +206,7 @@ export default function PaymentForm({
             value={bankAccount}
             onChange={(e) => setBankAccount(e.target.value)}
             placeholder="např. 123456789/0300"
-            className="w-full px-3 py-2.5 min-h-[44px] rounded-[10px] border border-border bg-surface text-sm text-text placeholder:text-text-faint focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
+            className="w-full px-3 py-2.5 min-h-[44px] border border-border bg-surface text-sm text-text placeholder:text-text-faint focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
           />
         </div>
 
@@ -219,13 +219,13 @@ export default function PaymentForm({
             value={note}
             onChange={(e) => setNote(e.target.value)}
             rows={2}
-            className="w-full px-3 py-2.5 rounded-[10px] border border-border bg-surface text-sm text-text placeholder:text-text-faint focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition resize-none"
+            className="w-full px-3 py-2.5 border border-border bg-surface text-sm text-text placeholder:text-text-faint focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition resize-none"
           />
         </div>
 
         {/* Error */}
         {error && (
-          <p className="text-sm text-ruby bg-ruby-pale border border-ruby-border rounded-[8px] px-3 py-2">
+          <p className="text-sm text-ruby bg-ruby-pale border border-ruby-border px-3 py-2">
             {error}
           </p>
         )}
@@ -235,7 +235,7 @@ export default function PaymentForm({
           <button
             type="submit"
             disabled={submitting}
-            className="w-full flex items-center justify-center gap-2 px-4 py-3 min-h-[44px] rounded-[10px] bg-emerald text-white text-sm font-semibold hover:bg-emerald/90 transition-colors disabled:opacity-60"
+            className="w-full flex items-center justify-center gap-2 px-4 py-3 min-h-[44px] bg-emerald text-white text-sm font-semibold hover:bg-emerald/90 transition-colors disabled:opacity-60"
           >
             {submitting && <Loader2 size={16} className="animate-spin" />}
             Přidat platbu

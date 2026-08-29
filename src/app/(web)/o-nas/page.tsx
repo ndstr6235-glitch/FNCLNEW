@@ -35,7 +35,7 @@ export default function AboutPage() {
                 Vítám vás v&nbsp;Puskin&nbsp;and&nbsp;Partners
               </h2>
               <p className="text-neutral-600 leading-relaxed mb-4">
-                Jmenuji se Lukáš Salamánek a jsem zakladatelem společnosti. Od roku 2004
+                Jmenuji se Miroslav Fencl a jsem zakladatelem společnosti. Od roku 2004
                 stavíme v Praze — začínali jsme rekonstrukcemi bytů na Starém Městě
                 a postupně jsme se rozrostli v developerskou firmu s vlastním týmem
                 řemeslníků a profesionálů.
@@ -54,9 +54,9 @@ export default function AboutPage() {
             <AnimateIn delay={200}>
               <div className="aspect-[4/3] bg-gradient-to-br from-neutral-100 via-primary-100 to-accent-50 rounded-2xl flex flex-col items-center justify-center p-8">
                 <div className="w-24 h-24 rounded-full bg-primary-200/60 flex items-center justify-center mb-4">
-                  <span className="text-primary-500 font-heading font-bold text-2xl">LS</span>
+                  <span className="text-primary-500 font-heading font-bold text-2xl">MF</span>
                 </div>
-                <p className="text-primary-800 font-heading font-bold">Lukáš Salamánek</p>
+                <p className="text-primary-800 font-heading font-bold">Miroslav Fencl</p>
                 <p className="text-neutral-500 text-sm">Zakladatel &amp; jednatel</p>
               </div>
             </AnimateIn>

@@ -8,7 +8,7 @@ const BADGE_COLORS: Record<string, { bg: string; text: string; border: string }>
   emerald: { bg: COLORS.emeraldPale, text: COLORS.emerald, border: COLORS.emeraldBorder },
   sapphire: { bg: COLORS.sapphirePale, text: COLORS.sapphire, border: COLORS.sapphireBorder },
   gold: { bg: COLORS.goldPale, text: COLORS.gold, border: COLORS.goldBorder },
-  amber: { bg: COLORS.amberPale, text: COLORS.amber, border: "#f5c842" },
+  amber: { bg: COLORS.amberPale, text: COLORS.amber, border: "#C2A468" },
   ruby: { bg: COLORS.rubyPale, text: COLORS.ruby, border: COLORS.rubyBorder },
 };
 

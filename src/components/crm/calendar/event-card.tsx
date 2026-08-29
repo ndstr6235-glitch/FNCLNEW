@@ -24,17 +24,17 @@ export default function EventCard({ event, isPast, onDelete }: EventCardProps) {
   return (
     <div
       className={cn(
-        "flex items-start gap-3 p-4 rounded-[12px] bg-surface border transition-colors group",
+        "flex items-start gap-3 p-4 bg-surface border transition-colors group",
         isPast ? "opacity-55" : ""
       )}
-      style={{ borderLeftColor: meta?.color || "#e4e8f0", borderLeftWidth: 3 }}
+      style={{ borderLeftColor: meta?.color || "rgba(22,33,29,0.14)", borderLeftWidth: 3 }}
     >
       {/* Icon */}
       <div
         className="w-9 h-9 rounded-full flex items-center justify-center text-sm shrink-0"
         style={{
           backgroundColor: meta?.pale || "#f0f2f7",
-          color: meta?.color || "#4a5578",
+          color: meta?.color || "#3B4842",
         }}
       >
         {meta?.icon || "?"}
@@ -60,7 +60,7 @@ export default function EventCard({ event, isPast, onDelete }: EventCardProps) {
             className="text-[10px] font-medium px-1.5 py-0.5 rounded-full"
             style={{
               backgroundColor: meta?.pale || "#f0f2f7",
-              color: meta?.color || "#4a5578",
+              color: meta?.color || "#3B4842",
             }}
           >
             {meta?.label || event.type}

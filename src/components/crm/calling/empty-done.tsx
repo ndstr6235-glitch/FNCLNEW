@@ -28,7 +28,7 @@ export default function EmptyDone({ progress }: EmptyDoneProps) {
       </div>
       <Link
         href="/dashboard"
-        className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-medium text-white transition-all hover:brightness-110"
+        className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-medium text-white transition-all"
         style={{ background: COLORS.gold }}
       >
         Zpět na dashboard

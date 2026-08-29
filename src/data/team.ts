@@ -1,5 +1,5 @@
 export const team = [
-  { name: "Lukáš Salamánek", role: "Majitel & jednatel" },
+  { name: "Miroslav Fencl", role: "Majitel & jednatel" },
   { name: "Jana Nováková", role: "Obchodní ředitelka" },
   { name: "Martin Dvořák", role: "Vedoucí staveb" },
   { name: "Eva Svobodová", role: "Marketing" },

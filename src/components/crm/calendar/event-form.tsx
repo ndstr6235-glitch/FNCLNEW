@@ -83,7 +83,7 @@ export default function EventForm({
           <select
             value={type}
             onChange={(e) => setType(e.target.value)}
-            className="w-full px-3 py-2.5 min-h-[44px] rounded-[10px] border border-border bg-surface text-sm text-text focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
+            className="w-full px-3 py-2.5 min-h-[44px] border border-border bg-surface text-sm text-text focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
           >
             {ALL_TYPES.map((t) => (
               <option key={t} value={t}>
@@ -103,7 +103,7 @@ export default function EventForm({
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="Hovor s klientem..."
-            className="w-full px-3 py-2.5 min-h-[44px] rounded-[10px] border border-border bg-surface text-sm text-text placeholder:text-text-faint focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
+            className="w-full px-3 py-2.5 min-h-[44px] border border-border bg-surface text-sm text-text placeholder:text-text-faint focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
             required
           />
         </div>
@@ -118,7 +118,7 @@ export default function EventForm({
               type="date"
               value={date}
               onChange={(e) => setDate(e.target.value)}
-              className="w-full px-3 py-2.5 min-h-[44px] rounded-[10px] border border-border bg-surface text-sm text-text focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
+              className="w-full px-3 py-2.5 min-h-[44px] border border-border bg-surface text-sm text-text focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
             />
           </div>
           <div>
@@ -129,7 +129,7 @@ export default function EventForm({
               type="time"
               value={time}
               onChange={(e) => setTime(e.target.value)}
-              className="w-full px-3 py-2.5 min-h-[44px] rounded-[10px] border border-border bg-surface text-sm text-text focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
+              className="w-full px-3 py-2.5 min-h-[44px] border border-border bg-surface text-sm text-text focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
             />
           </div>
         </div>
@@ -143,7 +143,7 @@ export default function EventForm({
             <select
               value={clientId}
               onChange={(e) => setClientId(e.target.value)}
-              className="w-full px-3 py-2.5 min-h-[44px] rounded-[10px] border border-border bg-surface text-sm text-text focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
+              className="w-full px-3 py-2.5 min-h-[44px] border border-border bg-surface text-sm text-text focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
             >
               <option value="">Bez klienta</option>
               {clients.map((c) => (
@@ -164,13 +164,13 @@ export default function EventForm({
             value={note}
             onChange={(e) => setNote(e.target.value)}
             rows={2}
-            className="w-full px-3 py-2.5 rounded-[10px] border border-border bg-surface text-sm text-text placeholder:text-text-faint focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition resize-none"
+            className="w-full px-3 py-2.5 border border-border bg-surface text-sm text-text placeholder:text-text-faint focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition resize-none"
           />
         </div>
 
         {/* Error */}
         {error && (
-          <p className="text-sm text-ruby bg-ruby-pale border border-ruby-border rounded-[8px] px-3 py-2">
+          <p className="text-sm text-ruby bg-ruby-pale border border-ruby-border px-3 py-2">
             {error}
           </p>
         )}
@@ -179,7 +179,7 @@ export default function EventForm({
         <button
           type="submit"
           disabled={submitting}
-          className="w-full flex items-center justify-center gap-2 px-4 py-3 min-h-[44px] rounded-[10px] bg-gradient-to-r from-gold to-gold-light text-white text-sm font-semibold shadow-md hover:shadow-lg transition-shadow disabled:opacity-60"
+          className="w-full flex items-center justify-center gap-2 px-4 py-3 min-h-[44px] bg-brass text-white text-sm font-semibold disabled:opacity-60"
         >
           {submitting && <Loader2 size={16} className="animate-spin" />}
           Vytvořit událost

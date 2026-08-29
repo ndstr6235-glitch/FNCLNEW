@@ -15,7 +15,7 @@ export default function DrawerHeader({ client, onClose }: DrawerHeaderProps) {
   const initials = `${client.firstName[0]}${client.lastName[0]}`;
 
   return (
-    <div className="bg-gradient-to-br from-sidebar to-[#1a1d28] px-4 py-5 pt-[max(1.25rem,env(safe-area-inset-top))] md:px-6 shrink-0">
+    <div className="bg-ink px-4 py-5 pt-[max(1.25rem,env(safe-area-inset-top))] md:px-6 shrink-0">
       {/* Top row: avatar + info + close */}
       <div className="flex items-start gap-3">
         <div className="w-10 h-10 rounded-full bg-gold/20 flex items-center justify-center text-sm font-bold text-gold shrink-0">
@@ -43,7 +43,7 @@ export default function DrawerHeader({ client, onClose }: DrawerHeaderProps) {
         </div>
         <button
           onClick={onClose}
-          className="w-11 h-11 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-[8px] text-white/40 hover:text-white hover:bg-white/10 transition-colors shrink-0"
+          className="w-11 h-11 min-h-[44px] min-w-[44px] flex items-center justify-center text-white/40 hover:text-white hover:bg-[rgba(239,234,225,0.1)] transition-colors shrink-0"
           aria-label="Zavřít"
         >
           <X size={18} />
@@ -52,7 +52,7 @@ export default function DrawerHeader({ client, onClose }: DrawerHeaderProps) {
 
       {/* KPI row — snap scroll for smooth iOS behavior */}
       <div className="flex gap-2.5 mt-4 overflow-x-auto -mx-4 px-4 md:mx-0 md:px-0 snap-x snap-mandatory scrollbar-none">
-        <div className="flex-1 min-w-[110px] snap-start bg-white/[0.06] rounded-[10px] p-2.5 md:p-3">
+        <div className="flex-1 min-w-[110px] snap-start bg-[rgba(239,234,225,0.06)] p-2.5 md:p-3">
           <div className="flex items-center gap-1.5 mb-1">
             <Landmark size={12} className="text-emerald shrink-0" />
             <span className="text-[10px] uppercase tracking-wider text-white/40 truncate">
@@ -63,7 +63,7 @@ export default function DrawerHeader({ client, onClose }: DrawerHeaderProps) {
             {fmtCZK(client.totalDeposit)}
           </p>
         </div>
-        <div className="flex-1 min-w-[110px] snap-start bg-white/[0.06] rounded-[10px] p-2.5 md:p-3">
+        <div className="flex-1 min-w-[110px] snap-start bg-[rgba(239,234,225,0.06)] p-2.5 md:p-3">
           <div className="flex items-center gap-1.5 mb-1">
             <TrendingUp size={12} className="text-gold shrink-0" />
             <span className="text-[10px] uppercase tracking-wider text-white/40 truncate">
@@ -74,7 +74,7 @@ export default function DrawerHeader({ client, onClose }: DrawerHeaderProps) {
             {fmtCZK(client.totalProfit)}
           </p>
         </div>
-        <div className="flex-1 min-w-[100px] snap-start bg-white/[0.06] rounded-[10px] p-2.5 md:p-3">
+        <div className="flex-1 min-w-[100px] snap-start bg-[rgba(239,234,225,0.06)] p-2.5 md:p-3">
           <div className="flex items-center gap-1.5 mb-1">
             <Percent size={12} className="text-sapphire shrink-0" />
             <span className="text-[10px] uppercase tracking-wider text-white/40 truncate">

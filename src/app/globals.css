@@ -1,67 +1,83 @@
 @import "tailwindcss";
 
 @theme {
-  /* Primary — Deep Navy */
-  --color-primary-50:  #f0f4f8;
-  --color-primary-100: #d9e2ec;
-  --color-primary-200: #bcccdc;
-  --color-primary-300: #9fb3c8;
-  --color-primary-400: #829ab1;
-  --color-primary-500: #627d98;
-  --color-primary-600: #486581;
-  --color-primary-700: #334e68;
-  --color-primary-800: #243b53;
-  --color-primary-900: #102a43;
+  /* ── Puskin Partners Design Tokens ── */
 
-  /* Accent — Warm Gold */
-  --color-accent-50:  #fdf8f0;
-  --color-accent-100: #f9ecd8;
-  --color-accent-200: #f0d9b0;
-  --color-accent-300: #e6c584;
-  --color-accent-400: #d4a94e;
-  --color-accent-500: #c49a3c;
-  --color-accent-600: #a67f2e;
-  --color-accent-700: #876524;
-  --color-accent-800: #6b4f1d;
-  --color-accent-900: #4e3a16;
+  /* Core palette */
+  --color-paper:      #F2EEE6;
+  --color-ink:        #16211D;
+  --color-ink-hover:  #0E1614;
+  --color-on-dark:    #EFEAE1;
+  --color-text-2:     #3B4842;
+  --color-text-3:     #6E6A61;
+  --color-brass:      #A9884E;
+  --color-brass-dark: #C2A468;
+  --color-photo-bg:   #2A3833;
 
-  /* Neutral — Warm Stone */
-  --color-neutral-50:  #fafaf9;
-  --color-neutral-100: #f5f5f4;
-  --color-neutral-200: #e7e5e4;
-  --color-neutral-300: #d6d3d1;
-  --color-neutral-400: #a8a29e;
-  --color-neutral-500: #78716c;
-  --color-neutral-600: #57534e;
-  --color-neutral-700: #44403c;
-  --color-neutral-800: #292524;
-  --color-neutral-900: #1c1917;
+  /* Semantic surface colors */
+  --color-surface:       #ffffff;
+  --color-surface-hover: #F2EEE6;
+  --color-bg:            #F2EEE6;
+  --color-sidebar:       #16211D;
 
-  /* Semantic */
-  --color-success: #16a34a;
-  --color-error:   #dc2626;
-  --color-warning: #f59e0b;
-  --color-info:    #3b82f6;
+  /* Semantic text colors */
+  --color-text:       #16211D;
+  --color-text-mid:   #3B4842;
+  --color-text-dim:   #6E6A61;
+  --color-text-faint: #B0ADA6;
+
+  /* Semantic border */
+  --color-border:      rgba(22, 33, 29, 0.14);
+  --color-border-dark: rgba(22, 33, 29, 0.25);
+
+  /* Brand accents */
+  --color-gold:         #A9884E;
+  --color-gold-light:   #C2A468;
+  --color-gold-pale:    #F2EEE6;
+  --color-gold-border:  rgba(169, 136, 78, 0.3);
+
+  /* Semantic status */
+  --color-emerald:        #1a9e6a;
+  --color-emerald-pale:   #edfaf4;
+  --color-emerald-border: #a3e6c9;
+
+  --color-ruby:        #d94040;
+  --color-ruby-pale:   #fdf0f0;
+  --color-ruby-border: #f5b8b8;
+
+  --color-sapphire:        #2d6be4;
+  --color-sapphire-pale:   #eef3fd;
+  --color-sapphire-border: #b3cdf9;
+
+  --color-amber:      #d97a1a;
+  --color-amber-pale: #fef5ec;
+
+  /* Semantic (generic aliases) */
+  --color-success: #1a9e6a;
+  --color-error:   #d94040;
+  --color-warning: #d97a1a;
+  --color-info:    #2d6be4;
 
   /* Typography */
-  --font-heading: var(--font-playfair-display), Georgia, serif;
-  --font-body:    var(--font-inter), system-ui, sans-serif;
+  --font-heading: var(--font-libre-caslon), Georgia, serif;
+  --font-body:    var(--font-libre-franklin), system-ui, sans-serif;
+  --font-display: var(--font-libre-caslon), Georgia, serif;
 
   /* Spacing scale (extends default) */
   --spacing-18: 4.5rem;
   --spacing-22: 5.5rem;
 
-  /* Border radius */
-  --radius-sm: 0.25rem;
-  --radius-md: 0.5rem;
-  --radius-lg: 0.75rem;
-  --radius-xl: 1rem;
-  --radius-2xl: 1.5rem;
+  /* Border radius — all zero per design rules */
+  --radius-sm:  0;
+  --radius-md:  0;
+  --radius-lg:  0;
+  --radius-xl:  0;
+  --radius-2xl: 0;
 
-  /* Shadows */
-  --shadow-soft: 0 2px 15px -3px rgba(0, 0, 0, 0.07), 0 10px 20px -2px rgba(0, 0, 0, 0.04);
-  --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
-  --shadow-elevated: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  /* Shadows — none per design rules */
+  --shadow-soft:     none;
+  --shadow-card:     none;
+  --shadow-elevated: none;
 }
 
 /* Base styles */
@@ -71,7 +87,8 @@ html {
 
 body {
   font-family: var(--font-body);
-  color: var(--color-neutral-800);
+  color: var(--color-ink);
+  background-color: var(--color-paper);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -82,6 +99,6 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Selection color */
 ::selection {
-  background-color: var(--color-accent-200);
-  color: var(--color-primary-900);
+  background-color: rgba(169, 136, 78, 0.25);
+  color: var(--color-ink);
 }

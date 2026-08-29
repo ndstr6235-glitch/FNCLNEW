@@ -83,16 +83,16 @@ export async function generateProposalPdf(data: ProposalPdfData): Promise<Buffer
   const margin = 56;
   const contentWidth = pageWidth - 2 * margin;
 
-  // ── Color palette (matches Puskin and Partners brand) ──
-  const navy = rgb(0.102, 0.153, 0.267); // #1a2744
-  const navyLight = rgb(0.18, 0.24, 0.36);
-  const gold = rgb(0.831, 0.659, 0.149); // #d4a826
-  const goldLight = rgb(0.961, 0.851, 0.376);
-  const grey = rgb(0.42, 0.46, 0.52); // #6b7280
+  // ── Color palette (matches Puskin Partners web design) ──
+  const navy = rgb(0.086, 0.129, 0.114); // #16211D (ink)
+  const navyLight = rgb(0.231, 0.282, 0.259); // #3B4842 (text-2)
+  const gold = rgb(0.663, 0.533, 0.306); // #A9884E (brass)
+  const goldLight = rgb(0.761, 0.643, 0.412); // #C2A468 (brass-dark)
+  const grey = rgb(0.431, 0.416, 0.380); // #6E6A61 (text-3)
   const greyLight = rgb(0.82, 0.84, 0.87);
-  const greyBg = rgb(0.969, 0.973, 0.98); // #f7f8fa
-  const black = rgb(0.102, 0.122, 0.18); // #1a1f2e
-  const white = rgb(1, 1, 1);
+  const greyBg = rgb(0.949, 0.933, 0.902); // #F2EEE6 (paper)
+  const black = rgb(0.086, 0.129, 0.114); // #16211D (ink)
+  const white = rgb(0.937, 0.918, 0.882); // #EFEAE1 (on-dark)
 
   let page = doc.addPage([pageWidth, pageHeight]);
   let y = pageHeight;
@@ -107,32 +107,28 @@ export async function generateProposalPdf(data: ProposalPdfData): Promise<Buffer
     color: navy,
   });
 
-  // Star icon — drawn as SVG path (doesn't rely on font glyph coverage)
-  // 5-pointed star, centered roughly at (margin+10, pageHeight-36)
-  const starPath =
-    "M 0 -10 L 2.94 -3.09 L 9.51 -3.09 L 4.29 1.18 L 5.88 8.09 L 0 3.82 L -5.88 8.09 L -4.29 1.18 L -9.51 -3.09 L -2.94 -3.09 Z";
-  page.drawSvgPath(starPath, {
-    x: margin + 10,
-    y: pageHeight - 36,
-    color: gold,
-    borderColor: gold,
-    borderWidth: 0.5,
-    scale: 1.3,
-  });
-  // Brand
-  page.drawText("Alexandr Puškin, s.r.o.", {
-    x: margin + 30,
-    y: pageHeight - 42,
-    size: 19,
+  // Brand — text logo (PUSKIN + PARTNERS)
+  page.drawText("PUSKIN", {
+    x: margin,
+    y: pageHeight - 38,
+    size: 20,
     font: fontBold,
     color: white,
   });
+  page.drawText("PARTNERS", {
+    x: margin,
+    y: pageHeight - 52,
+    size: 9,
+    font: fontSemi,
+    color: gold,
+  });
 
   // Right side company info
+  const headerInfoFaded = rgb(0.937, 0.918, 0.882); // on-dark at 60% visual
   const headerRight = [
-    { text: "Alexandr Puškin, s.r.o.", size: 9.5, font: fontSemi, color: rgb(1, 1, 1) },
-    { text: "IČO: 26740788  |  DS: ", size: 8.5, font: fontRegular, color: rgb(0.78, 0.81, 0.86) },
-    { text: "Rybná 716/24, 110 00 Praha 1", size: 8.5, font: fontRegular, color: rgb(0.78, 0.81, 0.86) },
+    { text: "Alexandr Puškin, s.r.o.", size: 9.5, font: fontSemi, color: white },
+    { text: "IČO: 26740788  |  DS: ", size: 8.5, font: fontRegular, color: headerInfoFaded },
+    { text: "Rybná 716/24, 110 00 Praha 1", size: 8.5, font: fontRegular, color: headerInfoFaded },
   ];
   headerRight.forEach((line, i) => {
     const w = line.font.widthOfTextAtSize(line.text, line.size);
@@ -145,16 +141,16 @@ export async function generateProposalPdf(data: ProposalPdfData): Promise<Buffer
     });
   });
 
-  // Gold accent line under header
+  // Brass accent line under header
   page.drawRectangle({
     x: 0,
-    y: pageHeight - headerH - 3,
+    y: pageHeight - headerH - 1,
     width: pageWidth,
-    height: 3,
+    height: 1,
     color: gold,
   });
 
-  y = pageHeight - headerH - 3 - 75;
+  y = pageHeight - headerH - 1 - 75;
 
   // ── TITLE ──
   const title = "Smlouva o zápůjčce";
@@ -316,28 +312,39 @@ export async function generateProposalPdf(data: ProposalPdfData): Promise<Buffer
 
   // ── Helper: footer ──
   function drawFooter(p: PDFPage) {
-    const footerY = 32;
-    p.drawLine({
-      start: { x: margin, y: footerY + 14 },
-      end: { x: pageWidth - margin, y: footerY + 14 },
-      thickness: 0.5,
-      color: greyLight,
+    const footerH = 36;
+    const footerY = 0;
+    // Dark background bar
+    p.drawRectangle({
+      x: 0,
+      y: footerY,
+      width: pageWidth,
+      height: footerH,
+      color: navy,
     });
+    // Brass line above
+    p.drawLine({
+      start: { x: 0, y: footerH },
+      end: { x: pageWidth, y: footerH },
+      thickness: 0.5,
+      color: gold,
+    });
+    const footerTextColor = rgb(0.937, 0.918, 0.882); // on-dark faded
     p.drawText("Alexandr Puškin, s.r.o.  |  IČO: 26740788  |  Rybná 716/24, 110 00 Praha 1", {
       x: margin,
-      y: footerY,
+      y: footerY + 13,
       size: 8,
       font: fontRegular,
-      color: grey,
+      color: footerTextColor,
     });
     const footRight = "Smlouva o zápůjčce";
     const frW = fontRegular.widthOfTextAtSize(footRight, 8);
     p.drawText(footRight, {
       x: pageWidth - margin - frW,
-      y: footerY,
+      y: footerY + 13,
       size: 8,
       font: fontRegular,
-      color: grey,
+      color: footerTextColor,
     });
   }
 
@@ -385,7 +392,7 @@ export async function generateProposalPdf(data: ProposalPdfData): Promise<Buffer
       ["Společnost:", "Alexandr Puškin, s.r.o."],
       ["Sídlo:", "Rybná 716/24, Staré Město, 110 00 Praha 1"],
       ["IČO:", "26740788"],
-      ["Zastoupená:", "Lukáš Salamánek, jednatel"],
+      ["Zastoupená:", "Miroslav Fencl, jednatel"],
     ],
     true,
   );
@@ -468,15 +475,15 @@ export async function generateProposalPdf(data: ProposalPdfData): Promise<Buffer
   page.drawText("VĚŘITEL", {
     x: leftCol,
     y,
-    size: 11,
-    font: fontBold,
+    size: 10,
+    font: fontSemi,
     color: gold,
   });
   page.drawText("DLUŽNÍK", {
     x: rightCol,
     y,
-    size: 11,
-    font: fontBold,
+    size: 10,
+    font: fontSemi,
     color: gold,
   });
 
@@ -488,17 +495,17 @@ export async function generateProposalPdf(data: ProposalPdfData): Promise<Buffer
     start: { x: leftCol, y },
     end: { x: leftLineEnd, y },
     thickness: 0.7,
-    color: navy,
+    color: gold,
   });
   page.drawLine({
     start: { x: rightCol, y },
     end: { x: rightLineEnd, y },
     thickness: 0.7,
-    color: navy,
+    color: gold,
   });
 
-  // Right side — Lukáš Salamánek name
-  page.drawText("Lukáš Salamánek, jednatel", {
+  // Right side — Miroslav Fencl name
+  page.drawText("Miroslav Fencl, jednatel", {
     x: rightCol,
     y: y - 14,
     size: 10,
@@ -507,7 +514,7 @@ export async function generateProposalPdf(data: ProposalPdfData): Promise<Buffer
   });
 
   // Date lines — VĚŘITEL stays blank for client to fill in by hand;
-  // DLUŽNÍK (Lukáš Salamánek) gets today's date pre-filled.
+  // DLUŽNÍK (Miroslav Fencl) gets today's date pre-filled.
   y -= 30;
   page.drawText("V Praze dne _______________", {
     x: leftCol,

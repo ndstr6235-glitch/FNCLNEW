@@ -37,10 +37,10 @@ export default function LeadPoolWidget({ stats, isAdmin }: Props) {
   }
 
   return (
-    <div className="rounded-[16px] border border-border bg-surface p-5 lg:p-6 shadow-sm">
+    <div className=" border border-border bg-surface p-5 lg:p-6">
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-2">
-          <span className="inline-flex items-center justify-center w-9 h-9 rounded-[10px] bg-sapphire-pale text-sapphire">
+          <span className="inline-flex items-center justify-center w-9 h-9 bg-sapphire-pale text-sapphire">
             <Users size={18} />
           </span>
           <div>
@@ -95,7 +95,7 @@ export default function LeadPoolWidget({ stats, isAdmin }: Props) {
         <button
           onClick={handleDistribute}
           disabled={pending || stats.activeBrokers === 0}
-          className="mt-5 w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-[10px] bg-gradient-to-r from-gold to-gold-light text-white text-sm font-semibold shadow-md hover:shadow-lg transition-shadow disabled:opacity-60 disabled:cursor-not-allowed"
+          className="mt-5 w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-brass text-white text-sm font-semibold disabled:opacity-60 disabled:cursor-not-allowed"
         >
           {pending ? <Loader2 size={14} className="animate-spin" /> : <Zap size={14} />}
           {pending ? "Distribuuji…" : "Distribuovat teď"}
@@ -111,7 +111,7 @@ export default function LeadPoolWidget({ stats, isAdmin }: Props) {
 
 function Stat({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-[10px] bg-surface-hover p-2.5">
+    <div className=" bg-surface-hover p-2.5">
       <div className="text-[10px] uppercase tracking-wider text-text-dim">
         {label}
       </div>

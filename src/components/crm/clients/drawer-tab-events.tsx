@@ -37,7 +37,7 @@ export default function DrawerTabEvents({ client }: DrawerTabEventsProps) {
               <div
                 key={e.id}
                 className={cn(
-                  "flex items-start gap-3 bg-surface-hover rounded-[10px] p-3 relative group",
+                  "flex items-start gap-3 bg-surface-hover p-3 relative group",
                   isPast && "opacity-55"
                 )}
               >
@@ -46,7 +46,7 @@ export default function DrawerTabEvents({ client }: DrawerTabEventsProps) {
                   className="w-8 h-8 rounded-full flex items-center justify-center text-xs shrink-0"
                   style={{
                     backgroundColor: eventMeta?.pale || "#f0f2f7",
-                    color: eventMeta?.color || "#4a5578",
+                    color: eventMeta?.color || "#3B4842",
                   }}
                 >
                   {eventMeta?.icon || "?"}
@@ -69,7 +69,7 @@ export default function DrawerTabEvents({ client }: DrawerTabEventsProps) {
                       className="text-[10px] font-medium px-1.5 py-0.5 rounded-full"
                       style={{
                         backgroundColor: eventMeta?.pale || "#f0f2f7",
-                        color: eventMeta?.color || "#4a5578",
+                        color: eventMeta?.color || "#3B4842",
                       }}
                     >
                       {eventMeta?.label || e.type}
@@ -100,7 +100,7 @@ export default function DrawerTabEvents({ client }: DrawerTabEventsProps) {
       )}
 
       {/* Add event button */}
-      <button className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-[10px] border border-border text-text-mid text-sm font-medium hover:bg-surface-hover transition-colors">
+      <button className="w-full flex items-center justify-center gap-2 px-4 py-2.5 border border-border text-text-mid text-sm font-medium hover:bg-surface-hover transition-colors">
         <Plus size={16} />
         Přidat událost
       </button>

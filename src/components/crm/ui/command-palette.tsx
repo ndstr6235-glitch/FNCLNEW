@@ -203,7 +203,7 @@ export default function CommandPalette({
           // Mobile: fullscreen
           "inset-0",
           // Desktop: centered modal
-          "md:inset-auto md:top-[15%] md:left-1/2 md:-translate-x-1/2 md:w-[min(560px,95vw)] md:max-h-[70dvh] md:rounded-[16px] md:shadow-lg md:border md:border-border"
+          "md:inset-auto md:top-[15%] md:left-1/2 md:-translate-x-1/2 md:w-[min(560px,95vw)] md:max-h-[70dvh] md:border md:border-border"
         )}
         style={{ animation: "modal-in 0.2s ease-out" }}
       >
@@ -224,12 +224,12 @@ export default function CommandPalette({
           />
           <button
             onClick={onClose}
-            className="w-11 h-11 flex items-center justify-center rounded-[8px] text-text-dim hover:text-text hover:bg-surface-hover transition-colors md:hidden"
+            className="w-11 h-11 flex items-center justify-center text-text-dim hover:text-text hover:bg-surface-hover transition-colors md:hidden"
             aria-label="Zavřít"
           >
             <X size={18} />
           </button>
-          <kbd className="hidden md:inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-[4px] bg-surface-hover border border-border text-[10px] font-medium text-text-dim">
+          <kbd className="hidden md:inline-flex items-center gap-0.5 px-1.5 py-0.5 border bg-surface-hover border border-border text-[10px] font-medium text-text-dim">
             ESC
           </kbd>
         </div>

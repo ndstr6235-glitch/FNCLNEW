@@ -16,7 +16,7 @@ interface UpcomingEventsProps {
 
 export default function UpcomingEvents({ events }: UpcomingEventsProps) {
   return (
-    <div className="bg-surface rounded-[16px] shadow-card p-4 lg:p-5">
+    <div className="bg-surface p-4 lg:p-5">
       <h2 className="text-sm font-semibold text-text mb-3">
         Nadcházející události
       </h2>
@@ -31,7 +31,7 @@ export default function UpcomingEvents({ events }: UpcomingEventsProps) {
             return (
               <div key={event.id} className="flex items-center gap-3">
                 <div
-                  className="w-8 h-8 rounded-[8px] flex items-center justify-center text-sm shrink-0"
+                  className="w-8 h-8 flex items-center justify-center text-sm shrink-0"
                   style={{ backgroundColor: meta.pale }}
                 >
                   {meta.icon}

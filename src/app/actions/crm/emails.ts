@@ -303,7 +303,7 @@ export async function sendEmail(
         const { PREZENTACE_PDF_BASE64 } = await import("@/lib/crm/prezentace-pdf");
         if (PREZENTACE_PDF_BASE64) {
           attachments.push({
-            filename: "Prezentace-Nodis-Star.pdf",
+            filename: "Prezentace-Puskin-Partners.pdf",
             content: PREZENTACE_PDF_BASE64,
             contentType: "application/pdf",
           });

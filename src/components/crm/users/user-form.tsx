@@ -113,7 +113,7 @@ export default function UserForm({ open, onClose, editData }: UserFormProps) {
               type="text"
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
-              className="w-full px-3 py-2.5 min-h-[44px] rounded-[10px] border border-border bg-surface text-sm text-text focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
+              className="w-full px-3 py-2.5 min-h-[44px] border border-border bg-surface text-sm text-text focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
               required
             />
           </div>
@@ -125,7 +125,7 @@ export default function UserForm({ open, onClose, editData }: UserFormProps) {
               type="text"
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
-              className="w-full px-3 py-2.5 min-h-[44px] rounded-[10px] border border-border bg-surface text-sm text-text focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
+              className="w-full px-3 py-2.5 min-h-[44px] border border-border bg-surface text-sm text-text focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
               required
             />
           </div>
@@ -141,7 +141,7 @@ export default function UserForm({ open, onClose, editData }: UserFormProps) {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="email@buildfund.cz"
-            className="w-full px-3 py-2.5 min-h-[44px] rounded-[10px] border border-border bg-surface text-sm text-text placeholder:text-text-faint focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
+            className="w-full px-3 py-2.5 min-h-[44px] border border-border bg-surface text-sm text-text placeholder:text-text-faint focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
             required
           />
         </div>
@@ -156,7 +156,7 @@ export default function UserForm({ open, onClose, editData }: UserFormProps) {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder={isEdit ? "••••••••" : "Zadejte heslo"}
-            className="w-full px-3 py-2.5 min-h-[44px] rounded-[10px] border border-border bg-surface text-sm text-text placeholder:text-text-faint focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
+            className="w-full px-3 py-2.5 min-h-[44px] border border-border bg-surface text-sm text-text placeholder:text-text-faint focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
             required={!isEdit}
           />
         </div>
@@ -169,7 +169,7 @@ export default function UserForm({ open, onClose, editData }: UserFormProps) {
           <select
             value={role}
             onChange={(e) => setRole(e.target.value)}
-            className="w-full px-3 py-2.5 min-h-[44px] rounded-[10px] border border-border bg-surface text-sm text-text focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
+            className="w-full px-3 py-2.5 min-h-[44px] border border-border bg-surface text-sm text-text focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
           >
             {ROLES.map((r) => (
               <option key={r.value} value={r.value}>
@@ -191,7 +191,7 @@ export default function UserForm({ open, onClose, editData }: UserFormProps) {
               max={150}
               value={dailyLeadQuota}
               onChange={(e) => setDailyLeadQuota(e.target.value)}
-              className="w-full px-3 py-2.5 min-h-[44px] rounded-[10px] border border-border bg-surface text-sm text-text focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
+              className="w-full px-3 py-2.5 min-h-[44px] border border-border bg-surface text-sm text-text focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
             />
             <p className="text-[11px] text-text-dim mt-1">
               Kolik nových leadů z poolu se brokerovi denně přiřadí (cron běží
@@ -202,7 +202,7 @@ export default function UserForm({ open, onClose, editData }: UserFormProps) {
 
         {/* Error */}
         {error && (
-          <p className="text-sm text-ruby bg-ruby-pale border border-ruby-border rounded-[8px] px-3 py-2">
+          <p className="text-sm text-ruby bg-ruby-pale border border-ruby-border px-3 py-2">
             {error}
           </p>
         )}
@@ -211,7 +211,7 @@ export default function UserForm({ open, onClose, editData }: UserFormProps) {
         <button
           type="submit"
           disabled={submitting}
-          className="w-full flex items-center justify-center gap-2 px-4 py-3 min-h-[44px] rounded-[10px] bg-gradient-to-r from-gold to-gold-light text-white text-sm font-semibold shadow-md hover:shadow-lg transition-shadow disabled:opacity-60"
+          className="w-full flex items-center justify-center gap-2 px-4 py-3 min-h-[44px] bg-brass text-white text-sm font-semibold disabled:opacity-60"
         >
           {submitting && <Loader2 size={16} className="animate-spin" />}
           {isEdit ? "Uložit změny" : "Vytvořit uživatele"}

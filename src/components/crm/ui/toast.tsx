@@ -66,7 +66,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
           <div
             key={t.id}
             className={cn(
-              "pointer-events-auto flex items-center gap-2.5 px-4 py-3 rounded-[12px] shadow-lg text-sm font-medium text-white w-full max-w-sm",
+              "pointer-events-auto flex items-center gap-2.5 px-4 py-3 text-sm font-medium text-white w-full max-w-sm",
               t.type === "success"
                 ? "bg-emerald"
                 : "bg-ruby"

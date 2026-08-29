@@ -37,7 +37,7 @@ export default function LeadCard({ lead }: LeadCardProps) {
       <div className="flex flex-wrap items-center gap-3">
         <a
           href={`tel:${lead.phone}`}
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-white font-medium text-base transition-all hover:brightness-110 active:scale-95"
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-white font-medium text-base transition-all active:scale-95"
           style={{ background: COLORS.sapphire }}
         >
           <Phone size={18} />

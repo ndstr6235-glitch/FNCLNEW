@@ -21,14 +21,14 @@ export default async function SettingsRoute() {
           Nastavení
         </h1>
         <p className="mt-0.5 text-sm text-text-mid">
-          Nastavení systému Nodis Star s.r.o.
+          Nastavení systému Alexandr Puškin, s.r.o.
         </p>
       </div>
 
       {/* AI konfigurace */}
-      <div className="bg-surface rounded-[16px] border border-border shadow-card p-5">
+      <div className="bg-surface border border-border p-5">
         <div className="flex items-center gap-3 mb-4">
-          <div className="w-10 h-10 rounded-[10px] bg-sapphire/10 flex items-center justify-center">
+          <div className="w-10 h-10 bg-sapphire/10 flex items-center justify-center">
             <Bot size={20} className="text-sapphire" />
           </div>
           <div>
@@ -42,9 +42,9 @@ export default async function SettingsRoute() {
       </div>
 
       {/* Systém info */}
-      <div className="bg-surface rounded-[16px] border border-border shadow-card p-5">
+      <div className="bg-surface border border-border p-5">
         <div className="flex items-center gap-3 mb-4">
-          <div className="w-10 h-10 rounded-[10px] bg-gold/10 flex items-center justify-center">
+          <div className="w-10 h-10 bg-gold/10 flex items-center justify-center">
             <Settings size={20} className="text-gold" />
           </div>
           <h2 className="text-base font-semibold text-text">Systém</h2>
@@ -52,7 +52,7 @@ export default async function SettingsRoute() {
         <div className="space-y-2 text-sm">
           <div className="flex justify-between py-2 border-b border-border/50">
             <span className="text-text-mid">Verze</span>
-            <span className="font-medium">Nodis Star s.r.o. v3</span>
+            <span className="font-medium">Puskin Partners CRM v3</span>
           </div>
           <div className="flex justify-between py-2 border-b border-border/50">
             <span className="text-text-mid">Prostředí</span>
@@ -70,9 +70,9 @@ export default async function SettingsRoute() {
       {/* Audit Log link */}
       <Link
         href="/settings/audit"
-        className="flex items-center gap-4 p-4 bg-surface rounded-[16px] border border-border shadow-card hover:bg-surface-hover transition-colors group"
+        className="flex items-center gap-4 p-4 bg-surface border border-border hover:bg-surface-hover transition-colors group"
       >
-        <div className="w-11 h-11 rounded-[12px] bg-gold/10 flex items-center justify-center shrink-0">
+        <div className="w-11 h-11 bg-gold/10 flex items-center justify-center shrink-0">
           <Shield size={20} className="text-gold" />
         </div>
         <div className="flex-1 min-w-0">

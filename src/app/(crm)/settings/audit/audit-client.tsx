@@ -95,7 +95,7 @@ export function AuditPageClient({ initialData, users }: Props) {
       </div>
 
       {/* Filters */}
-      <div className="bg-surface rounded-[16px] shadow-card p-4 mb-4">
+      <div className="bg-surface p-4 mb-4">
         <div className="flex items-center gap-2 mb-3">
           <Filter className="w-4 h-4 text-text-dim" />
           <span className="text-sm font-medium text-text-mid">Filtry</span>
@@ -105,7 +105,7 @@ export function AuditPageClient({ initialData, users }: Props) {
           <select
             value={filters.userId}
             onChange={(e) => handleFilterChange("userId", e.target.value)}
-            className="px-3 py-2 rounded-[10px] border border-border bg-surface text-sm min-h-[44px] focus:border-gold focus:ring-1 focus:ring-gold/50 outline-none"
+            className="px-3 py-2 border border-border bg-surface text-sm min-h-[44px] focus:border-gold focus:ring-1 focus:ring-gold/50 outline-none"
           >
             <option value="">Všichni uživatelé</option>
             {users.map((u) => (
@@ -119,7 +119,7 @@ export function AuditPageClient({ initialData, users }: Props) {
           <select
             value={filters.action}
             onChange={(e) => handleFilterChange("action", e.target.value)}
-            className="px-3 py-2 rounded-[10px] border border-border bg-surface text-sm min-h-[44px] focus:border-gold focus:ring-1 focus:ring-gold/50 outline-none"
+            className="px-3 py-2 border border-border bg-surface text-sm min-h-[44px] focus:border-gold focus:ring-1 focus:ring-gold/50 outline-none"
           >
             <option value="">Všechny akce</option>
             {Object.entries(ACTION_LABELS).map(([key, { label }]) => (
@@ -131,7 +131,7 @@ export function AuditPageClient({ initialData, users }: Props) {
           <select
             value={filters.entity}
             onChange={(e) => handleFilterChange("entity", e.target.value)}
-            className="px-3 py-2 rounded-[10px] border border-border bg-surface text-sm min-h-[44px] focus:border-gold focus:ring-1 focus:ring-gold/50 outline-none"
+            className="px-3 py-2 border border-border bg-surface text-sm min-h-[44px] focus:border-gold focus:ring-1 focus:ring-gold/50 outline-none"
           >
             <option value="">Všechny entity</option>
             {Object.entries(ENTITY_LABELS).map(([key, label]) => (
@@ -144,7 +144,7 @@ export function AuditPageClient({ initialData, users }: Props) {
             type="date"
             value={filters.dateFrom}
             onChange={(e) => handleFilterChange("dateFrom", e.target.value)}
-            className="px-3 py-2 rounded-[10px] border border-border bg-surface text-sm min-h-[44px] focus:border-gold focus:ring-1 focus:ring-gold/50 outline-none"
+            className="px-3 py-2 border border-border bg-surface text-sm min-h-[44px] focus:border-gold focus:ring-1 focus:ring-gold/50 outline-none"
             placeholder="Od"
           />
 
@@ -153,14 +153,14 @@ export function AuditPageClient({ initialData, users }: Props) {
             type="date"
             value={filters.dateTo}
             onChange={(e) => handleFilterChange("dateTo", e.target.value)}
-            className="px-3 py-2 rounded-[10px] border border-border bg-surface text-sm min-h-[44px] focus:border-gold focus:ring-1 focus:ring-gold/50 outline-none"
+            className="px-3 py-2 border border-border bg-surface text-sm min-h-[44px] focus:border-gold focus:ring-1 focus:ring-gold/50 outline-none"
             placeholder="Do"
           />
         </div>
       </div>
 
       {/* Desktop table */}
-      <div className="hidden md:block bg-surface rounded-[16px] shadow-card overflow-hidden">
+      <div className="hidden md:block bg-surface overflow-hidden">
         <table className="w-full">
           <thead>
             <tr className="border-b border-border text-left">
@@ -212,14 +212,14 @@ export function AuditPageClient({ initialData, users }: Props) {
       {/* Mobile cards */}
       <div className="md:hidden space-y-3">
         {data.logs.length === 0 ? (
-          <div className="bg-surface rounded-[16px] shadow-card p-8 text-center text-text-dim text-sm">
+          <div className="bg-surface p-8 text-center text-text-dim text-sm">
             Žádné záznamy
           </div>
         ) : (
           data.logs.map((log) => {
             const actionMeta = ACTION_LABELS[log.action] ?? { label: log.action, color: "text-text-mid" };
             return (
-              <div key={log.id} className="bg-surface rounded-[16px] shadow-card p-4">
+              <div key={log.id} className="bg-surface p-4">
                 <div className="flex items-center justify-between mb-2">
                   <span className={cn("text-sm font-medium", actionMeta.color)}>
                     {actionMeta.label}
@@ -249,7 +249,7 @@ export function AuditPageClient({ initialData, users }: Props) {
           <button
             onClick={() => fetchPage(page - 1)}
             disabled={page <= 1 || isPending}
-            className="flex items-center gap-1 px-3 py-2 rounded-[10px] border border-border text-sm font-medium text-text-mid hover:bg-surface-hover transition-colors disabled:opacity-40 disabled:cursor-not-allowed min-h-[44px]"
+            className="flex items-center gap-1 px-3 py-2 border border-border text-sm font-medium text-text-mid hover:bg-surface-hover transition-colors disabled:opacity-40 disabled:cursor-not-allowed min-h-[44px]"
           >
             <ChevronLeft className="w-4 h-4" />
             Předchozí
@@ -260,7 +260,7 @@ export function AuditPageClient({ initialData, users }: Props) {
           <button
             onClick={() => fetchPage(page + 1)}
             disabled={!data.hasMore || isPending}
-            className="flex items-center gap-1 px-3 py-2 rounded-[10px] border border-border text-sm font-medium text-text-mid hover:bg-surface-hover transition-colors disabled:opacity-40 disabled:cursor-not-allowed min-h-[44px]"
+            className="flex items-center gap-1 px-3 py-2 border border-border text-sm font-medium text-text-mid hover:bg-surface-hover transition-colors disabled:opacity-40 disabled:cursor-not-allowed min-h-[44px]"
           >
             Další
             <ChevronRight className="w-4 h-4" />

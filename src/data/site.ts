@@ -19,7 +19,7 @@ export const siteConfig = {
     phone: "+420 222 244 889",
     hours: "Po–Pá 09:00–18:00",
   },
-  owner: "Lukáš Salamánek",
+  owner: "Miroslav Fencl",
   social: {
     facebook: "#",
     instagram: "#",

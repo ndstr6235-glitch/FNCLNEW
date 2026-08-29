@@ -56,40 +56,40 @@ const FREQUENCY_OPTIONS = [
 
 // Pre-defined team member signatures
 // Note: `email` is used as replyTo (personal inbox).
-// The displayed signature always shows the shared info@nodistar.cz address.
+// The displayed signature always shows the shared info@puskinpartners.cz address.
 const TEAM_SIGNATURES = [
   {
     id: "fencl",
     name: "Miroslav Fencl",
     role: "Zakladatel & jednatel",
-    email: "fencl@nodistar.cz",
+    email: "fencl@puskinpartners.cz",
     phone: "",
   },
   {
     id: "novak",
     name: "Jan Novák",
     role: "Obchodní ředitel",
-    email: "novak@nodistar.cz",
+    email: "novak@puskinpartners.cz",
     phone: "+420 728 722 924",
   },
   {
     id: "svoboda",
     name: "Petr Svoboda",
     role: "Provozní ředitel",
-    email: "svoboda@nodistar.cz",
+    email: "svoboda@puskinpartners.cz",
     phone: "+420 728 733 093",
   },
   {
     id: "sojkova",
     name: "Lucie Sojková",
     role: "Finanční manažerka",
-    email: "sojkova@nodistar.cz",
+    email: "sojkova@puskinpartners.cz",
     phone: "+420 728 739 389",
   },
 ];
 
 // Email shown inside the signature block (shared inbox, not personal)
-const SIGNATURE_DISPLAY_EMAIL = "info@nodistar.cz";
+const SIGNATURE_DISPLAY_EMAIL = "info@puskinpartners.cz";
 
 export default function EmailComposer({
   open,
@@ -152,9 +152,9 @@ export default function EmailComposer({
   // Helper to build a signature string from a team member
   // Always shows the shared SIGNATURE_DISPLAY_EMAIL — personal email is only used as replyTo
   function buildTeamSignature(member: typeof TEAM_SIGNATURES[number]) {
-    const lines = ["S pozdravem,", "", member.name, member.role, "Nodis Star s.r.o.", SIGNATURE_DISPLAY_EMAIL];
+    const lines = ["S pozdravem,", "", member.name, member.role, "Alexandr Puškin, s.r.o.", SIGNATURE_DISPLAY_EMAIL];
     if (member.phone) lines.push(member.phone);
-    lines.push("www.nodistar.cz");
+    lines.push("www.puskinpartners.cz");
     return lines.join("\n");
   }
 
@@ -305,8 +305,8 @@ export default function EmailComposer({
         to: recipientEmail,
         subject: subjectOverride || selectedTemplate.subject,
         body: finalBody,
-        replyTo: "info@nodistar.cz",
-        senderName: selectedMember?.name || "Nodis Star s.r.o.",
+        replyTo: "info@puskinpartners.cz",
+        senderName: selectedMember?.name || "Alexandr Puškin, s.r.o.",
         templateLabel: selectedTemplate.label,
         contractMeta,
         clientId,
@@ -346,7 +346,7 @@ export default function EmailComposer({
       <div
         className={cn(
           "absolute bg-surface flex flex-col overflow-hidden",
-          "inset-0 md:inset-y-4 md:right-4 md:left-auto md:w-[min(600px,95vw)] md:rounded-[16px] md:shadow-lg"
+          "inset-0 md:inset-y-4 md:right-4 md:left-auto md:w-[min(600px,95vw)] md:border md:border-border"
         )}
         style={{ animation: "modal-in 0.25s ease-out" }}
       >
@@ -357,7 +357,7 @@ export default function EmailComposer({
           </h2>
           <button
             onClick={onClose}
-            className="w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-[8px] text-text-dim hover:text-text hover:bg-surface-hover transition-colors"
+            className="w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center text-text-dim hover:text-text hover:bg-surface-hover transition-colors"
           >
             <X size={18} />
           </button>
@@ -367,7 +367,7 @@ export default function EmailComposer({
         <div className="flex-1 overflow-y-auto px-5 py-4 space-y-4">
           {/* No email warning */}
           {!clientEmail && !recipientEmail && (
-            <div className="flex items-center gap-2 p-3 rounded-[10px] bg-amber-pale border border-amber text-amber text-sm">
+            <div className="flex items-center gap-2 p-3 bg-amber-pale border border-amber text-amber text-sm">
               <AlertTriangle size={16} />
               Klient nemá vyplněný email
             </div>
@@ -400,7 +400,7 @@ export default function EmailComposer({
           </div>
 
           {/* To (editable) + Subject */}
-          <div className="bg-surface-hover rounded-[10px] p-3 space-y-2">
+          <div className="bg-surface-hover p-3 space-y-2">
             <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 text-sm">
               <label htmlFor="recipient-email" className="text-text-dim sm:w-16 shrink-0">
                 Komu:
@@ -411,7 +411,7 @@ export default function EmailComposer({
                 value={recipientEmail}
                 onChange={(e) => setRecipientEmail(e.target.value)}
                 placeholder="email@example.com"
-                className="flex-1 min-w-0 px-2.5 py-1.5 rounded-[8px] border border-border bg-surface text-sm text-text placeholder:text-text-faint focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
+                className="flex-1 min-w-0 px-2.5 py-1.5 border border-border bg-surface text-sm text-text placeholder:text-text-faint focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
               />
             </div>
             {recipientEmail !== clientEmail && clientEmail && (
@@ -438,14 +438,14 @@ export default function EmailComposer({
                 value={subjectOverride}
                 onChange={(e) => setSubjectOverride(e.target.value)}
                 placeholder="Předmět emailu"
-                className="flex-1 min-w-0 px-2.5 py-1.5 rounded-[8px] border border-border bg-surface text-sm text-text placeholder:text-text-faint focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
+                className="flex-1 min-w-0 px-2.5 py-1.5 border border-border bg-surface text-sm text-text placeholder:text-text-faint focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
               />
             </div>
           </div>
 
           {/* Návrh smlouvy info */}
           {isNavrhSmlouva && (
-            <div className="rounded-[10px] border border-border bg-surface-hover p-3">
+            <div className=" border border-border bg-surface-hover p-3">
               <p className="text-xs text-text-mid leading-relaxed">
                 <strong className="text-text">Návrh smlouvy</strong> — klient dostane prázdný vzor smlouvy v PDF a emailem ho požádáme o údaje potřebné pro finální smlouvu. Částku ani parametry neznáme — vyplníš je až ve <strong className="text-text">Smlouvě finální</strong>.
               </p>
@@ -454,7 +454,7 @@ export default function EmailComposer({
 
           {/* Contract fields — shown only for "Smlouva finální" */}
           {showContractFields && (
-            <div className="rounded-[10px] border-2 border-gold/30 bg-gold-pale p-3 space-y-3">
+            <div className=" border-2 border-gold/30 bg-gold-pale p-3 space-y-3">
               <div className="flex items-center gap-1.5">
                 <FileText size={14} className="text-gold" />
                 <label className="text-xs font-medium text-gold">
@@ -475,7 +475,7 @@ export default function EmailComposer({
                     value={contractFirstName}
                     onChange={(e) => setContractFirstName(e.target.value)}
                     placeholder="Jan"
-                    className="w-full px-3 py-2.5 min-h-[44px] rounded-[10px] border border-border bg-surface-hover text-sm text-text placeholder:text-text-faint focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
+                    className="w-full px-3 py-2.5 min-h-[44px] border border-border bg-surface-hover text-sm text-text placeholder:text-text-faint focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
                   />
                 </div>
 
@@ -489,7 +489,7 @@ export default function EmailComposer({
                     value={contractLastName}
                     onChange={(e) => setContractLastName(e.target.value)}
                     placeholder="Novák"
-                    className="w-full px-3 py-2.5 min-h-[44px] rounded-[10px] border border-border bg-surface-hover text-sm text-text placeholder:text-text-faint focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
+                    className="w-full px-3 py-2.5 min-h-[44px] border border-border bg-surface-hover text-sm text-text placeholder:text-text-faint focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
                   />
                 </div>
 
@@ -508,7 +508,7 @@ export default function EmailComposer({
                         )
                       }
                       placeholder="500 000"
-                      className="w-full px-3 py-2.5 min-h-[44px] rounded-[10px] border border-border bg-surface-hover text-sm text-text placeholder:text-text-faint focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition pr-12"
+                      className="w-full px-3 py-2.5 min-h-[44px] border border-border bg-surface-hover text-sm text-text placeholder:text-text-faint focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition pr-12"
                     />
                     <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-text-dim pointer-events-none">
                       CZK
@@ -532,7 +532,7 @@ export default function EmailComposer({
                       }
                       placeholder="8"
                       step="0.1"
-                      className="w-full px-3 py-2.5 min-h-[44px] rounded-[10px] border border-border bg-surface-hover text-sm text-text placeholder:text-text-faint focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition pr-12"
+                      className="w-full px-3 py-2.5 min-h-[44px] border border-border bg-surface-hover text-sm text-text placeholder:text-text-faint focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition pr-12"
                     />
                     <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-text-dim pointer-events-none">
                       % p.a.
@@ -548,7 +548,7 @@ export default function EmailComposer({
                   <select
                     value={duration}
                     onChange={(e) => setDuration(e.target.value)}
-                    className="w-full px-3 py-2.5 min-h-[44px] rounded-[10px] border border-border bg-surface-hover text-sm text-text focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition appearance-none"
+                    className="w-full px-3 py-2.5 min-h-[44px] border border-border bg-surface-hover text-sm text-text focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition appearance-none"
                   >
                     {DURATION_OPTIONS.map((opt) => (
                       <option key={opt.value} value={opt.value}>
@@ -567,7 +567,7 @@ export default function EmailComposer({
                     type="date"
                     value={startDate}
                     onChange={(e) => setStartDate(e.target.value)}
-                    className="w-full px-3 py-2.5 min-h-[44px] rounded-[10px] border border-border bg-surface-hover text-sm text-text focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
+                    className="w-full px-3 py-2.5 min-h-[44px] border border-border bg-surface-hover text-sm text-text focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
                   />
                 </div>
 
@@ -579,7 +579,7 @@ export default function EmailComposer({
                   <select
                     value={payoutFrequency}
                     onChange={(e) => setPayoutFrequency(e.target.value)}
-                    className="w-full px-3 py-2.5 min-h-[44px] rounded-[10px] border border-border bg-surface-hover text-sm text-text focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition appearance-none"
+                    className="w-full px-3 py-2.5 min-h-[44px] border border-border bg-surface-hover text-sm text-text focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition appearance-none"
                   >
                     {FREQUENCY_OPTIONS.map((opt) => (
                       <option key={opt.value} value={opt.value}>
@@ -599,7 +599,7 @@ export default function EmailComposer({
                     value={clientBankAccount}
                     onChange={(e) => setClientBankAccount(e.target.value)}
                     placeholder="např. 123456789/0300"
-                    className="w-full px-3 py-2.5 min-h-[44px] rounded-[10px] border border-border bg-surface-hover text-sm text-text placeholder:text-text-faint focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
+                    className="w-full px-3 py-2.5 min-h-[44px] border border-border bg-surface-hover text-sm text-text placeholder:text-text-faint focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
                   />
                   <p className="mt-1 text-[11px] text-text-faint">
                     Číslo se uloží do každého upozornění na výplatu i do smlouvy jako bankovní spojení Věřitele.
@@ -615,7 +615,7 @@ export default function EmailComposer({
                     type="date"
                     value={birthDate}
                     onChange={(e) => setBirthDate(e.target.value)}
-                    className="w-full px-3 py-2.5 min-h-[44px] rounded-[10px] border border-border bg-surface-hover text-sm text-text focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
+                    className="w-full px-3 py-2.5 min-h-[44px] border border-border bg-surface-hover text-sm text-text focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
                   />
                 </div>
 
@@ -631,7 +631,7 @@ export default function EmailComposer({
                     value={street}
                     onChange={(e) => setStreet(e.target.value)}
                     placeholder="Hradecká 2526/3"
-                    className="w-full px-3 py-2.5 min-h-[44px] rounded-[10px] border border-border bg-surface-hover text-sm text-text placeholder:text-text-faint focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
+                    className="w-full px-3 py-2.5 min-h-[44px] border border-border bg-surface-hover text-sm text-text placeholder:text-text-faint focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
                   />
                 </div>
 
@@ -644,7 +644,7 @@ export default function EmailComposer({
                     value={city}
                     onChange={(e) => setCity(e.target.value)}
                     placeholder="Praha"
-                    className="w-full px-3 py-2.5 min-h-[44px] rounded-[10px] border border-border bg-surface-hover text-sm text-text placeholder:text-text-faint focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
+                    className="w-full px-3 py-2.5 min-h-[44px] border border-border bg-surface-hover text-sm text-text placeholder:text-text-faint focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
                   />
                 </div>
 
@@ -658,7 +658,7 @@ export default function EmailComposer({
                     onChange={(e) => setZip(e.target.value)}
                     placeholder="130 00"
                     inputMode="numeric"
-                    className="w-full px-3 py-2.5 min-h-[44px] rounded-[10px] border border-border bg-surface-hover text-sm text-text placeholder:text-text-faint focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
+                    className="w-full px-3 py-2.5 min-h-[44px] border border-border bg-surface-hover text-sm text-text placeholder:text-text-faint focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
                   />
                 </div>
 
@@ -668,7 +668,7 @@ export default function EmailComposer({
 
                 {/* Calculated payout display */}
                 {calculatedPayout > 0 && (
-                  <div className="md:col-span-2 p-2.5 rounded-[8px] bg-surface border border-gold/20 space-y-1">
+                  <div className="md:col-span-2 p-2.5 bg-surface border border-gold/20 space-y-1">
                     <div className="flex items-center gap-2">
                       <span className="text-xs text-text-mid">
                         Výplata {frequencyLabel}:
@@ -687,7 +687,7 @@ export default function EmailComposer({
           )}
 
           {/* Salutation — golden frame + AI */}
-          <div className="rounded-[10px] border-2 border-gold-border bg-gold-pale p-3">
+          <div className=" border-2 border-gold-border bg-gold-pale p-3">
             <div className="flex items-center justify-between mb-1">
               <label className="text-xs font-medium text-gold">
                 Oslovení
@@ -708,13 +708,13 @@ export default function EmailComposer({
               onChange={(e) => setSalutation(e.target.value)}
               placeholder='Např: "pane Nováku", "Petro"'
               autoFocus
-              className="w-full px-3 py-2.5 min-h-[44px] rounded-[8px] border border-gold-border bg-surface text-sm text-text placeholder:text-text-faint focus:outline-none focus:ring-2 focus:ring-gold/40 transition"
+              className="w-full px-3 py-2.5 min-h-[44px] border border-gold-border bg-surface text-sm text-text placeholder:text-text-faint focus:outline-none focus:ring-2 focus:ring-gold/40 transition"
             />
           </div>
 
           {/* Podklady od brokera — only for contract template (admin only) */}
           {isContractTemplate && userRole === "administrator" && (clientNote || brokerName) && (
-            <div className="rounded-[10px] border-2 border-sapphire-border bg-sapphire-pale p-3 space-y-2">
+            <div className=" border-2 border-sapphire-border bg-sapphire-pale p-3 space-y-2">
               <div className="flex items-center gap-1.5">
                 <FileText size={14} className="text-sapphire" />
                 <label className="text-xs font-medium text-sapphire">
@@ -734,7 +734,7 @@ export default function EmailComposer({
               {clientNote && (
                 <div className="text-xs text-text-mid">
                   <p className="mb-0.5 font-medium">Poznámky:</p>
-                  <p className="text-text whitespace-pre-line bg-surface-hover rounded-[6px] p-2">
+                  <p className="text-text whitespace-pre-line bg-surface-hover p-2">
                     {clientNote}
                   </p>
                 </div>
@@ -785,12 +785,12 @@ export default function EmailComposer({
               value={finalBody}
               onChange={(e) => setBodyOverride(e.target.value)}
               rows={8}
-              className="w-full px-3 py-2.5 rounded-[10px] border border-border bg-surface text-sm text-text focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition resize-none leading-relaxed"
+              className="w-full px-3 py-2.5 border border-border bg-surface text-sm text-text focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition resize-none leading-relaxed"
             />
           </div>
 
           {/* Signature — blue frame with team member selector */}
-          <div className="rounded-[10px] border-2 border-sapphire-border bg-sapphire-pale p-3 space-y-2">
+          <div className=" border-2 border-sapphire-border bg-sapphire-pale p-3 space-y-2">
             <label className="block text-xs font-medium text-sapphire">
               Podpis
             </label>
@@ -830,7 +830,7 @@ export default function EmailComposer({
               onChange={(e) => setSignature(e.target.value)}
               rows={4}
               placeholder={selectedSignatureId ? "Napište vlastní podpis…" : "Vyberte podpis…"}
-              className="w-full px-3 py-2 rounded-[8px] border border-sapphire-border bg-surface text-sm text-text placeholder:text-text-faint focus:outline-none focus:ring-2 focus:ring-sapphire/30 transition resize-none"
+              className="w-full px-3 py-2 border border-sapphire-border bg-surface text-sm text-text placeholder:text-text-faint focus:outline-none focus:ring-2 focus:ring-sapphire/30 transition resize-none"
             />
           </div>
         </div>
@@ -840,7 +840,7 @@ export default function EmailComposer({
           <button
             onClick={handleSendEmail}
             disabled={!recipientEmail || !selectedTemplate || sending}
-            className="w-full flex items-center justify-center gap-2 px-4 py-3 min-h-[44px] rounded-[10px] bg-gradient-to-r from-gold to-gold-light text-white text-sm font-semibold shadow-md hover:shadow-lg transition-shadow disabled:opacity-50"
+            className="w-full flex items-center justify-center gap-2 px-4 py-3 min-h-[44px] bg-brass text-white text-sm font-semibold disabled:opacity-50"
           >
             {sending ? (
               <Loader2 size={16} className="animate-spin" />
@@ -852,7 +852,7 @@ export default function EmailComposer({
           <button
             onClick={handleSendMailto}
             disabled={!recipientEmail || !selectedTemplate}
-            className="w-full flex items-center justify-center gap-2 px-4 py-2.5 min-h-[44px] rounded-[10px] border border-border text-text-mid text-sm font-medium hover:bg-surface-hover transition-colors disabled:opacity-50"
+            className="w-full flex items-center justify-center gap-2 px-4 py-2.5 min-h-[44px] border border-border text-text-mid text-sm font-medium hover:bg-surface-hover transition-colors disabled:opacity-50"
           >
             <Mail size={16} />
             Otevřít v poštovním klientovi
@@ -881,7 +881,7 @@ function AIButton({ label, icon, onClick }: { label: string; icon: React.ReactNo
       type="button"
       onClick={handleClick}
       disabled={loading}
-      className="flex items-center gap-1 px-2 py-1 rounded-[6px] bg-sapphire/10 text-sapphire text-[11px] font-medium hover:bg-sapphire/20 transition-colors disabled:opacity-50"
+      className="flex items-center gap-1 px-2 py-1 bg-sapphire/10 text-sapphire text-[11px] font-medium hover:bg-sapphire/20 transition-colors disabled:opacity-50"
     >
       {loading ? <Loader2 size={12} className="animate-spin" /> : icon}
       {label}

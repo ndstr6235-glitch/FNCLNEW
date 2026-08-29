@@ -19,7 +19,7 @@ export default function ClientsEmpty({ hasFilters }: ClientsEmptyProps) {
           : "Přidejte prvního klienta a začněte"}
       </p>
       {!hasFilters && (
-        <button className="flex items-center gap-2 px-4 py-2.5 rounded-[10px] bg-gradient-to-r from-gold to-gold-light text-white text-sm font-semibold shadow-md hover:shadow-lg transition-shadow">
+        <button className="flex items-center gap-2 px-4 py-2.5 bg-brass text-white text-sm font-semibold">
           <UserPlus size={16} />
           Přidat klienta
         </button>

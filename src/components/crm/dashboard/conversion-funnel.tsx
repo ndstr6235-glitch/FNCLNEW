@@ -38,7 +38,7 @@ export default function ConversionFunnel({ initialData }: Props) {
   const poolCount = data.stages[0]?.count ?? 0;
 
   return (
-    <div className="bg-surface rounded-[16px] border border-border p-4 md:p-6 transition-colors duration-200">
+    <div className="bg-surface border border-border p-4 md:p-6 transition-colors duration-200">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-4">
         <h3 className="font-display text-sm md:text-base font-bold text-text">
           Konverzní funnel
@@ -48,7 +48,7 @@ export default function ConversionFunnel({ initialData }: Props) {
             value={source}
             onChange={(e) => handleSourceChange(e.target.value)}
             disabled={isPending}
-            className="text-xs border border-border rounded-lg px-2 py-1.5 bg-surface text-text-mid focus:outline-none focus:border-sapphire disabled:opacity-50"
+            className="text-xs border border-border px-2 py-1.5 bg-surface text-text-mid focus:outline-none focus:border-sapphire disabled:opacity-50"
           >
             <option value="">Všechny zdroje</option>
             {data.availableSources.map((s) => (
@@ -59,7 +59,7 @@ export default function ConversionFunnel({ initialData }: Props) {
             value={brokerId}
             onChange={(e) => handleBrokerChange(e.target.value)}
             disabled={isPending}
-            className="text-xs border border-border rounded-lg px-2 py-1.5 bg-surface text-text-mid focus:outline-none focus:border-sapphire disabled:opacity-50"
+            className="text-xs border border-border px-2 py-1.5 bg-surface text-text-mid focus:outline-none focus:border-sapphire disabled:opacity-50"
           >
             <option value="">Všichni brokeři</option>
             {data.availableBrokers.map((b) => (

@@ -12,7 +12,7 @@ export const testimonials = [
     rating: 5,
   },
   {
-    text: "Hledali jsme byt pro rodinu přes půl roku sami. Pan Salamánek nám do měsíce našel přesně to, co jsme chtěli.",
+    text: "Hledali jsme byt pro rodinu přes půl roku sami. Pan Fencl nám do měsíce našel přesně to, co jsme chtěli.",
     name: "Markéta a Ondřej Bartošovi",
     role: "Koupě bytu, Praha 6",
     rating: 4,

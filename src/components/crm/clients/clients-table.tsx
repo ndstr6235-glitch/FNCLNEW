@@ -32,7 +32,7 @@ export default function ClientsTable({
       : false;
 
   return (
-    <div className="hidden md:block bg-surface rounded-[16px] border border-border shadow-card overflow-hidden">
+    <div className="hidden md:block bg-surface border border-border overflow-hidden">
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead>

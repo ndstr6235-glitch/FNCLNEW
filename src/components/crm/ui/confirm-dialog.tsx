@@ -27,11 +27,11 @@ export default function ConfirmDialog({
     <div className="fixed inset-0 z-[70] flex items-center justify-center p-4">
       <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={onCancel} />
       <div
-        className="relative z-10 bg-surface rounded-[16px] shadow-lg max-w-sm w-full p-6"
+        className="relative z-10 bg-surface border border-border max-w-sm w-full p-6"
         style={{ animation: "fade-in 0.15s ease-out" }}
       >
         <div className="flex items-start gap-3 mb-4">
-          <div className="w-10 h-10 rounded-full bg-ruby/10 flex items-center justify-center shrink-0">
+          <div className="w-10 h-10 bg-ruby/10 flex items-center justify-center shrink-0">
             <AlertTriangle size={20} className="text-ruby" />
           </div>
           <div>
@@ -44,13 +44,13 @@ export default function ConfirmDialog({
         <div className="flex gap-3 justify-end">
           <button
             onClick={onCancel}
-            className="px-4 py-2.5 min-h-[44px] rounded-[10px] border border-border text-sm font-medium text-text-mid hover:bg-surface-hover transition-colors"
+            className="px-4 py-2.5 min-h-[44px] border border-border text-sm font-medium text-text-mid hover:bg-surface-hover transition-colors"
           >
             Zrušit
           </button>
           <button
             onClick={onConfirm}
-            className={`px-4 py-2.5 min-h-[44px] rounded-[10px] text-sm font-semibold text-white transition-colors ${
+            className={`px-4 py-2.5 min-h-[44px] text-sm font-semibold text-white transition-colors ${
               destructive
                 ? "bg-ruby hover:bg-ruby/90"
                 : "bg-gold hover:bg-gold/90"

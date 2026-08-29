@@ -88,7 +88,7 @@ export default function ClientsFilters({
           placeholder="Hledat jméno, email, telefon..."
           value={searchValue}
           onChange={(e) => setSearchValue(e.target.value)}
-          className="w-full pl-9 pr-3 py-2.5 min-h-[44px] rounded-[10px] border border-border bg-surface text-sm text-text placeholder:text-text-faint focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
+          className="w-full pl-9 pr-3 py-2.5 min-h-[44px] border border-border bg-surface text-sm text-text placeholder:text-text-faint focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
         />
       </div>
 
@@ -97,7 +97,7 @@ export default function ClientsFilters({
         <select
           value={currentStatus}
           onChange={(e) => handleStatus(e.target.value)}
-          className="appearance-none w-full sm:w-auto pl-3 pr-8 py-2.5 min-h-[44px] rounded-[10px] border border-border bg-surface text-sm text-text focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition cursor-pointer"
+          className="appearance-none w-full sm:w-auto pl-3 pr-8 py-2.5 min-h-[44px] border border-border bg-surface text-sm text-text focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition cursor-pointer"
         >
           <option value="all">Vše</option>
           <option value="investor">Investor</option>
@@ -114,7 +114,7 @@ export default function ClientsFilters({
         <select
           value={currentOutcome}
           onChange={(e) => handleOutcome(e.target.value)}
-          className="appearance-none w-full sm:w-auto pl-3 pr-8 py-2.5 min-h-[44px] rounded-[10px] border border-border bg-surface text-sm text-text focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition cursor-pointer"
+          className="appearance-none w-full sm:w-auto pl-3 pr-8 py-2.5 min-h-[44px] border border-border bg-surface text-sm text-text focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition cursor-pointer"
         >
           <option value="all">Všechny výsledky ({totalCount})</option>
           <option value="none">Bez hovoru ({outcomeCounts?.[""] ?? 0})</option>
@@ -136,7 +136,7 @@ export default function ClientsFilters({
           <select
             value={currentBroker}
             onChange={(e) => handleBroker(e.target.value)}
-            className="appearance-none w-full sm:w-auto pl-3 pr-8 py-2.5 min-h-[44px] rounded-[10px] border border-border bg-surface text-sm text-text focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition cursor-pointer"
+            className="appearance-none w-full sm:w-auto pl-3 pr-8 py-2.5 min-h-[44px] border border-border bg-surface text-sm text-text focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition cursor-pointer"
           >
             <option value="all">Všichni brokeři</option>
             {brokers.map((b) => (

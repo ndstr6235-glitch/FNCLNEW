@@ -11,7 +11,7 @@ export default function PipelineFunnel({ counts }: Props) {
   if (total === 0) return null;
 
   return (
-    <div className="bg-surface rounded-[16px] border border-border p-4 md:p-6 transition-colors duration-200">
+    <div className="bg-surface border border-border p-4 md:p-6 transition-colors duration-200">
       <h3 className="font-display text-sm md:text-base font-bold text-text mb-4">
         Pipeline
       </h3>

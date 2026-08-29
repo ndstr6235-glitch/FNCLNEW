@@ -95,10 +95,10 @@ export default function NewTicketModal({
   return (
     <div className="fixed inset-0 z-[60] flex items-end sm:items-center justify-center">
       <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={handleClose} />
-      <div className="relative bg-surface rounded-t-[20px] sm:rounded-[20px] w-full sm:max-w-lg shadow-xl max-h-[90dvh] overflow-y-auto">
+      <div className="relative bg-surface sm: w-full sm:max-w-lg max-h-[90dvh] overflow-y-auto">
         <div className="flex items-center justify-between px-5 py-4 border-b border-border sticky top-0 bg-surface z-10">
           <h2 className="text-base font-semibold text-text">Nový požadavek</h2>
-          <button onClick={handleClose} className="w-9 h-9 flex items-center justify-center rounded-[8px] hover:bg-surface-hover">
+          <button onClick={handleClose} className="w-9 h-9 flex items-center justify-center hover:bg-surface-hover">
             <X size={18} className="text-text-dim" />
           </button>
         </div>
@@ -107,7 +107,7 @@ export default function NewTicketModal({
           <div>
             <label className="block text-sm font-medium text-text-mid mb-1">Název *</label>
             <input
-              className="w-full px-3 py-2 rounded-[10px] border border-border bg-surface text-text text-sm focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold/30"
+              className="w-full px-3 py-2 border border-border bg-surface text-text text-sm focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold/30"
               placeholder="Stručný popis požadavku…"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
@@ -118,7 +118,7 @@ export default function NewTicketModal({
           <div>
             <label className="block text-sm font-medium text-text-mid mb-1">Popis</label>
             <textarea
-              className="w-full px-3 py-2 rounded-[10px] border border-border bg-surface text-text text-sm focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold/30 resize-none"
+              className="w-full px-3 py-2 border border-border bg-surface text-text text-sm focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold/30 resize-none"
               rows={4}
               placeholder="Detailní popis, co je potřeba řešit…"
               value={description}
@@ -129,7 +129,7 @@ export default function NewTicketModal({
           <div>
             <label className="block text-sm font-medium text-text-mid mb-1">Priorita</label>
             <select
-              className="w-full px-3 py-2 rounded-[10px] border border-border bg-surface text-text text-sm focus:outline-none focus:border-gold"
+              className="w-full px-3 py-2 border border-border bg-surface text-text text-sm focus:outline-none focus:border-gold"
               value={priority}
               onChange={(e) => setPriority(e.target.value as TicketPriority)}
             >
@@ -143,7 +143,7 @@ export default function NewTicketModal({
             <div>
               <label className="block text-sm font-medium text-text-mid mb-1">Přiřadit komu</label>
               <select
-                className="w-full px-3 py-2 rounded-[10px] border border-border bg-surface text-text text-sm focus:outline-none focus:border-gold"
+                className="w-full px-3 py-2 border border-border bg-surface text-text text-sm focus:outline-none focus:border-gold"
                 value={assigneeId}
                 onChange={(e) => setAssigneeId(e.target.value)}
               >
@@ -159,7 +159,7 @@ export default function NewTicketModal({
             <div>
               <label className="block text-sm font-medium text-text-mid mb-1">Klient (volitelné)</label>
               <input
-                className="w-full px-3 py-2 rounded-[10px] border border-border bg-surface text-text text-sm focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold/30"
+                className="w-full px-3 py-2 border border-border bg-surface text-text text-sm focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold/30"
                 placeholder="Vyhledat klienta…"
                 value={clientSearch}
                 onChange={(e) => {
@@ -168,7 +168,7 @@ export default function NewTicketModal({
                 }}
               />
               {clientSearch && !clientId && filteredClients.length > 0 && (
-                <div className="mt-1 border border-border rounded-[10px] overflow-hidden bg-surface shadow-lg max-h-40 overflow-y-auto">
+                <div className="mt-1 border border-border overflow-hidden bg-surface max-h-40 overflow-y-auto">
                   {filteredClients.map((c) => (
                     <button
                       key={c.id}
@@ -190,7 +190,7 @@ export default function NewTicketModal({
           {prefilledClientId && prefilledClientName && (
             <div>
               <label className="block text-sm font-medium text-text-mid mb-1">Klient</label>
-              <div className="px-3 py-2 rounded-[10px] border border-border bg-surface-hover text-text text-sm">
+              <div className="px-3 py-2 border border-border bg-surface-hover text-text text-sm">
                 {prefilledClientName}
               </div>
             </div>
@@ -200,7 +200,7 @@ export default function NewTicketModal({
             <button
               type="button"
               onClick={handleClose}
-              className="flex-1 px-4 py-2.5 rounded-[10px] border border-border text-text-mid text-sm font-medium hover:bg-surface-hover transition-colors"
+              className="flex-1 px-4 py-2.5 border border-border text-text-mid text-sm font-medium hover:bg-surface-hover transition-colors"
             >
               Zrušit
             </button>
@@ -208,7 +208,7 @@ export default function NewTicketModal({
               type="submit"
               disabled={isPending || !title.trim()}
               className={cn(
-                "flex-1 px-4 py-2.5 rounded-[10px] bg-gold text-white text-sm font-semibold transition-colors",
+                "flex-1 px-4 py-2.5 bg-gold text-white text-sm font-semibold transition-colors",
                 isPending || !title.trim() ? "opacity-50 cursor-not-allowed" : "hover:bg-gold-light"
               )}
             >

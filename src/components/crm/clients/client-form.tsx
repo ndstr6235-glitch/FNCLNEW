@@ -141,7 +141,7 @@ export default function ClientForm({
               type="text"
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
-              className="w-full px-3 py-2.5 min-h-[44px] rounded-[10px] border border-border bg-surface text-sm text-text focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
+              className="w-full px-3 py-2.5 min-h-[44px] border border-border bg-surface text-sm text-text focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
               required
             />
           </div>
@@ -153,7 +153,7 @@ export default function ClientForm({
               type="text"
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
-              className="w-full px-3 py-2.5 min-h-[44px] rounded-[10px] border border-border bg-surface text-sm text-text focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
+              className="w-full px-3 py-2.5 min-h-[44px] border border-border bg-surface text-sm text-text focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
               required
             />
           </div>
@@ -169,7 +169,7 @@ export default function ClientForm({
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
             placeholder="+420 777 123 456"
-            className="w-full px-3 py-2.5 min-h-[44px] rounded-[10px] border border-border bg-surface text-sm text-text placeholder:text-text-faint focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
+            className="w-full px-3 py-2.5 min-h-[44px] border border-border bg-surface text-sm text-text placeholder:text-text-faint focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
           />
         </div>
 
@@ -182,7 +182,7 @@ export default function ClientForm({
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="email@example.cz"
-            className="w-full px-3 py-2.5 min-h-[44px] rounded-[10px] border border-border bg-surface text-sm text-text placeholder:text-text-faint focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
+            className="w-full px-3 py-2.5 min-h-[44px] border border-border bg-surface text-sm text-text placeholder:text-text-faint focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
           />
         </div>
 
@@ -195,7 +195,7 @@ export default function ClientForm({
             type="date"
             value={birthDate}
             onChange={(e) => setBirthDate(e.target.value)}
-            className="w-full px-3 py-2.5 min-h-[44px] rounded-[10px] border border-border bg-surface text-sm text-text focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
+            className="w-full px-3 py-2.5 min-h-[44px] border border-border bg-surface text-sm text-text focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
           />
         </div>
 
@@ -209,7 +209,7 @@ export default function ClientForm({
             value={street}
             onChange={(e) => setStreet(e.target.value)}
             placeholder="Hradecká 2526/3"
-            className="w-full px-3 py-2.5 min-h-[44px] rounded-[10px] border border-border bg-surface text-sm text-text placeholder:text-text-faint focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
+            className="w-full px-3 py-2.5 min-h-[44px] border border-border bg-surface text-sm text-text placeholder:text-text-faint focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
           />
         </div>
         <div className="grid grid-cols-[1fr_120px] gap-3">
@@ -222,7 +222,7 @@ export default function ClientForm({
               value={city}
               onChange={(e) => setCity(e.target.value)}
               placeholder="Praha"
-              className="w-full px-3 py-2.5 min-h-[44px] rounded-[10px] border border-border bg-surface text-sm text-text placeholder:text-text-faint focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
+              className="w-full px-3 py-2.5 min-h-[44px] border border-border bg-surface text-sm text-text placeholder:text-text-faint focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
             />
           </div>
           <div>
@@ -235,7 +235,7 @@ export default function ClientForm({
               onChange={(e) => setZip(e.target.value)}
               placeholder="130 00"
               inputMode="numeric"
-              className="w-full px-3 py-2.5 min-h-[44px] rounded-[10px] border border-border bg-surface text-sm text-text placeholder:text-text-faint focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
+              className="w-full px-3 py-2.5 min-h-[44px] border border-border bg-surface text-sm text-text placeholder:text-text-faint focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
             />
           </div>
         </div>
@@ -250,7 +250,7 @@ export default function ClientForm({
             value={bankAccount}
             onChange={(e) => setBankAccount(e.target.value)}
             placeholder="123456789/0300"
-            className="w-full px-3 py-2.5 min-h-[44px] rounded-[10px] border border-border bg-surface text-sm text-text placeholder:text-text-faint focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
+            className="w-full px-3 py-2.5 min-h-[44px] border border-border bg-surface text-sm text-text placeholder:text-text-faint focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
           />
           <p className="mt-1 text-[11px] text-text-faint">
             Použije se v PDF smlouvy jako bankovní spojení Věřitele i v každém upozornění na výplatu úroku.
@@ -269,7 +269,7 @@ export default function ClientForm({
                   type="date"
                   value={callDate}
                   onChange={(e) => setCallDate(e.target.value)}
-                  className="w-full px-3 py-2.5 min-h-[44px] rounded-[10px] border border-border bg-surface text-sm text-text focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
+                  className="w-full px-3 py-2.5 min-h-[44px] border border-border bg-surface text-sm text-text focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
                 />
               </div>
               <div>
@@ -280,7 +280,7 @@ export default function ClientForm({
                   type="date"
                   value={nextPaymentDate}
                   onChange={(e) => setNextPaymentDate(e.target.value)}
-                  className="w-full px-3 py-2.5 min-h-[44px] rounded-[10px] border border-border bg-surface text-sm text-text focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
+                  className="w-full px-3 py-2.5 min-h-[44px] border border-border bg-surface text-sm text-text focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
                 />
               </div>
             </div>
@@ -294,7 +294,7 @@ export default function ClientForm({
                 min={1}
                 value={paymentFreq}
                 onChange={(e) => setPaymentFreq(parseInt(e.target.value) || 30)}
-                className="w-full px-3 py-2.5 min-h-[44px] rounded-[10px] border border-border bg-surface text-sm text-text focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
+                className="w-full px-3 py-2.5 min-h-[44px] border border-border bg-surface text-sm text-text focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
               />
             </div>
           </>
@@ -309,7 +309,7 @@ export default function ClientForm({
             <select
               value={stage}
               onChange={(e) => setStage(e.target.value as ClientStage)}
-              className="w-full px-3 py-2.5 min-h-[44px] rounded-[10px] border border-border bg-surface text-sm text-text focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
+              className="w-full px-3 py-2.5 min-h-[44px] border border-border bg-surface text-sm text-text focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
             >
               {PIPELINE_STAGES.map((s) => (
                 <option key={s.key} value={s.key}>
@@ -329,7 +329,7 @@ export default function ClientForm({
             <select
               value={assignedTo}
               onChange={(e) => setAssignedTo(e.target.value)}
-              className="w-full px-3 py-2.5 min-h-[44px] rounded-[10px] border border-border bg-surface text-sm text-text focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
+              className="w-full px-3 py-2.5 min-h-[44px] border border-border bg-surface text-sm text-text focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
             >
               <option value="">Vyberte brokera</option>
               {brokers.map((b) => (
@@ -350,13 +350,13 @@ export default function ClientForm({
             value={note}
             onChange={(e) => setNote(e.target.value)}
             rows={3}
-            className="w-full px-3 py-2.5 rounded-[10px] border border-border bg-surface text-sm text-text placeholder:text-text-faint focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition resize-none"
+            className="w-full px-3 py-2.5 border border-border bg-surface text-sm text-text placeholder:text-text-faint focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition resize-none"
           />
         </div>
 
         {/* Error */}
         {error && (
-          <p className="text-sm text-ruby bg-ruby-pale border border-ruby-border rounded-[8px] px-3 py-2">
+          <p className="text-sm text-ruby bg-ruby-pale border border-ruby-border px-3 py-2">
             {error}
           </p>
         )}
@@ -366,7 +366,7 @@ export default function ClientForm({
           <button
             type="submit"
             disabled={submitting}
-            className="w-full flex items-center justify-center gap-2 px-4 py-3 min-h-[44px] rounded-[10px] bg-gradient-to-r from-gold to-gold-light text-white text-sm font-semibold shadow-md hover:shadow-lg transition-shadow disabled:opacity-60"
+            className="w-full flex items-center justify-center gap-2 px-4 py-3 min-h-[44px] bg-brass text-white text-sm font-semibold disabled:opacity-60"
           >
             {submitting && <Loader2 size={16} className="animate-spin" />}
             {isEdit ? "Uložit změny" : "Vytvořit klienta"}

@@ -13,7 +13,7 @@ interface RecentClientsProps {
 
 export default function RecentClients({ clients }: RecentClientsProps) {
   return (
-    <div className="bg-surface rounded-[16px] shadow-card p-4 lg:p-5">
+    <div className="bg-surface p-4 lg:p-5">
       <h2 className="text-sm font-semibold text-text mb-3">
         Poslední klienti
       </h2>
@@ -44,7 +44,7 @@ export default function RecentClients({ clients }: RecentClientsProps) {
                   </p>
                 </div>
                 <span
-                  className={`text-[10px] font-semibold px-2 py-0.5 rounded-[20px] ${
+                  className={`text-[10px] font-semibold px-2 py-0.5 ${
                     client.isInvestor
                       ? "bg-emerald-pale text-emerald"
                       : "bg-amber-pale text-amber"

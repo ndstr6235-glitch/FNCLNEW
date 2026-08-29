@@ -110,7 +110,7 @@ export default function DrawerTabDocuments({ clientId }: Props) {
         onDrop={handleDrop}
         onDragOver={(e) => e.preventDefault()}
         className={cn(
-          "border-2 border-dashed border-border rounded-[12px] p-6 text-center transition-colors",
+          "border-2 border-dashed border-border p-6 text-center transition-colors",
           "hover:border-gold hover:bg-gold-pale/30 cursor-pointer"
         )}
         onClick={() => fileInputRef.current?.click()}
@@ -152,9 +152,9 @@ export default function DrawerTabDocuments({ clientId }: Props) {
             return (
               <div
                 key={doc.id}
-                className="flex items-center gap-3 p-3 rounded-[10px] bg-surface-hover hover:bg-border/30 transition-colors group"
+                className="flex items-center gap-3 p-3 bg-surface-hover hover:bg-border/30 transition-colors group"
               >
-                <div className="w-9 h-9 rounded-[8px] bg-sapphire-pale flex items-center justify-center shrink-0">
+                <div className="w-9 h-9 bg-sapphire-pale flex items-center justify-center shrink-0">
                   <Icon size={16} className="text-sapphire" />
                 </div>
                 <div className="flex-1 min-w-0">
@@ -173,7 +173,7 @@ export default function DrawerTabDocuments({ clientId }: Props) {
                       href={doc.fileUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-11 h-11 md:w-8 md:h-8 flex items-center justify-center rounded-[6px] hover:bg-sapphire-pale text-text-dim hover:text-sapphire transition-colors"
+                      className="w-11 h-11 md:w-8 md:h-8 flex items-center justify-center hover:bg-sapphire-pale text-text-dim hover:text-sapphire transition-colors"
                       title="Otevrit"
                     >
                       <ExternalLink size={14} />
@@ -183,7 +183,7 @@ export default function DrawerTabDocuments({ clientId }: Props) {
                   <a
                     href={doc.fileUrl}
                     download={doc.name}
-                    className="w-11 h-11 md:w-8 md:h-8 flex items-center justify-center rounded-[6px] hover:bg-emerald-pale text-text-dim hover:text-emerald transition-colors"
+                    className="w-11 h-11 md:w-8 md:h-8 flex items-center justify-center hover:bg-emerald-pale text-text-dim hover:text-emerald transition-colors"
                     title="Stahnout"
                   >
                     <Download size={14} />
@@ -191,7 +191,7 @@ export default function DrawerTabDocuments({ clientId }: Props) {
                   {/* Delete */}
                   <button
                     onClick={() => setDeleteId(doc.id)}
-                    className="w-11 h-11 md:w-8 md:h-8 flex items-center justify-center rounded-[6px] hover:bg-ruby-pale text-text-dim hover:text-ruby transition-colors"
+                    className="w-11 h-11 md:w-8 md:h-8 flex items-center justify-center hover:bg-ruby-pale text-text-dim hover:text-ruby transition-colors"
                     title="Smazat"
                   >
                     <Trash2 size={14} />

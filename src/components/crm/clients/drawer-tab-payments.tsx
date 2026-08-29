@@ -76,7 +76,7 @@ export default function DrawerTabPayments({
     <div className="p-4 md:p-6 space-y-4">
       {/* Totals */}
       <div className="flex gap-3">
-        <div className="flex-1 bg-emerald-pale rounded-[10px] p-3 border border-emerald-border">
+        <div className="flex-1 bg-emerald-pale p-3 border border-emerald-border">
           <span className="text-[10px] uppercase tracking-wider text-emerald/70">
             Celkový vklad
           </span>
@@ -84,7 +84,7 @@ export default function DrawerTabPayments({
             {fmtCZK(totalDeposit)}
           </p>
         </div>
-        <div className="flex-1 bg-gold-pale rounded-[10px] p-3 border border-gold-border">
+        <div className="flex-1 bg-gold-pale p-3 border border-gold-border">
           <span className="text-[10px] uppercase tracking-wider text-gold/70">
             Celkový výdělek
           </span>
@@ -108,7 +108,7 @@ export default function DrawerTabPayments({
             return (
               <div
                 key={p.id}
-                className={`rounded-[10px] p-3 space-y-2 border ${
+                className={` p-3 space-y-2 border ${
                   p.paid
                     ? "bg-emerald-pale/40 border-emerald-border"
                     : "bg-surface-hover border-transparent"
@@ -151,7 +151,7 @@ export default function DrawerTabPayments({
                   )}
                   <button
                     onClick={() => togglePaid(p.id, p.paid)}
-                    className={`text-xs px-2 py-1 rounded-[6px] transition-colors ${
+                    className={`text-xs px-2 py-1 transition-colors ${
                       p.paid
                         ? "text-text-dim hover:bg-surface"
                         : "bg-emerald text-white hover:bg-emerald/90"
@@ -187,12 +187,12 @@ export default function DrawerTabPayments({
                         onChange={(e) => setEditValue(e.target.value)}
                         placeholder="123456789/0300"
                         autoFocus
-                        className="flex-1 min-w-0 px-2 py-1 rounded-[6px] border border-border bg-surface text-xs text-text placeholder:text-text-faint focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
+                        className="flex-1 min-w-0 px-2 py-1 border border-border bg-surface text-xs text-text placeholder:text-text-faint focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
                       />
                       <button
                         onClick={() => saveEdit(p.id)}
                         disabled={saving}
-                        className="w-7 h-7 flex items-center justify-center rounded-[6px] bg-emerald text-white hover:bg-emerald/90 disabled:opacity-50"
+                        className="w-7 h-7 flex items-center justify-center bg-emerald text-white hover:bg-emerald/90 disabled:opacity-50"
                         title="Uložit"
                       >
                         <Check size={12} />
@@ -200,7 +200,7 @@ export default function DrawerTabPayments({
                       <button
                         onClick={cancelEdit}
                         disabled={saving}
-                        className="w-7 h-7 flex items-center justify-center rounded-[6px] bg-surface text-text-dim hover:bg-surface-hover"
+                        className="w-7 h-7 flex items-center justify-center bg-surface text-text-dim hover:bg-surface-hover"
                         title="Zrušit"
                       >
                         <X size={12} />
@@ -238,7 +238,7 @@ export default function DrawerTabPayments({
       {/* Add payment button */}
       <button
         onClick={onAddPayment}
-        className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-[10px] bg-emerald/10 text-emerald text-sm font-medium hover:bg-emerald/20 transition-colors"
+        className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-emerald/10 text-emerald text-sm font-medium hover:bg-emerald/20 transition-colors"
       >
         <Plus size={16} />
         Přidat platbu

@@ -10,7 +10,7 @@ function htmlPage(icon: string, title: string, message: string): NextResponse {
 h1{color:#b8912a;font-size:28px;margin-bottom:8px}p{color:#556073;line-height:1.6}</style></head>
 <body><div style="font-size:48px;margin-bottom:24px">${icon}</div>
 <h1>${title}</h1><p>${message}</p>
-<p style="font-size:12px;margin-top:32px;color:#888">Nodis Star s.r.o. • IČO 21300101</p></body></html>`;
+<p style="font-size:12px;margin-top:32px;color:#888">Alexandr Puškin, s.r.o. • IČO 26740788</p></body></html>`;
   return new NextResponse(html, {
     status: 200,
     headers: { "Content-Type": "text/html; charset=utf-8" },
@@ -93,6 +93,6 @@ export async function GET(req: NextRequest) {
   return htmlPage(
     "✉️",
     "Byli jste odhlášeni",
-    "Z této e-mailové adresy už nebudete dostávat další zprávy. Pokud jste se odhlásili omylem, kontaktujte info@nodistar.cz."
+    "Z této e-mailové adresy už nebudete dostávat další zprávy. Pokud jste se odhlásili omylem, kontaktujte info@puskinpartners.cz."
   );
 }

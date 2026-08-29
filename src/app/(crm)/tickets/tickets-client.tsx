@@ -136,7 +136,7 @@ export default function TicketsClient({ initialTickets, userRole, brokers, clien
         <h1 className="text-xl font-display font-bold text-text">Požadavky</h1>
         <button
           onClick={() => setShowModal(true)}
-          className="flex items-center gap-2 px-4 py-2 rounded-[10px] bg-gold text-white text-sm font-semibold hover:bg-gold-light transition-colors"
+          className="flex items-center gap-2 px-4 py-2 bg-gold text-white text-sm font-semibold hover:bg-gold-light transition-colors"
         >
           <Plus size={16} />
           Nový požadavek
@@ -145,20 +145,20 @@ export default function TicketsClient({ initialTickets, userRole, brokers, clien
 
       <div className="flex flex-col gap-2">
         <input
-          className="w-full sm:w-72 px-3 py-2 rounded-[10px] border border-border bg-surface text-text text-sm focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold/30"
+          className="w-full sm:w-72 px-3 py-2 border border-border bg-surface text-text text-sm focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold/30"
           placeholder="Hledat…"
           value={search}
           onChange={(e) => applySearch(e.target.value)}
         />
 
         <div className="flex flex-wrap gap-2">
-          <div className="flex gap-1 bg-surface-hover rounded-[10px] p-1">
+          <div className="flex gap-1 bg-surface-hover p-1">
             {STATUS_FILTERS.map((f) => (
               <button
                 key={f.value}
                 onClick={() => applyStatusFilter(f.value)}
                 className={cn(
-                  "px-3 py-1 rounded-[8px] text-xs font-medium transition-colors",
+                  "px-3 py-1 text-xs font-medium transition-colors",
                   statusFilter === f.value
                     ? "bg-gold text-white"
                     : "text-text-mid hover:text-text"
@@ -170,13 +170,13 @@ export default function TicketsClient({ initialTickets, userRole, brokers, clien
           </div>
 
           {userRole !== "broker" && (
-            <div className="flex gap-1 bg-surface-hover rounded-[10px] p-1">
+            <div className="flex gap-1 bg-surface-hover p-1">
               {ASSIGNEE_FILTERS.map((f) => (
                 <button
                   key={f.value}
                   onClick={() => applyAssigneeFilter(f.value)}
                   className={cn(
-                    "px-3 py-1 rounded-[8px] text-xs font-medium transition-colors",
+                    "px-3 py-1 text-xs font-medium transition-colors",
                     assigneeFilter === f.value
                       ? "bg-gold text-white"
                       : "text-text-mid hover:text-text"
@@ -188,13 +188,13 @@ export default function TicketsClient({ initialTickets, userRole, brokers, clien
             </div>
           )}
 
-          <div className="flex gap-1 bg-surface-hover rounded-[10px] p-1">
+          <div className="flex gap-1 bg-surface-hover p-1">
             {PRIORITY_FILTERS.map((f) => (
               <button
                 key={f.value}
                 onClick={() => applyPriorityFilter(f.value)}
                 className={cn(
-                  "px-3 py-1 rounded-[8px] text-xs font-medium transition-colors",
+                  "px-3 py-1 text-xs font-medium transition-colors",
                   priorityFilter === f.value
                     ? "bg-gold text-white"
                     : "text-text-mid hover:text-text"
@@ -207,7 +207,7 @@ export default function TicketsClient({ initialTickets, userRole, brokers, clien
         </div>
       </div>
 
-      <div className="bg-surface rounded-[16px] border border-border overflow-hidden">
+      <div className="bg-surface border border-border overflow-hidden">
         {tickets.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-16 text-text-faint">
             <p className="text-sm">Žádné požadavky</p>

@@ -53,274 +53,277 @@ export function generateProposalHTML(data: ProposalData): string {
 <head>
 <meta charset="UTF-8">
 <title>Smlouva o zápůjčce – Alexandr Puškin, s.r.o.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Display&family=Libre+Franklin:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   @page { size: A4; margin: 0; }
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; color: #1a1f2e; line-height: 1.65; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  @media print { .page { box-shadow: none !important; } }
+  body { font-family: 'Libre Franklin', system-ui, sans-serif; color: #16211D; line-height: 1.65; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  @media print { .page { max-width: 100% !important; } }
 </style>
 </head>
-<body style="background:#fff;">
+<body style="background:#F2EEE6;">
 
 <!-- PAGE 1 -->
 <div class="page" style="width:210mm; min-height:297mm; margin:0 auto; background:#fff; position:relative; padding-bottom:50px;">
 
   <!-- HEADER -->
-  <div style="background:#1a2744; padding:22px 44px; display:flex; align-items:center; justify-content:space-between;">
-    <div style="display:flex; align-items:center; gap:12px;">
-      <span style="font-size:28px; color:#d4a826;">&#9733;</span>
-      <span style="font-size:20px; font-weight:700; color:#ffffff; letter-spacing:0.5px;">Alexandr Puškin, s.r.o.</span>
+  <div style="background:#16211D; padding:22px 44px; display:flex; align-items:center; justify-content:space-between;">
+    <div>
+      <div style="font-family:'Libre Caslon Display',Georgia,serif; font-size:20px; color:#EFEAE1; letter-spacing:.2em; text-transform:uppercase;">PUSKIN</div>
+      <div style="font-family:'Libre Franklin',system-ui,sans-serif; font-size:10px; color:#A9884E; letter-spacing:.35em; text-transform:uppercase; margin-top:2px;">PARTNERS</div>
     </div>
-    <div style="text-align:right; color:rgba(255,255,255,0.6); font-size:11px; line-height:1.7;">
+    <div style="text-align:right; color:rgba(239,234,225,0.6); font-size:11px; line-height:1.7;">
       <div>Alexandr Puškin, s.r.o.</div>
       <div>IČO: 26740788 | DS: </div>
       <div>Rybná 716/24, 110 00 Praha 1</div>
     </div>
   </div>
 
-  <!-- GOLD LINE -->
-  <div style="height:3px; background:linear-gradient(90deg,#d4a826,#f0d060,#d4a826);"></div>
+  <!-- BRASS LINE -->
+  <div style="height:1px; background:#A9884E;"></div>
 
   <!-- BODY -->
   <div style="padding:44px 52px 0 52px;">
 
     <!-- TITLE -->
     <div style="text-align:center; margin-bottom:40px;">
-      <h1 style="font-size:28px; font-weight:700; color:#1a2744; margin:0 0 8px 0;">Smlouva o zápůjčce</h1>
-      <p style="font-size:13px; color:#6b7280;">uzavřená dle § 2390 a násl. zákona č. 89/2012 Sb., občanský zákoník</p>
+      <h1 style="font-family:'Libre Caslon Display',Georgia,serif; font-size:28px; font-weight:400; color:#16211D; margin:0 0 8px 0; letter-spacing:.02em;">Smlouva o zápůjčce</h1>
+      <p style="font-size:13px; color:#6E6A61;">uzavřená dle § 2390 a násl. zákona č. 89/2012 Sb., občanský zákoník</p>
     </div>
 
     <!-- SECTION 1: SMLUVNÍ STRANY -->
-    <div style="margin-bottom:32px;">
-      <div style="margin-bottom:20px; padding-bottom:8px; border-bottom:3px solid #c0392b; display:inline-block;">
-        <h2 style="font-size:18px; font-weight:700; color:#1a2744;">1. Smluvní strany</h2>
+    <div style="margin-bottom:32px; border-top:1px solid rgba(22,33,29,.14); padding-top:20px;">
+      <div style="margin-bottom:20px;">
+        <div style="font-size:11.5px; font-weight:600; color:#A9884E; text-transform:uppercase; letter-spacing:.2em; margin-bottom:4px;">I</div>
+        <h2 style="font-family:'Libre Caslon Display',Georgia,serif; font-size:18px; font-weight:400; color:#16211D;">Smluvní strany</h2>
       </div>
 
       <!-- VĚŘITEL -->
-      <div style="background:#f7f8fa; border-radius:8px; padding:22px 28px; margin-bottom:14px;">
-        <div style="font-size:13px; font-weight:700; color:#d4a826; text-transform:uppercase; letter-spacing:1.5px; margin-bottom:14px;">Věřitel</div>
-        <table style="width:100%; font-size:14px; color:#1a1f2e; border-collapse:collapse;">
+      <div style="background:#F2EEE6; padding:22px 28px; margin-bottom:14px; border-left:2px solid #A9884E;">
+        <div style="font-size:11.5px; font-weight:600; color:#A9884E; text-transform:uppercase; letter-spacing:.2em; margin-bottom:14px;">Věřitel</div>
+        <table style="width:100%; font-size:14px; color:#16211D; border-collapse:collapse;">
           <tr>
-            <td style="padding:5px 0; width:180px; color:#6b7280;">Jméno a příjmení:</td>
-            <td style="padding:5px 0; border-bottom:1px solid #d1d5db;">&nbsp;</td>
+            <td style="padding:5px 0; width:180px; color:#6E6A61;">Jméno a příjmení:</td>
+            <td style="padding:5px 0; border-bottom:1px solid rgba(22,33,29,.14);">&nbsp;</td>
           </tr>
           <tr>
-            <td style="padding:5px 0; color:#6b7280;">RČ / datum narození:</td>
-            <td style="padding:5px 0; border-bottom:1px solid #d1d5db;">&nbsp;</td>
+            <td style="padding:5px 0; color:#6E6A61;">RČ / datum narození:</td>
+            <td style="padding:5px 0; border-bottom:1px solid rgba(22,33,29,.14);">&nbsp;</td>
           </tr>
           <tr>
-            <td style="padding:5px 0; color:#6b7280;">Bytem:</td>
-            <td style="padding:5px 0; border-bottom:1px solid #d1d5db;">&nbsp;</td>
+            <td style="padding:5px 0; color:#6E6A61;">Bytem:</td>
+            <td style="padding:5px 0; border-bottom:1px solid rgba(22,33,29,.14);">&nbsp;</td>
           </tr>
           <tr>
-            <td style="padding:5px 0; color:#6b7280;">Bankovní spojení:</td>
-            <td style="padding:5px 0; border-bottom:1px solid #d1d5db;">&nbsp;</td>
+            <td style="padding:5px 0; color:#6E6A61;">Bankovní spojení:</td>
+            <td style="padding:5px 0; border-bottom:1px solid rgba(22,33,29,.14);">&nbsp;</td>
           </tr>
         </table>
       </div>
 
       <!-- DLUŽNÍK -->
-      <div style="background:#f7f8fa; border-radius:8px; padding:22px 28px;">
-        <div style="font-size:13px; font-weight:700; color:#d4a826; text-transform:uppercase; letter-spacing:1.5px; margin-bottom:14px;">Dlužník</div>
-        <table style="width:100%; font-size:14px; color:#1a1f2e; border-collapse:collapse;">
+      <div style="background:#F2EEE6; padding:22px 28px; border-left:2px solid #16211D;">
+        <div style="font-size:11.5px; font-weight:600; color:#16211D; text-transform:uppercase; letter-spacing:.2em; margin-bottom:14px;">Dlužník</div>
+        <table style="width:100%; font-size:14px; color:#16211D; border-collapse:collapse;">
           <tr>
-            <td style="padding:5px 0; width:180px; color:#6b7280;">Společnost:</td>
+            <td style="padding:5px 0; width:180px; color:#6E6A61;">Společnost:</td>
             <td style="padding:5px 0; font-weight:600;">Alexandr Puškin, s.r.o.</td>
           </tr>
           <tr>
-            <td style="padding:5px 0; color:#6b7280;">Sídlo:</td>
+            <td style="padding:5px 0; color:#6E6A61;">Sídlo:</td>
             <td style="padding:5px 0; font-weight:600;">Rybná 716/24, Staré Město, 110 00 Praha 1</td>
           </tr>
           <tr>
-            <td style="padding:5px 0; color:#6b7280;">IČO:</td>
+            <td style="padding:5px 0; color:#6E6A61;">IČO:</td>
             <td style="padding:5px 0; font-weight:600;">26740788</td>
           </tr>
           <tr>
-            <td style="padding:5px 0; color:#6b7280;">Zastoupená:</td>
-            <td style="padding:5px 0; font-weight:600;">Lukáš Salamánek, jednatel</td>
+            <td style="padding:5px 0; color:#6E6A61;">Zastoupená:</td>
+            <td style="padding:5px 0; font-weight:600;">Miroslav Fencl, jednatel</td>
           </tr>
         </table>
       </div>
     </div>
 
     <!-- ČLÁNEK II -->
-    <div style="margin-bottom:28px;">
-      <div style="font-size:11px; font-weight:700; color:#d4a826; text-transform:uppercase; letter-spacing:1.5px; margin-bottom:4px;">Článek II</div>
-      <h3 style="font-size:20px; font-weight:700; color:#1a2744; margin-bottom:16px;">Předmět smlouvy</h3>
+    <div style="margin-bottom:28px; border-top:1px solid rgba(22,33,29,.14); padding-top:20px;">
+      <div style="font-size:11.5px; font-weight:600; color:#A9884E; text-transform:uppercase; letter-spacing:.2em; margin-bottom:4px;">Článek II</div>
+      <h3 style="font-family:'Libre Caslon Display',Georgia,serif; font-size:20px; font-weight:400; color:#16211D; margin-bottom:16px;">Předmět smlouvy</h3>
       <table style="width:100%; font-size:14px; border-collapse:collapse;">
         <tr>
-          <td style="width:40px; vertical-align:top; padding:4px 12px 4px 0; font-weight:700; color:#d4a826;">2.1</td>
+          <td style="width:40px; vertical-align:top; padding:4px 12px 4px 0; font-weight:600; color:#A9884E;">2.1</td>
           <td style="padding:4px 0; line-height:1.7;">Předmětem této smlouvy je poskytnutí peněžní zápůjčky ve výši ${amount} (slovy: ${amountWords} korun českých).</td>
         </tr>
         <tr>
-          <td style="width:40px; vertical-align:top; padding:4px 12px 4px 0; font-weight:700; color:#d4a826;">2.2</td>
+          <td style="width:40px; vertical-align:top; padding:4px 12px 4px 0; font-weight:600; color:#A9884E;">2.2</td>
           <td style="padding:4px 0; line-height:1.7;">Účelem zápůjčky je financování podnikatelské činnosti Dlužníka.</td>
         </tr>
         <tr>
-          <td style="width:40px; vertical-align:top; padding:4px 12px 4px 0; font-weight:700; color:#d4a826;">2.3</td>
+          <td style="width:40px; vertical-align:top; padding:4px 12px 4px 0; font-weight:600; color:#A9884E;">2.3</td>
           <td style="padding:4px 0; line-height:1.7;">Peněžní zápůjčku vyplatí Věřitel Dlužníkovi bezhotovostně na číslo účtu: <strong></strong>.</td>
         </tr>
       </table>
     </div>
 
     <!-- ČLÁNEK III -->
-    <div style="margin-bottom:28px;">
-      <div style="font-size:11px; font-weight:700; color:#d4a826; text-transform:uppercase; letter-spacing:1.5px; margin-bottom:4px;">Článek III</div>
-      <h3 style="font-size:20px; font-weight:700; color:#1a2744; margin-bottom:16px;">Doba trvání smlouvy</h3>
+    <div style="margin-bottom:28px; border-top:1px solid rgba(22,33,29,.14); padding-top:20px;">
+      <div style="font-size:11.5px; font-weight:600; color:#A9884E; text-transform:uppercase; letter-spacing:.2em; margin-bottom:4px;">Článek III</div>
+      <h3 style="font-family:'Libre Caslon Display',Georgia,serif; font-size:20px; font-weight:400; color:#16211D; margin-bottom:16px;">Doba trvání smlouvy</h3>
       <table style="width:100%; font-size:14px; border-collapse:collapse;">
         <tr>
-          <td style="width:40px; vertical-align:top; padding:4px 12px 4px 0; font-weight:700; color:#d4a826;">3.1</td>
+          <td style="width:40px; vertical-align:top; padding:4px 12px 4px 0; font-weight:600; color:#A9884E;">3.1</td>
           <td style="padding:4px 0; line-height:1.7;">Tato smlouva se uzavírá na dobu určitou ${duration} ode dne poskytnutí zápůjčky.</td>
         </tr>
         <tr>
-          <td style="width:40px; vertical-align:top; padding:4px 12px 4px 0; font-weight:700; color:#d4a826;">3.2</td>
+          <td style="width:40px; vertical-align:top; padding:4px 12px 4px 0; font-weight:600; color:#A9884E;">3.2</td>
           <td style="padding:4px 0; line-height:1.7;">Smluvní strany se mohou písemně dohodnout na prodloužení (prolongaci) smlouvy, a to nejpozději 30 dnů před uplynutím sjednané doby.</td>
         </tr>
       </table>
     </div>
 
     <!-- ČLÁNEK IV -->
-    <div style="margin-bottom:28px;">
-      <div style="font-size:11px; font-weight:700; color:#d4a826; text-transform:uppercase; letter-spacing:1.5px; margin-bottom:4px;">Článek IV</div>
-      <h3 style="font-size:20px; font-weight:700; color:#1a2744; margin-bottom:16px;">Úrok a výplata výnosu</h3>
+    <div style="margin-bottom:28px; border-top:1px solid rgba(22,33,29,.14); padding-top:20px;">
+      <div style="font-size:11.5px; font-weight:600; color:#A9884E; text-transform:uppercase; letter-spacing:.2em; margin-bottom:4px;">Článek IV</div>
+      <h3 style="font-family:'Libre Caslon Display',Georgia,serif; font-size:20px; font-weight:400; color:#16211D; margin-bottom:16px;">Úrok a výplata výnosu</h3>
       <table style="width:100%; font-size:14px; border-collapse:collapse;">
         <tr>
-          <td style="width:40px; vertical-align:top; padding:4px 12px 4px 0; font-weight:700; color:#d4a826;">4.1</td>
+          <td style="width:40px; vertical-align:top; padding:4px 12px 4px 0; font-weight:600; color:#A9884E;">4.1</td>
           <td style="padding:4px 0; line-height:1.7;">Zápůjčka je úročena pevnou sazbou ve výši <strong>${rate} měsíčně</strong> z jistiny.</td>
         </tr>
         <tr>
-          <td style="width:40px; vertical-align:top; padding:4px 12px 4px 0; font-weight:700; color:#d4a826;">4.2</td>
+          <td style="width:40px; vertical-align:top; padding:4px 12px 4px 0; font-weight:600; color:#A9884E;">4.2</td>
           <td style="padding:4px 0; line-height:1.7;">Úrok je splatný <strong>${frequency}</strong>, vždy k 15. dni příslušného kalendářního období.</td>
         </tr>
         <tr>
-          <td style="width:40px; vertical-align:top; padding:4px 12px 4px 0; font-weight:700; color:#d4a826;">4.3</td>
+          <td style="width:40px; vertical-align:top; padding:4px 12px 4px 0; font-weight:600; color:#A9884E;">4.3</td>
           <td style="padding:4px 0; line-height:1.7;">První úroková platba bude vyplacena k nejbližšímu 15. dni následujícímu po podpisu smlouvy.</td>
         </tr>
         <tr>
-          <td style="width:40px; vertical-align:top; padding:4px 12px 4px 0; font-weight:700; color:#d4a826;">4.4</td>
+          <td style="width:40px; vertical-align:top; padding:4px 12px 4px 0; font-weight:600; color:#A9884E;">4.4</td>
           <td style="padding:4px 0; line-height:1.7;">Jistina je splatná nejpozději poslední den sjednané doby trvání smlouvy, pokud nebude sjednána její prolongace.</td>
         </tr>
       </table>
     </div>
 
     <!-- ČLÁNEK V -->
-    <div style="margin-bottom:28px;">
-      <div style="font-size:11px; font-weight:700; color:#d4a826; text-transform:uppercase; letter-spacing:1.5px; margin-bottom:4px;">Článek V</div>
-      <h3 style="font-size:20px; font-weight:700; color:#1a2744; margin-bottom:16px;">Prodlení a sankce</h3>
+    <div style="margin-bottom:28px; border-top:1px solid rgba(22,33,29,.14); padding-top:20px;">
+      <div style="font-size:11.5px; font-weight:600; color:#A9884E; text-transform:uppercase; letter-spacing:.2em; margin-bottom:4px;">Článek V</div>
+      <h3 style="font-family:'Libre Caslon Display',Georgia,serif; font-size:20px; font-weight:400; color:#16211D; margin-bottom:16px;">Prodlení a sankce</h3>
       <table style="width:100%; font-size:14px; border-collapse:collapse;">
         <tr>
-          <td style="width:40px; vertical-align:top; padding:4px 12px 4px 0; font-weight:700; color:#d4a826;">5.1</td>
+          <td style="width:40px; vertical-align:top; padding:4px 12px 4px 0; font-weight:600; color:#A9884E;">5.1</td>
           <td style="padding:4px 0; line-height:1.7;">V případě prodlení Dlužníka delšího než 5 kalendářních dnů s úhradou úroku nebo vrácením jistiny vzniká Věřiteli právo požadovat smluvní úrok z prodlení ve výši 12 % ročně z dlužné částky.</td>
         </tr>
         <tr>
-          <td style="width:40px; vertical-align:top; padding:4px 12px 4px 0; font-weight:700; color:#d4a826;">5.2</td>
+          <td style="width:40px; vertical-align:top; padding:4px 12px 4px 0; font-weight:600; color:#A9884E;">5.2</td>
           <td style="padding:4px 0; line-height:1.7;">V případě prodlení delšího než 30 dnů je Věřitel oprávněn zesplatnit celý závazek a požadovat okamžité splacení jistiny.</td>
         </tr>
       </table>
     </div>
 
     <!-- ČLÁNEK VI -->
-    <div style="margin-bottom:28px;">
-      <div style="font-size:11px; font-weight:700; color:#d4a826; text-transform:uppercase; letter-spacing:1.5px; margin-bottom:4px;">Článek VI</div>
-      <h3 style="font-size:20px; font-weight:700; color:#1a2744; margin-bottom:16px;">Práva a povinnosti Věřitele</h3>
+    <div style="margin-bottom:28px; border-top:1px solid rgba(22,33,29,.14); padding-top:20px;">
+      <div style="font-size:11.5px; font-weight:600; color:#A9884E; text-transform:uppercase; letter-spacing:.2em; margin-bottom:4px;">Článek VI</div>
+      <h3 style="font-family:'Libre Caslon Display',Georgia,serif; font-size:20px; font-weight:400; color:#16211D; margin-bottom:16px;">Práva a povinnosti Věřitele</h3>
       <table style="width:100%; font-size:14px; border-collapse:collapse;">
         <tr>
-          <td style="width:40px; vertical-align:top; padding:4px 12px 4px 0; font-weight:700; color:#d4a826;">6.1</td>
+          <td style="width:40px; vertical-align:top; padding:4px 12px 4px 0; font-weight:600; color:#A9884E;">6.1</td>
           <td style="padding:4px 0; line-height:1.7;">Věřitel je povinen poskytnout Dlužníkovi peněžní prostředky ve výši jistiny dle čl. 2.1 této smlouvy, a to nejpozději do 5 pracovních dnů ode dne podpisu této smlouvy oběma smluvními stranami.</td>
         </tr>
         <tr>
-          <td style="width:40px; vertical-align:top; padding:4px 12px 4px 0; font-weight:700; color:#d4a826;">6.2</td>
+          <td style="width:40px; vertical-align:top; padding:4px 12px 4px 0; font-weight:600; color:#A9884E;">6.2</td>
           <td style="padding:4px 0; line-height:1.7;">Věřitel je oprávněn požadovat po Dlužníkovi řádné a včasné plnění veškerých závazků vyplývajících z této smlouvy, zejména výplatu úroků ve sjednaných termínech a vrácení jistiny v termínu dle čl. 3.1.</td>
         </tr>
         <tr>
-          <td style="width:40px; vertical-align:top; padding:4px 12px 4px 0; font-weight:700; color:#d4a826;">6.3</td>
+          <td style="width:40px; vertical-align:top; padding:4px 12px 4px 0; font-weight:600; color:#A9884E;">6.3</td>
           <td style="padding:4px 0; line-height:1.7;">Věřitel je oprávněn ověřit u Dlužníka stav úhrad a aktuální výši jeho závazku z této smlouvy, a to nejvýše jednou za kalendářní čtvrtletí na základě písemné žádosti.</td>
         </tr>
         <tr>
-          <td style="width:40px; vertical-align:top; padding:4px 12px 4px 0; font-weight:700; color:#d4a826;">6.4</td>
+          <td style="width:40px; vertical-align:top; padding:4px 12px 4px 0; font-weight:600; color:#A9884E;">6.4</td>
           <td style="padding:4px 0; line-height:1.7;">Věřitel je povinen sdělit Dlužníkovi bez zbytečného odkladu jakoukoliv změnu svých identifikačních nebo platebních údajů, zejména změnu bankovního spojení.</td>
         </tr>
       </table>
     </div>
 
     <!-- ČLÁNEK VII -->
-    <div style="margin-bottom:28px;">
-      <div style="font-size:11px; font-weight:700; color:#d4a826; text-transform:uppercase; letter-spacing:1.5px; margin-bottom:4px;">Článek VII</div>
-      <h3 style="font-size:20px; font-weight:700; color:#1a2744; margin-bottom:16px;">Práva a povinnosti Dlužníka</h3>
+    <div style="margin-bottom:28px; border-top:1px solid rgba(22,33,29,.14); padding-top:20px;">
+      <div style="font-size:11.5px; font-weight:600; color:#A9884E; text-transform:uppercase; letter-spacing:.2em; margin-bottom:4px;">Článek VII</div>
+      <h3 style="font-family:'Libre Caslon Display',Georgia,serif; font-size:20px; font-weight:400; color:#16211D; margin-bottom:16px;">Práva a povinnosti Dlužníka</h3>
       <table style="width:100%; font-size:14px; border-collapse:collapse;">
         <tr>
-          <td style="width:40px; vertical-align:top; padding:4px 12px 4px 0; font-weight:700; color:#d4a826;">7.1</td>
+          <td style="width:40px; vertical-align:top; padding:4px 12px 4px 0; font-weight:600; color:#A9884E;">7.1</td>
           <td style="padding:4px 0; line-height:1.7;">Dlužník je povinen vrátit Věřiteli celou poskytnutou jistinu řádně a včas v termínu dle čl. 3.1, a to na bankovní účet Věřitele uvedený v záhlaví této smlouvy.</td>
         </tr>
         <tr>
-          <td style="width:40px; vertical-align:top; padding:4px 12px 4px 0; font-weight:700; color:#d4a826;">7.2</td>
+          <td style="width:40px; vertical-align:top; padding:4px 12px 4px 0; font-weight:600; color:#A9884E;">7.2</td>
           <td style="padding:4px 0; line-height:1.7;">Dlužník je povinen vyplácet Věřiteli úroky ve výši a četnosti dle čl. IV této smlouvy, vždy nejpozději do 15. dne kalendářního měsíce za období uplynulé.</td>
         </tr>
         <tr>
-          <td style="width:40px; vertical-align:top; padding:4px 12px 4px 0; font-weight:700; color:#d4a826;">7.3</td>
+          <td style="width:40px; vertical-align:top; padding:4px 12px 4px 0; font-weight:600; color:#A9884E;">7.3</td>
           <td style="padding:4px 0; line-height:1.7;">Dlužník je povinen použít poskytnutou zápůjčku výhradně v souladu s účelem sjednaným v čl. 2.2 této smlouvy.</td>
         </tr>
         <tr>
-          <td style="width:40px; vertical-align:top; padding:4px 12px 4px 0; font-weight:700; color:#d4a826;">7.4</td>
+          <td style="width:40px; vertical-align:top; padding:4px 12px 4px 0; font-weight:600; color:#A9884E;">7.4</td>
           <td style="padding:4px 0; line-height:1.7;">Dlužník je povinen bez zbytečného odkladu, nejpozději však do 7 kalendářních dnů, písemně informovat Věřitele o zahájení insolvenčního řízení, exekučního řízení nebo o podstatném zhoršení své finanční situace ohrožující plnění závazků z této smlouvy.</td>
         </tr>
         <tr>
-          <td style="width:40px; vertical-align:top; padding:4px 12px 4px 0; font-weight:700; color:#d4a826;">7.5</td>
+          <td style="width:40px; vertical-align:top; padding:4px 12px 4px 0; font-weight:600; color:#A9884E;">7.5</td>
           <td style="padding:4px 0; line-height:1.7;">Dlužník je oprávněn kdykoliv splatit zápůjčku zcela nebo zčásti i před termínem splatnosti, a to bez sankce. O předčasné splátce je Dlužník povinen Věřitele písemně informovat nejméně 15 kalendářních dnů předem.</td>
         </tr>
       </table>
     </div>
 
     <!-- ČLÁNEK VIII -->
-    <div style="margin-bottom:28px;">
-      <div style="font-size:11px; font-weight:700; color:#d4a826; text-transform:uppercase; letter-spacing:1.5px; margin-bottom:4px;">Článek VIII</div>
-      <h3 style="font-size:20px; font-weight:700; color:#1a2744; margin-bottom:16px;">Prohlášení Dlužníka</h3>
+    <div style="margin-bottom:28px; border-top:1px solid rgba(22,33,29,.14); padding-top:20px;">
+      <div style="font-size:11.5px; font-weight:600; color:#A9884E; text-transform:uppercase; letter-spacing:.2em; margin-bottom:4px;">Článek VIII</div>
+      <h3 style="font-family:'Libre Caslon Display',Georgia,serif; font-size:20px; font-weight:400; color:#16211D; margin-bottom:16px;">Prohlášení Dlužníka</h3>
       <table style="width:100%; font-size:14px; border-collapse:collapse;">
         <tr>
-          <td style="width:40px; vertical-align:top; padding:4px 12px 4px 0; font-weight:700; color:#d4a826;">8.1</td>
+          <td style="width:40px; vertical-align:top; padding:4px 12px 4px 0; font-weight:600; color:#A9884E;">8.1</td>
           <td style="padding:4px 0; line-height:1.7;">Dlužník prohlašuje, že není v úpadku ani mu úpadek nehrozí, není proti němu vedeno insolvenční řízení, exekuce ani výkon rozhodnutí a je schopen dostát svým závazkům.</td>
         </tr>
       </table>
     </div>
 
     <!-- ČLÁNEK IX -->
-    <div style="margin-bottom:28px;">
-      <div style="font-size:11px; font-weight:700; color:#d4a826; text-transform:uppercase; letter-spacing:1.5px; margin-bottom:4px;">Článek IX</div>
-      <h3 style="font-size:20px; font-weight:700; color:#1a2744; margin-bottom:16px;">Závěrečná ustanovení</h3>
+    <div style="margin-bottom:28px; border-top:1px solid rgba(22,33,29,.14); padding-top:20px;">
+      <div style="font-size:11.5px; font-weight:600; color:#A9884E; text-transform:uppercase; letter-spacing:.2em; margin-bottom:4px;">Článek IX</div>
+      <h3 style="font-family:'Libre Caslon Display',Georgia,serif; font-size:20px; font-weight:400; color:#16211D; margin-bottom:16px;">Závěrečná ustanovení</h3>
       <table style="width:100%; font-size:14px; border-collapse:collapse;">
         <tr>
-          <td style="width:40px; vertical-align:top; padding:4px 12px 4px 0; font-weight:700; color:#d4a826;">9.1</td>
+          <td style="width:40px; vertical-align:top; padding:4px 12px 4px 0; font-weight:600; color:#A9884E;">9.1</td>
           <td style="padding:4px 0; line-height:1.7;">Jakékoli změny této smlouvy lze provádět pouze písemnou formou číslovaných dodatků.</td>
         </tr>
         <tr>
-          <td style="width:40px; vertical-align:top; padding:4px 12px 4px 0; font-weight:700; color:#d4a826;">9.2</td>
+          <td style="width:40px; vertical-align:top; padding:4px 12px 4px 0; font-weight:600; color:#A9884E;">9.2</td>
           <td style="padding:4px 0; line-height:1.7;">Pokud by některé ustanovení bylo neplatné, ostatní ustanovení zůstávají nedotčena.</td>
         </tr>
         <tr>
-          <td style="width:40px; vertical-align:top; padding:4px 12px 4px 0; font-weight:700; color:#d4a826;">9.3</td>
+          <td style="width:40px; vertical-align:top; padding:4px 12px 4px 0; font-weight:600; color:#A9884E;">9.3</td>
           <td style="padding:4px 0; line-height:1.7;">Smlouva je vyhotovena ve dvou stejnopisech, z nichž každá strana obdrží jedno vyhotovení.</td>
         </tr>
         <tr>
-          <td style="width:40px; vertical-align:top; padding:4px 12px 4px 0; font-weight:700; color:#d4a826;">9.4</td>
+          <td style="width:40px; vertical-align:top; padding:4px 12px 4px 0; font-weight:600; color:#A9884E;">9.4</td>
           <td style="padding:4px 0; line-height:1.7;">Smlouva nabývá účinnosti dnem podpisu oběma smluvními stranami.</td>
         </tr>
       </table>
     </div>
 
     <!-- SIGNATURES -->
-    <div style="border-top:2px solid #d1d5db; margin-top:40px; padding-top:24px;">
+    <div style="border-top:1px solid rgba(22,33,29,.14); margin-top:40px; padding-top:24px;">
       <table style="width:100%; font-size:14px;">
         <tr>
           <td style="width:50%; vertical-align:top; padding-right:30px;">
-            <div style="font-weight:700; color:#1a2744; margin-bottom:60px;">VĚŘITEL</div>
-            <div style="border-bottom:1px solid #1a2744; margin-bottom:10px;">&nbsp;</div>
-            <div style="color:#6b7280; font-size:13px;">V Praze dne _____________</div>
+            <div style="font-size:11.5px; font-weight:600; color:#A9884E; text-transform:uppercase; letter-spacing:.2em; margin-bottom:60px;">Věřitel</div>
+            <div style="border-bottom:1px solid #A9884E; margin-bottom:10px;">&nbsp;</div>
+            <div style="color:#6E6A61; font-size:13px;">V Praze dne _____________</div>
           </td>
           <td style="width:50%; vertical-align:top; padding-left:30px;">
-            <div style="font-weight:700; color:#1a2744; margin-bottom:60px;">DLUŽNÍK</div>
-            <div style="border-bottom:1px solid #1a2744; margin-bottom:10px;">&nbsp;</div>
-            <div style="font-weight:700;">Lukáš Salamánek, jednatel</div>
-            <div style="color:#6b7280; font-size:13px;">V Praze dne ${new Date().toLocaleDateString("cs-CZ")}</div>
+            <div style="font-size:11.5px; font-weight:600; color:#A9884E; text-transform:uppercase; letter-spacing:.2em; margin-bottom:60px;">Dlužník</div>
+            <div style="border-bottom:1px solid #A9884E; margin-bottom:10px;">&nbsp;</div>
+            <div style="font-weight:600; color:#16211D;">Miroslav Fencl, jednatel</div>
+            <div style="color:#6E6A61; font-size:13px;">V Praze dne ${new Date().toLocaleDateString("cs-CZ")}</div>
           </td>
         </tr>
       </table>
@@ -329,7 +332,7 @@ export function generateProposalHTML(data: ProposalData): string {
   </div>
 
   <!-- FOOTER -->
-  <div style="position:absolute; bottom:0; left:0; right:0; border-top:1px solid #d1d5db; padding:14px 52px; display:flex; justify-content:space-between; font-size:11px; color:#9ca3af;">
+  <div style="position:absolute; bottom:0; left:0; right:0; background:#16211D; border-top:1px solid #A9884E; padding:14px 52px; display:flex; justify-content:space-between; font-size:11px; color:rgba(239,234,225,0.6);">
     <span>Alexandr Puškin, s.r.o. | IČO: 26740788 | Rybná 716/24, 110 00 Praha 1</span>
     <span>Smlouva o zápůjčce</span>
   </div>

@@ -132,7 +132,7 @@ export default function DrawerTabOverview({
 
       {/* Address */}
       {hasAddress && (
-        <div className="rounded-[12px] border border-border bg-surface-hover p-4">
+        <div className=" border border-border bg-surface-hover p-4">
           <div className="flex items-center gap-1.5 mb-2">
             <MapPin size={14} className="text-text-dim" />
             <span className="text-[10px] uppercase tracking-wider text-text-dim">
@@ -148,7 +148,7 @@ export default function DrawerTabOverview({
       )}
 
       {/* Note */}
-      <div className="rounded-[12px] border-2 border-gold-border bg-gold-pale p-4">
+      <div className=" border-2 border-gold-border bg-gold-pale p-4">
         <div className="flex items-center justify-between mb-2">
           <span className="text-xs font-medium text-text-mid uppercase tracking-wider">
             Poznámka
@@ -185,7 +185,7 @@ export default function DrawerTabOverview({
 
       {/* Po hovoru — primary CTA for call-center workflow */}
       {client.dnc ? (
-        <div className="rounded-[12px] border-2 border-ruby-border bg-ruby-pale p-4 flex items-center gap-2">
+        <div className=" border-2 border-ruby-border bg-ruby-pale p-4 flex items-center gap-2">
           <span className="text-lg">🚫</span>
           <div>
             <p className="text-sm font-semibold text-ruby">
@@ -199,7 +199,7 @@ export default function DrawerTabOverview({
       ) : (
         <button
           onClick={() => setCallOpen(true)}
-          className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-[10px] bg-gradient-to-r from-gold to-gold-light text-white text-sm font-semibold shadow-md hover:shadow-lg transition-shadow"
+          className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-brass text-white text-sm font-semibold"
         >
           <Phone size={14} />
           Po hovoru — zaznamenat výsledek
@@ -221,14 +221,14 @@ export default function DrawerTabOverview({
       <div className="flex gap-3">
         <button
           onClick={onEdit}
-          className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-[10px] border border-border text-sm font-medium text-text-mid hover:text-text hover:bg-surface-hover transition-colors"
+          className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 border border-border text-sm font-medium text-text-mid hover:text-text hover:bg-surface-hover transition-colors"
         >
           <Pencil size={14} />
           Upravit klienta
         </button>
         <button
           onClick={onDelete}
-          className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-[10px] border border-ruby-border text-sm font-medium text-ruby hover:bg-ruby-pale transition-colors"
+          className="flex items-center justify-center gap-2 px-4 py-2.5 border border-ruby-border text-sm font-medium text-ruby hover:bg-ruby-pale transition-colors"
         >
           <Trash2 size={14} />
         </button>
@@ -259,8 +259,8 @@ function MetadataSection({
     <div
       className={
         isWarn
-          ? "rounded-[12px] border border-ruby-border bg-ruby-pale p-4"
-          : "rounded-[12px] border border-border bg-surface-hover p-4"
+          ? " border border-ruby-border bg-ruby-pale p-4"
+          : " border border-border bg-surface-hover p-4"
       }
     >
       <div className="flex items-center gap-1.5 mb-3">
@@ -299,7 +299,7 @@ function InfoCard({
   value: string;
 }) {
   return (
-    <div className="bg-surface-hover rounded-[10px] p-3">
+    <div className="bg-surface-hover p-3">
       <div className="flex items-center gap-1.5 mb-1">
         {icon}
         <span className="text-[10px] uppercase tracking-wider text-text-dim">

@@ -135,7 +135,7 @@ export default function DrawerTabHistory({ clientId }: DrawerTabHistoryProps) {
           <button
             onClick={loadMore}
             disabled={loadingMore}
-            className="flex items-center gap-1.5 px-4 py-2 min-h-[36px] rounded-[8px] text-xs font-medium text-text-mid hover:text-text hover:bg-surface-hover transition-colors disabled:opacity-50"
+            className="flex items-center gap-1.5 px-4 py-2 min-h-[36px] text-xs font-medium text-text-mid hover:text-text hover:bg-surface-hover transition-colors disabled:opacity-50"
           >
             {loadingMore ? (
               <Loader2 size={14} className="animate-spin" />

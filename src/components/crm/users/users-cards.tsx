@@ -61,7 +61,7 @@ export default function UsersCards({
             <div
               key={user.id}
               className={cn(
-                "bg-surface rounded-[16px] border border-border p-4 space-y-3",
+                "bg-surface border border-border p-4 space-y-3",
                 !user.active && "opacity-55"
               )}
             >
@@ -118,7 +118,7 @@ export default function UsersCards({
                 <div className="flex gap-2 pt-1 border-t border-border">
                   <button
                     onClick={() => onEdit(user)}
-                    className="flex-1 flex items-center justify-center gap-1.5 py-2 min-h-[44px] rounded-[8px] text-xs font-medium text-gold hover:bg-gold/10 transition-colors"
+                    className="flex-1 flex items-center justify-center gap-1.5 py-2 min-h-[44px] text-xs font-medium text-gold hover:bg-gold/10 transition-colors"
                   >
                     <Pencil size={12} />
                     Upravit
@@ -128,7 +128,7 @@ export default function UsersCards({
                       <button
                         onClick={() => handleToggleActive(user.id)}
                         className={cn(
-                          "flex-1 flex items-center justify-center gap-1.5 py-2 min-h-[44px] rounded-[8px] text-xs font-medium transition-colors",
+                          "flex-1 flex items-center justify-center gap-1.5 py-2 min-h-[44px] text-xs font-medium transition-colors",
                           user.active
                             ? "text-amber hover:bg-amber/10"
                             : "text-emerald hover:bg-emerald/10"
@@ -139,7 +139,7 @@ export default function UsersCards({
                       </button>
                       <button
                         onClick={() => setDeleteId(user.id)}
-                        className="flex-1 flex items-center justify-center gap-1.5 py-2 min-h-[44px] rounded-[8px] text-xs font-medium text-ruby hover:bg-ruby/10 transition-colors"
+                        className="flex-1 flex items-center justify-center gap-1.5 py-2 min-h-[44px] text-xs font-medium text-ruby hover:bg-ruby/10 transition-colors"
                       >
                         <Trash2 size={12} />
                         Smazat

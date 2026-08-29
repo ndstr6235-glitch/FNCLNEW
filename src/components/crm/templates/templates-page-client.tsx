@@ -48,7 +48,7 @@ export default function TemplatesPageClient({
             setEditTemplate(null);
             setShowForm(true);
           }}
-          className="flex items-center gap-2 px-4 py-2.5 rounded-[10px] bg-gradient-to-r from-gold to-gold-light text-white text-sm font-semibold shadow-md hover:shadow-lg transition-shadow"
+          className="flex items-center gap-2 px-4 py-2.5 bg-brass text-white text-sm font-semibold"
         >
           <Plus size={16} />
           <span className="hidden sm:inline">Nová šablona</span>

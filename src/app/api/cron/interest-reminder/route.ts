@@ -8,7 +8,7 @@ import { Resend } from "resend";
  * Aggregates all clients with INTEREST CalEvents scheduled for the current
  * month (within the next 30 days) and:
  * 1. Creates an in-app Notification for every administrator/supervisor
- * 2. Sends a summary email to info@nodistar.cz listing all upcoming payouts
+ * 2. Sends a summary email to info@puskinpartners.cz listing all upcoming payouts
  *    (kdo, kolik, na jaký účet)
  */
 export async function GET(req: NextRequest) {
@@ -97,15 +97,15 @@ export async function GET(req: NextRequest) {
 
   const summary = lines.join("\n");
   const subject = `Připomínka výplaty úroků — ${events.length} klient(ů) tento měsíc`;
-  const emailBody = `Připomínka pro výplatu úroků v následujících 30 dnech:\n\n${summary}\n\n---\nNodis Star s.r.o.`;
+  const emailBody = `Připomínka pro výplatu úroků v následujících 30 dnech:\n\n${summary}\n\n---\nAlexandr Puškin, s.r.o.`;
 
   // Send summary email to info@
   try {
     if (process.env.RESEND_API_KEY) {
       const resend = new Resend(process.env.RESEND_API_KEY);
       await resend.emails.send({
-        from: "Nodis Star s.r.o. <info@nodistar.cz>",
-        to: ["info@nodistar.cz"],
+        from: "Alexandr Puškin, s.r.o. <info@puskinpartners.cz>",
+        to: ["info@puskinpartners.cz"],
         subject,
         text: emailBody,
       });

@@ -14,21 +14,21 @@ export default function DrawerFooter({ onSwitchTab }: DrawerFooterProps) {
       <div className="flex flex-col gap-2 sm:flex-row sm:gap-3">
         <button
           onClick={() => onSwitchTab("email")}
-          className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 min-h-[44px] rounded-[10px] bg-gradient-to-r from-gold to-gold-light text-white text-sm font-semibold shadow-md hover:shadow-lg transition-shadow"
+          className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 min-h-[44px] bg-brass text-white text-sm font-semibold"
         >
           <Mail size={16} />
           Email
         </button>
         <button
           onClick={() => onSwitchTab("payments")}
-          className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 min-h-[44px] rounded-[10px] bg-emerald text-white text-sm font-semibold hover:bg-emerald/90 transition-colors"
+          className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 min-h-[44px] bg-emerald text-white text-sm font-semibold hover:bg-emerald/90 transition-colors"
         >
           <CreditCard size={16} />
           Platba
         </button>
         <button
           onClick={() => onSwitchTab("events")}
-          className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 min-h-[44px] rounded-[10px] border border-border text-text-mid text-sm font-medium hover:bg-surface-hover transition-colors"
+          className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 min-h-[44px] border border-border text-text-mid text-sm font-medium hover:bg-surface-hover transition-colors"
         >
           <CalendarPlus size={16} />
           Událost

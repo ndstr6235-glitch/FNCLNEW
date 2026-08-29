@@ -16,7 +16,7 @@ export default function ThemeToggle({ variant = "sidebar", collapsed }: ThemeTog
     return (
       <button
         onClick={toggle}
-        className="w-11 h-11 flex items-center justify-center rounded-[8px] hover:bg-surface-hover transition-colors"
+        className="w-11 h-11 flex items-center justify-center  hover:bg-surface-hover transition-colors"
         aria-label={isDark ? "Světlý režim" : "Tmavý režim"}
       >
         {isDark ? (
@@ -31,7 +31,7 @@ export default function ThemeToggle({ variant = "sidebar", collapsed }: ThemeTog
   return (
     <button
       onClick={toggle}
-      className="w-full flex items-center gap-2 px-3 py-2 rounded-[8px] text-white/40 hover:text-white/70 hover:bg-white/[0.06] transition-all text-sm"
+      className="w-full flex items-center gap-2 px-3 py-2 text-on-dark/40 hover:text-on-dark/70 hover:bg-[rgba(239,234,225,0.06)] transition-all text-sm"
       aria-label={isDark ? "Světlý režim" : "Tmavý režim"}
     >
       {isDark ? (

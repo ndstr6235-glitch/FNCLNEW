@@ -119,7 +119,7 @@ export default function TemplateForm({
             value={label}
             onChange={(e) => setLabel(e.target.value)}
             placeholder='Např: "Prezentace", "Follow-up"'
-            className="w-full px-3 py-2.5 min-h-[44px] rounded-[10px] border border-border bg-surface text-sm text-text placeholder:text-text-faint focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
+            className="w-full px-3 py-2.5 min-h-[44px] border border-border bg-surface text-sm text-text placeholder:text-text-faint focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
             required
           />
         </div>
@@ -134,7 +134,7 @@ export default function TemplateForm({
             value={subject}
             onChange={(e) => setSubject(e.target.value)}
             placeholder="Předmět emailu"
-            className="w-full px-3 py-2.5 min-h-[44px] rounded-[10px] border border-border bg-surface text-sm text-text placeholder:text-text-faint focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
+            className="w-full px-3 py-2.5 min-h-[44px] border border-border bg-surface text-sm text-text placeholder:text-text-faint focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
             required
           />
         </div>
@@ -152,7 +152,7 @@ export default function TemplateForm({
             onChange={(e) => setBody(e.target.value)}
             rows={5}
             placeholder="Vážený/á [OSLOVENÍ],&#10;&#10;...&#10;&#10;[PODPIS]"
-            className="w-full px-3 py-2.5 rounded-[10px] border border-border bg-surface text-sm text-text placeholder:text-text-faint focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition resize-none leading-relaxed"
+            className="w-full px-3 py-2.5 border border-border bg-surface text-sm text-text placeholder:text-text-faint focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition resize-none leading-relaxed"
             required
           />
         </div>
@@ -186,7 +186,7 @@ export default function TemplateForm({
 
         {/* Error */}
         {error && (
-          <p className="text-sm text-ruby bg-ruby-pale border border-ruby-border rounded-[8px] px-3 py-2">
+          <p className="text-sm text-ruby bg-ruby-pale border border-ruby-border px-3 py-2">
             {error}
           </p>
         )}
@@ -195,7 +195,7 @@ export default function TemplateForm({
         <button
           type="submit"
           disabled={submitting}
-          className="w-full flex items-center justify-center gap-2 px-4 py-3 min-h-[44px] rounded-[10px] bg-gradient-to-r from-gold to-gold-light text-white text-sm font-semibold shadow-md hover:shadow-lg transition-shadow disabled:opacity-60"
+          className="w-full flex items-center justify-center gap-2 px-4 py-3 min-h-[44px] bg-brass text-white text-sm font-semibold disabled:opacity-60"
         >
           {submitting && <Loader2 size={16} className="animate-spin" />}
           {isEdit ? "Uložit změny" : "Vytvořit šablonu"}

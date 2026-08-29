@@ -1,18 +1,18 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Inter } from "next/font/google";
+import { Libre_Caslon_Display, Libre_Franklin } from "next/font/google";
 import "./globals.css";
 
-const playfair = Playfair_Display({
+const libreCaslon = Libre_Caslon_Display({
   subsets: ["latin", "latin-ext"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-playfair-display",
+  weight: ["400"],
+  variable: "--font-libre-caslon",
   display: "swap",
 });
 
-const inter = Inter({
+const libreFranklin = Libre_Franklin({
   subsets: ["latin", "latin-ext"],
-  weight: ["300", "400", "500", "600"],
-  variable: "--font-inter",
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-libre-franklin",
   display: "swap",
 });
 
@@ -38,7 +38,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="cs">
-      <body className={`${playfair.variable} ${inter.variable} font-body`}>{children}</body>
+      <body className={`${libreCaslon.variable} ${libreFranklin.variable} font-body`}>{children}</body>
     </html>
   );
 }

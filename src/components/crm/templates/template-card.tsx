@@ -42,7 +42,7 @@ export default function TemplateCard({ template, onEdit }: TemplateCardProps) {
 
   return (
     <>
-      <div className="bg-surface rounded-[16px] border border-border p-4 space-y-3 hover:shadow-md transition-shadow">
+      <div className="bg-surface border border-border p-4 space-y-3">
         {/* Header row */}
         <div className="flex items-start justify-between gap-2">
           <div className="flex-1 min-w-0">
@@ -56,14 +56,14 @@ export default function TemplateCard({ template, onEdit }: TemplateCardProps) {
           <div className="flex gap-1 shrink-0">
             <button
               onClick={() => onEdit(template)}
-              className="w-8 h-8 flex items-center justify-center rounded-[8px] text-text-dim hover:text-gold hover:bg-gold/10 transition-colors"
+              className="w-8 h-8 flex items-center justify-center text-text-dim hover:text-gold hover:bg-gold/10 transition-colors"
               title="Upravit"
             >
               <Pencil size={14} />
             </button>
             <button
               onClick={() => setShowDeleteConfirm(true)}
-              className="w-8 h-8 flex items-center justify-center rounded-[8px] text-text-dim hover:text-ruby hover:bg-ruby/10 transition-colors"
+              className="w-8 h-8 flex items-center justify-center text-text-dim hover:text-ruby hover:bg-ruby/10 transition-colors"
               title="Smazat"
             >
               <Trash2 size={14} />

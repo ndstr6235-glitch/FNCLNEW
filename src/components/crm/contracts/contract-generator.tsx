@@ -25,7 +25,7 @@ const FREQUENCY_OPTIONS = [
 ];
 
 const INPUT_CLASS =
-  "w-full px-3 py-2.5 min-h-[44px] rounded-[10px] border border-border bg-surface text-sm text-text placeholder:text-text-faint focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition";
+  "w-full px-3 py-2.5 min-h-[44px] border border-border bg-surface text-sm text-text placeholder:text-text-faint focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition";
 
 const LABEL_CLASS = "block text-xs font-medium text-text-mid mb-1";
 
@@ -150,7 +150,7 @@ export default function ContractGenerator({ userRole }: ContractGeneratorProps) 
     <div className="space-y-6 animate-fade-in">
       {/* Page header */}
       <div className="flex items-center gap-3">
-        <div className="w-10 h-10 rounded-[12px] bg-gradient-to-br from-gold to-gold-light flex items-center justify-center">
+        <div className="w-10 h-10 bg-brass flex items-center justify-center">
           <FileText size={20} className="text-white" />
         </div>
         <div>
@@ -166,7 +166,7 @@ export default function ContractGenerator({ userRole }: ContractGeneratorProps) 
       <div className="flex flex-col xl:flex-row gap-4 sm:gap-6">
         {/* LEFT: Form */}
         <div className="w-full xl:w-[420px] shrink-0">
-          <div className="bg-surface rounded-[16px] border border-border shadow-card p-5 space-y-4">
+          <div className="bg-surface border border-border p-5 space-y-4">
             <h2 className="text-sm font-semibold text-text flex items-center gap-2">
               <Eye size={16} className="text-gold" />
               Údaje věřitele a smlouvy
@@ -312,7 +312,7 @@ export default function ContractGenerator({ userRole }: ContractGeneratorProps) 
               <button
                 type="button"
                 onClick={handlePrint}
-                className="w-full flex items-center justify-center gap-2 px-4 py-3 min-h-[44px] rounded-[10px] bg-gradient-to-r from-gold to-gold-light text-white text-sm font-semibold shadow-md hover:shadow-lg transition-shadow"
+                className="w-full flex items-center justify-center gap-2 px-4 py-3 min-h-[44px] bg-brass text-white text-sm font-semibold"
               >
                 <Download size={16} />
                 Stáhnout PDF
@@ -320,7 +320,7 @@ export default function ContractGenerator({ userRole }: ContractGeneratorProps) 
               <button
                 type="button"
                 onClick={() => setShowEmailModal(true)}
-                className="w-full flex items-center justify-center gap-2 px-4 py-3 min-h-[44px] rounded-[10px] border border-border bg-surface text-sm font-semibold text-text hover:bg-surface-hover transition"
+                className="w-full flex items-center justify-center gap-2 px-4 py-3 min-h-[44px] border border-border bg-surface text-sm font-semibold text-text hover:bg-surface-hover transition"
               >
                 <Mail size={16} />
                 Odeslat emailem
@@ -331,7 +331,7 @@ export default function ContractGenerator({ userRole }: ContractGeneratorProps) 
 
         {/* RIGHT: Live Preview */}
         <div className="flex-1 min-w-0">
-          <div className="bg-surface rounded-[16px] border border-border shadow-card overflow-hidden">
+          <div className="bg-surface border border-border overflow-hidden">
             <div className="px-5 py-3 border-b border-border flex items-center gap-2">
               <Eye size={16} className="text-gold" />
               <span className="text-sm font-semibold text-text">
@@ -343,7 +343,7 @@ export default function ContractGenerator({ userRole }: ContractGeneratorProps) 
                 ref={updateIframe}
                 onLoad={iframeOnLoad}
                 title="Contract preview"
-                className="w-full h-[300px] sm:h-[400px] md:h-[600px] lg:h-[800px] bg-white rounded-[8px] shadow-md"
+                className="w-full h-[300px] sm:h-[400px] md:h-[600px] lg:h-[800px] bg-paper"
                 style={{ border: "none" }}
               />
             </div>
@@ -358,7 +358,7 @@ export default function ContractGenerator({ userRole }: ContractGeneratorProps) 
             className="absolute inset-0 bg-black/50 backdrop-blur-sm"
             onClick={() => setShowEmailModal(false)}
           />
-          <div className="relative bg-surface rounded-[16px] border border-border shadow-lg w-full max-w-md mx-4 p-6 space-y-4 animate-fade-in">
+          <div className="relative bg-surface border border-border w-full max-w-md mx-4 p-6 space-y-4 animate-fade-in">
             <h3 className="text-lg font-display font-bold text-text flex items-center gap-2">
               <Send size={18} className="text-gold" />
               Odeslat smlouvu emailem
@@ -383,7 +383,7 @@ export default function ContractGenerator({ userRole }: ContractGeneratorProps) 
               <button
                 type="button"
                 onClick={() => setShowEmailModal(false)}
-                className="flex-1 px-4 py-3 min-h-[44px] rounded-[10px] border border-border bg-surface text-sm font-semibold text-text hover:bg-surface-hover transition"
+                className="flex-1 px-4 py-3 min-h-[44px] border border-border bg-surface text-sm font-semibold text-text hover:bg-surface-hover transition"
               >
                 Zrušit
               </button>
@@ -391,7 +391,7 @@ export default function ContractGenerator({ userRole }: ContractGeneratorProps) 
                 type="button"
                 onClick={handleSendEmail}
                 disabled={sending}
-                className="flex-1 flex items-center justify-center gap-2 px-4 py-3 min-h-[44px] rounded-[10px] bg-gradient-to-r from-gold to-gold-light text-white text-sm font-semibold shadow-md hover:shadow-lg transition-shadow disabled:opacity-60"
+                className="flex-1 flex items-center justify-center gap-2 px-4 py-3 min-h-[44px] bg-brass text-white text-sm font-semibold disabled:opacity-60"
               >
                 {sending && <Loader2 size={16} className="animate-spin" />}
                 Odeslat

@@ -83,7 +83,7 @@ export default function TicketThread({ ticketId, messages, currentUserId, onMess
               </div>
               <div
                 className={cn(
-                  "px-3 py-2 rounded-[12px] text-sm leading-relaxed whitespace-pre-wrap break-words",
+                  "px-3 py-2 text-sm leading-relaxed whitespace-pre-wrap break-words",
                   isOwn
                     ? "bg-gold text-white rounded-tr-[4px]"
                     : "bg-surface-hover text-text rounded-tl-[4px] border border-border"
@@ -100,7 +100,7 @@ export default function TicketThread({ ticketId, messages, currentUserId, onMess
 
       <form onSubmit={handleSubmit} className="flex gap-2 pt-2 border-t border-border sticky bottom-0 bg-surface pb-2">
         <textarea
-          className="flex-1 px-3 py-2 rounded-[10px] border border-border bg-surface text-text text-sm focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold/30 resize-none"
+          className="flex-1 px-3 py-2 border border-border bg-surface text-text text-sm focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold/30 resize-none"
           placeholder="Napište odpověď…"
           rows={2}
           value={text}
@@ -116,7 +116,7 @@ export default function TicketThread({ ticketId, messages, currentUserId, onMess
           type="submit"
           disabled={isPending || !text.trim()}
           className={cn(
-            "self-end px-3 py-2 rounded-[10px] bg-gold text-white transition-colors",
+            "self-end px-3 py-2 bg-gold text-white transition-colors",
             isPending || !text.trim() ? "opacity-50 cursor-not-allowed" : "hover:bg-gold-light"
           )}
         >

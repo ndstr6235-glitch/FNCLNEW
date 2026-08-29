@@ -38,7 +38,7 @@ export default function EventTypeFilter({
               key={type}
               onClick={() => onToggle(type)}
               className={cn(
-                "w-full flex items-center gap-2.5 px-3 py-2 rounded-[8px] text-sm transition-colors text-left",
+                "w-full flex items-center gap-2.5 px-3 py-2 text-sm transition-colors text-left",
                 isActive
                   ? "bg-surface-hover font-medium text-text"
                   : "text-text-dim hover:text-text-mid hover:bg-surface-hover/50"

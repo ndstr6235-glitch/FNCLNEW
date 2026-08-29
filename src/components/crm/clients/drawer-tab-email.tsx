@@ -96,7 +96,7 @@ export default function DrawerTabEmail({
         </div>
 
         {!client.email && (
-          <div className="flex items-center gap-2 p-3 rounded-[10px] bg-amber-pale border border-amber text-amber text-sm mb-2">
+          <div className="flex items-center gap-2 p-3 bg-amber-pale border border-amber text-amber text-sm mb-2">
             Klient nemá vyplněný email — adresu lze zadat ručně v composeru.
           </div>
         )}
@@ -111,7 +111,7 @@ export default function DrawerTabEmail({
               <button
                 key={template.id}
                 onClick={() => handleOpen(template.id)}
-                className="w-full flex items-center gap-3 px-4 py-3 min-h-[44px] rounded-[10px] border border-border bg-surface hover:bg-surface-hover hover:border-gold/30 transition-colors text-left group"
+                className="w-full flex items-center gap-3 px-4 py-3 min-h-[44px] border border-border bg-surface hover:bg-surface-hover hover:border-gold/30 transition-colors text-left group"
               >
                 <div className="w-8 h-8 rounded-full bg-gold/10 flex items-center justify-center shrink-0 group-hover:bg-gold/20 transition-colors">
                   <Mail size={14} className="text-gold" />
@@ -161,7 +161,7 @@ export default function DrawerTabEmail({
               return (
                 <div
                   key={email.id}
-                  className="rounded-[10px] border border-border bg-surface overflow-hidden"
+                  className=" border border-border bg-surface overflow-hidden"
                 >
                   <button
                     onClick={() =>
@@ -216,7 +216,7 @@ export default function DrawerTabEmail({
                             })}
                           </span>
                         </div>
-                        <div className="mt-3 p-3 rounded-[8px] bg-bg text-sm text-text-mid whitespace-pre-wrap leading-relaxed max-h-[300px] overflow-y-auto">
+                        <div className="mt-3 p-3 bg-bg text-sm text-text-mid whitespace-pre-wrap leading-relaxed max-h-[300px] overflow-y-auto">
                           {email.body}
                         </div>
                       </div>
