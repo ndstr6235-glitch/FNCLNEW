@@ -1,13 +1,15 @@
 import { SignJWT, jwtVerify } from "jose";
 import type { Role } from "./types";
 
-if (!process.env.SESSION_SECRET) {
-  throw new Error(
-    "SESSION_SECRET environment variable is required. Set it to a random string of at least 32 characters."
-  );
+function getSecret() {
+  const s = process.env.SESSION_SECRET;
+  if (!s) {
+    throw new Error(
+      "SESSION_SECRET environment variable is required. Set it to a random string of at least 32 characters."
+    );
+  }
+  return new TextEncoder().encode(s);
 }
-
-const secret = new TextEncoder().encode(process.env.SESSION_SECRET);
 
 export interface SessionPayload {
   id: string;
@@ -26,14 +28,14 @@ export async function encrypt(
     .setProtectedHeader({ alg: "HS256" })
     .setExpirationTime("7d")
     .setIssuedAt()
-    .sign(secret);
+    .sign(getSecret());
 }
 
 export async function decrypt(
   session: string
 ): Promise<SessionPayload | null> {
   try {
-    const { payload } = await jwtVerify(session, secret);
+    const { payload } = await jwtVerify(session, getSecret());
     return payload as unknown as SessionPayload;
   } catch {
     return null;
