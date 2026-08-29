@@ -207,10 +207,11 @@ ul, ol {
 }
 
 .section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
   margin-bottom: 64px;
+}
+
+.section-header .section-label {
+  margin-bottom: 20px;
 }
 
 .section-header h2 {
