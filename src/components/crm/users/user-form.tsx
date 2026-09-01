@@ -140,7 +140,7 @@ export default function UserForm({ open, onClose, editData }: UserFormProps) {
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="email@buildfund.cz"
+            placeholder="email@puskinpartners.cz"
             className="w-full px-3 py-2.5 min-h-[44px] border border-border bg-surface text-sm text-text placeholder:text-text-faint focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
             required
           />

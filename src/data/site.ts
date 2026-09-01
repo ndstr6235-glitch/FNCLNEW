@@ -20,11 +20,6 @@ export const siteConfig = {
     hours: "Po–Pá 09:00–18:00",
   },
   owner: "Miroslav Fencl",
-  social: {
-    facebook: "#",
-    instagram: "#",
-    linkedin: "#",
-  },
   navigation: {
     main: [
       { label: "O nás", href: "/o-nas" },

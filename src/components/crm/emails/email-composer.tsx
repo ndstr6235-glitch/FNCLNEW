@@ -66,25 +66,11 @@ const TEAM_SIGNATURES = [
     phone: "",
   },
   {
-    id: "novak",
-    name: "Jan Novák",
-    role: "Obchodní ředitel",
-    email: "novak@puskinpartners.cz",
-    phone: "+420 728 722 924",
-  },
-  {
-    id: "svoboda",
-    name: "Petr Svoboda",
-    role: "Provozní ředitel",
-    email: "svoboda@puskinpartners.cz",
-    phone: "+420 728 733 093",
-  },
-  {
-    id: "sojkova",
-    name: "Lucie Sojková",
-    role: "Finanční manažerka",
-    email: "sojkova@puskinpartners.cz",
-    phone: "+420 728 739 389",
+    id: "admin",
+    name: "Admin Puskin",
+    role: "Administrace",
+    email: "admin@puskinpartners.cz",
+    phone: "",
   },
 ];
 

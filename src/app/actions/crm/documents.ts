@@ -3,8 +3,7 @@
 import { prisma } from "@/lib/crm/db";
 import { getSession } from "@/lib/crm/auth";
 import { revalidatePath } from "next/cache";
-import { writeFile, unlink, mkdir } from "fs/promises";
-import { join } from "path";
+import { put, del } from "@vercel/blob";
 import { randomUUID } from "crypto";
 import { logAudit } from "./audit";
 
@@ -16,7 +15,6 @@ const ALLOWED_TYPES = [
   "image/png",
 ];
 const MAX_SIZE = 10 * 1024 * 1024; // 10MB
-const UPLOAD_DIR = join(process.cwd(), "public", "uploads");
 
 export interface DocumentRow {
   id: string;
@@ -225,19 +223,23 @@ export async function uploadDocument(
   const ext = file.name.split(".").pop() || "bin";
   const uniqueName = `${randomUUID()}.${ext}`;
 
-  // Ensure upload dir exists
-  await mkdir(UPLOAD_DIR, { recursive: true });
-
   const buffer = Buffer.from(await file.arrayBuffer());
-  const filePath = join(UPLOAD_DIR, uniqueName);
-  await writeFile(filePath, buffer);
+  const blob = await put(
+    `documents/${clientId}/${uniqueName}`,
+    buffer,
+    {
+      access: "public",
+      contentType: file.type,
+      addRandomSuffix: false,
+    }
+  );
 
   await prisma.document.create({
     data: {
       clientId,
       name: name || file.name,
       fileName: uniqueName,
-      fileUrl: `/uploads/${uniqueName}`,
+      fileUrl: blob.url,
       fileSize: file.size,
       mimeType: file.type,
       uploadedBy: session.id,
@@ -259,11 +261,13 @@ export async function deleteDocument(
   const doc = await prisma.document.findUnique({ where: { id: documentId } });
   if (!doc) return { success: false, error: "Dokument nenalezen" };
 
-  // Delete file from disk
+  // Delete file from Vercel Blob
   try {
-    await unlink(join(UPLOAD_DIR, doc.fileName));
+    if (doc.fileUrl) {
+      await del(doc.fileUrl);
+    }
   } catch {
-    // File may not exist, continue
+    // Blob may not exist, continue
   }
 
   await prisma.document.delete({ where: { id: documentId } });
