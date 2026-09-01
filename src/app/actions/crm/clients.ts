@@ -428,6 +428,8 @@ export async function createPayment(data: {
       payoutFrequency,
       date: data.date || new Date().toISOString().split("T")[0],
       note: bankPart + data.note.trim(),
+      paid: true,
+      paidAt: data.date || new Date().toISOString().split("T")[0],
     },
   });
 
