@@ -372,5 +372,65 @@
     <p>Alexandr Puškin, s.r.o. · IČO: 26740788 · Rybná 716/24, Staré Město, 110 00 Praha 1 · Spisová značka: C 90827, Městský soud v Praze</p>
   </footer>
 
+  <script>
+    (function() {
+      fetch('/api/cms')
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          // --- Emissions ---
+          if (data.emissions && data.emissions.length > 0) {
+            // Desktop table
+            var list = document.querySelector('.emi-list');
+            if (list) {
+              var head = list.querySelector('.emi-head');
+              var html = head ? head.outerHTML : '';
+              data.emissions.forEach(function(e) {
+                html += '<div class="emi-row">' +
+                  '<span class="emi-name">' + e.name + '</span>' +
+                  '<span>' + e.location + '</span>' +
+                  '<span class="emi-yield">' + e.yieldPa + '</span>' +
+                  '<span>' + e.maturity + '</span>' +
+                  '<span>' + e.minEntry + '</span>' +
+                  '</div>';
+              });
+              list.innerHTML = html;
+            }
+            // Mobile cards
+            var cards = document.querySelector('.emissions-cards');
+            if (cards) {
+              var ch = '';
+              data.emissions.forEach(function(e) {
+                ch += '<div class="emission-card">' +
+                  '<div class="emission-card-name">' + e.name + '</div>' +
+                  '<div class="emission-card-rows">' +
+                  '<div class="emission-card-row"><span class="emission-card-label">LOKALITA</span><span class="emission-card-value">' + e.location + '</span></div>' +
+                  '<div class="emission-card-row"><span class="emission-card-label">VÝNOS P.A.</span><span class="emission-card-value">' + e.yieldPa + '</span></div>' +
+                  '<div class="emission-card-row"><span class="emission-card-label">SPLATNOST</span><span class="emission-card-value">' + e.maturity + '</span></div>' +
+                  '<div class="emission-card-row"><span class="emission-card-label">MINIMÁLNÍ VSTUP</span><span class="emission-card-value">' + e.minEntry + '</span></div>' +
+                  '</div></div>';
+              });
+              cards.innerHTML = ch;
+            }
+          }
+
+          // --- Stats ---
+          if (data.stats && data.stats.length > 0) {
+            var statsEl = document.querySelector('.hero-stats');
+            if (statsEl) {
+              var sh = '';
+              data.stats.forEach(function(s) {
+                sh += '<div class="hero-stat">' +
+                  '<div class="hero-stat-value">' + s.value + '</div>' +
+                  '<div class="hero-stat-label">' + s.label + '</div>' +
+                  '</div>';
+              });
+              statsEl.innerHTML = sh;
+            }
+          }
+        })
+        .catch(function() { /* keep static fallback */ });
+    })();
+  </script>
+
 </body>
 </html>

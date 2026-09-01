@@ -315,3 +315,39 @@ model TicketMessage {
 
   @@index([ticketId, createdAt])
 }
+
+// ---------------------------------------------------------------------------
+// CMS — editable web content
+// ---------------------------------------------------------------------------
+
+model WebEmission {
+  id        String  @id @default(cuid())
+  name      String
+  location  String
+  yieldPa   String
+  maturity  String
+  minEntry  String
+  active    Boolean @default(true)
+  sortOrder Int     @default(0)
+}
+
+model WebProject {
+  id          String  @id @default(cuid())
+  name        String
+  description String
+  imageUrl    String  @default("")
+  status      String  @default("active")
+  sortOrder   Int     @default(0)
+}
+
+model WebStat {
+  id        String @id @default(cuid())
+  value     String
+  label     String
+  sortOrder Int    @default(0)
+}
+
+model WebContent {
+  key   String @id
+  value String
+}

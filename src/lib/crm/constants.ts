@@ -107,6 +107,7 @@ export const NAV_SECTIONS: NavSection[] = [
     items: [
       { key: "users", label: "Uzivatele", roles: ["administrator", "supervisor"] },
       { key: "templates", label: "Sablony emailu", roles: ["administrator"] },
+      { key: "cms", label: "Web (CMS)", roles: ["administrator"] },
       { key: "settings", label: "Nastaveni", roles: ["administrator"] },
     ],
   },

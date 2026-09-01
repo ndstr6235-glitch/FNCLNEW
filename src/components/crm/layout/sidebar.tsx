@@ -15,6 +15,7 @@ import {
   PhoneCall,
   Ticket,
   Database,
+  Globe,
   type LucideIcon,
 } from "lucide-react";
 import { NAV_SECTIONS, ROLE_META } from "@/lib/crm/constants";
@@ -32,6 +33,7 @@ const ICON_MAP: Record<string, LucideIcon> = {
   emails: Mail,
   contracts: FileText,
   documents: FileText,
+  cms: Globe,
   users: UserCog,
   templates: FileText,
   settings: Settings,
