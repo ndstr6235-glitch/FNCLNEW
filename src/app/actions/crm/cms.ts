@@ -137,3 +137,71 @@ export async function deleteContent(key: string) {
   revalidatePath("/cms");
   return { success: true };
 }
+
+// ---------------------------------------------------------------------------
+// WebNews CRUD
+// ---------------------------------------------------------------------------
+
+export async function getNews() {
+  return prisma.webNews.findMany({ orderBy: { sortOrder: "asc" } });
+}
+
+export async function upsertNews(data: {
+  id?: string;
+  title: string;
+  date: string;
+  content?: string;
+  active: boolean;
+  sortOrder: number;
+}) {
+  if (!(await checkAdmin())) return { success: false, error: "Nemáte oprávnění" };
+  const { id, ...rest } = data;
+  if (id) {
+    await prisma.webNews.update({ where: { id }, data: rest });
+  } else {
+    await prisma.webNews.create({ data: rest });
+  }
+  revalidatePath("/cms");
+  return { success: true };
+}
+
+export async function deleteNews(id: string) {
+  if (!(await checkAdmin())) return { success: false, error: "Nemáte oprávnění" };
+  await prisma.webNews.delete({ where: { id } });
+  revalidatePath("/cms");
+  return { success: true };
+}
+
+// ---------------------------------------------------------------------------
+// WebTestimonial CRUD
+// ---------------------------------------------------------------------------
+
+export async function getTestimonials() {
+  return prisma.webTestimonial.findMany({ orderBy: { sortOrder: "asc" } });
+}
+
+export async function upsertTestimonial(data: {
+  id?: string;
+  quote: string;
+  author: string;
+  role?: string;
+  active: boolean;
+  sortOrder: number;
+}) {
+  if (!(await checkAdmin())) return { success: false, error: "Nemáte oprávnění" };
+  const { id, ...rest } = data;
+  if (id) {
+    await prisma.webTestimonial.update({ where: { id }, data: rest });
+  } else {
+    await prisma.webTestimonial.create({ data: rest });
+  }
+  revalidatePath("/cms");
+  return { success: true };
+}
+
+export async function deleteTestimonial(id: string) {
+  if (!(await checkAdmin())) return { success: false, error: "Nemáte oprávnění" };
+  await prisma.webTestimonial.delete({ where: { id } });
+  revalidatePath("/cms");
+  return { success: true };
+}

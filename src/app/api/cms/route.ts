@@ -4,13 +4,22 @@ import { prisma } from "@/lib/crm/db";
 export const revalidate = 300; // cache 5 minutes
 
 export async function GET() {
-  const [emissions, stats, contents] = await Promise.all([
+  const [emissions, projects, stats, contents, news, testimonials] = await Promise.all([
     prisma.webEmission.findMany({
       where: { active: true },
       orderBy: { sortOrder: "asc" },
     }),
+    prisma.webProject.findMany({ orderBy: { sortOrder: "asc" } }),
     prisma.webStat.findMany({ orderBy: { sortOrder: "asc" } }),
     prisma.webContent.findMany(),
+    prisma.webNews.findMany({
+      where: { active: true },
+      orderBy: { sortOrder: "asc" },
+    }),
+    prisma.webTestimonial.findMany({
+      where: { active: true },
+      orderBy: { sortOrder: "asc" },
+    }),
   ]);
 
   const contentMap: Record<string, string> = {};
@@ -19,7 +28,7 @@ export async function GET() {
   }
 
   return NextResponse.json(
-    { emissions, stats, content: contentMap },
+    { emissions, projects, stats, content: contentMap, news, testimonials },
     {
       headers: {
         "Cache-Control": "public, s-maxage=300, stale-while-revalidate=60",

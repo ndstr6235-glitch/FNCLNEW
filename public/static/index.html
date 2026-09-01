@@ -374,6 +374,8 @@
 
   <script>
     (function() {
+      function esc(s) { var d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+
       fetch('/api/cms')
         .then(function(r) { return r.json(); })
         .then(function(data) {
@@ -386,11 +388,11 @@
               var html = head ? head.outerHTML : '';
               data.emissions.forEach(function(e) {
                 html += '<div class="emi-row">' +
-                  '<span class="emi-name">' + e.name + '</span>' +
-                  '<span>' + e.location + '</span>' +
-                  '<span class="emi-yield">' + e.yieldPa + '</span>' +
-                  '<span>' + e.maturity + '</span>' +
-                  '<span>' + e.minEntry + '</span>' +
+                  '<span class="emi-name">' + esc(e.name) + '</span>' +
+                  '<span>' + esc(e.location) + '</span>' +
+                  '<span class="emi-yield">' + esc(e.yieldPa) + '</span>' +
+                  '<span>' + esc(e.maturity) + '</span>' +
+                  '<span>' + esc(e.minEntry) + '</span>' +
                   '</div>';
               });
               list.innerHTML = html;
@@ -401,12 +403,12 @@
               var ch = '';
               data.emissions.forEach(function(e) {
                 ch += '<div class="emission-card">' +
-                  '<div class="emission-card-name">' + e.name + '</div>' +
+                  '<div class="emission-card-name">' + esc(e.name) + '</div>' +
                   '<div class="emission-card-rows">' +
-                  '<div class="emission-card-row"><span class="emission-card-label">LOKALITA</span><span class="emission-card-value">' + e.location + '</span></div>' +
-                  '<div class="emission-card-row"><span class="emission-card-label">VÝNOS P.A.</span><span class="emission-card-value">' + e.yieldPa + '</span></div>' +
-                  '<div class="emission-card-row"><span class="emission-card-label">SPLATNOST</span><span class="emission-card-value">' + e.maturity + '</span></div>' +
-                  '<div class="emission-card-row"><span class="emission-card-label">MINIMÁLNÍ VSTUP</span><span class="emission-card-value">' + e.minEntry + '</span></div>' +
+                  '<div class="emission-card-row"><span class="emission-card-label">LOKALITA</span><span class="emission-card-value">' + esc(e.location) + '</span></div>' +
+                  '<div class="emission-card-row"><span class="emission-card-label">VÝNOS P.A.</span><span class="emission-card-value">' + esc(e.yieldPa) + '</span></div>' +
+                  '<div class="emission-card-row"><span class="emission-card-label">SPLATNOST</span><span class="emission-card-value">' + esc(e.maturity) + '</span></div>' +
+                  '<div class="emission-card-row"><span class="emission-card-label">MINIMÁLNÍ VSTUP</span><span class="emission-card-value">' + esc(e.minEntry) + '</span></div>' +
                   '</div></div>';
               });
               cards.innerHTML = ch;
@@ -420,11 +422,70 @@
               var sh = '';
               data.stats.forEach(function(s) {
                 sh += '<div class="hero-stat">' +
-                  '<div class="hero-stat-value">' + s.value + '</div>' +
-                  '<div class="hero-stat-label">' + s.label + '</div>' +
+                  '<div class="hero-stat-value">' + esc(s.value) + '</div>' +
+                  '<div class="hero-stat-label">' + esc(s.label) + '</div>' +
                   '</div>';
               });
               statsEl.innerHTML = sh;
+            }
+          }
+
+          // --- Portfolio / Projects ---
+          if (data.projects && data.projects.length > 0) {
+            var grid = document.querySelector('.portfolio-grid');
+            if (grid) {
+              var ph = '';
+              data.projects.forEach(function(p, i) {
+                var isLarge = i === 0;
+                var cls = isLarge ? 'portfolio-item-large' : 'portfolio-item-small';
+                var h = isLarge ? '460px' : '214px';
+                var imgStyle = p.imageUrl ? 'background-image:url(' + esc(p.imageUrl) + ');background-size:cover;background-position:center;' : '';
+                if (isLarge) {
+                  ph += '<div class="' + cls + '">' +
+                    '<div class="photo" style="height:' + h + ';' + imgStyle + '" role="img" aria-label="' + esc(p.name) + '" aria-hidden="true"></div>' +
+                    '<div class="portfolio-caption">' +
+                    '<span class="portfolio-caption-name">' + esc(p.name) + '</span>' +
+                    '<span class="portfolio-caption-meta">' + esc(p.description) + '</span>' +
+                    '</div></div>';
+                } else {
+                  if (i === 1) ph += '<div class="portfolio-item-small-group">';
+                  ph += '<div class="' + cls + '">' +
+                    '<div class="photo" style="height:' + h + ';' + imgStyle + '" role="img" aria-label="' + esc(p.name) + '" aria-hidden="true"></div>' +
+                    '<div class="portfolio-caption">' +
+                    '<span class="portfolio-caption-name">' + esc(p.name) + '</span>' +
+                    '<span class="portfolio-caption-meta">' + esc(p.description) + '</span>' +
+                    '</div></div>';
+                }
+              });
+              if (data.projects.length > 1) ph += '</div>';
+              grid.innerHTML = ph;
+            }
+          }
+
+          // --- News ---
+          if (data.news && data.news.length > 0) {
+            var newsSide = document.querySelector('.news-side');
+            if (newsSide) {
+              var nh = '<span class="section-label">NOVINKY</span>';
+              data.news.forEach(function(n) {
+                nh += '<div class="news-item">' +
+                  '<span class="news-item-title">' + esc(n.title) + '</span>' +
+                  '<span class="news-item-date">' + esc(n.date) + '</span>' +
+                  '</div>';
+              });
+              newsSide.innerHTML = nh;
+            }
+          }
+
+          // --- Testimonials ---
+          if (data.testimonials && data.testimonials.length > 0) {
+            var refSide = document.querySelector('.ref-side');
+            if (refSide) {
+              var t = data.testimonials[0];
+              var rh = '<span class="section-label">V — REFERENCE</span>' +
+                '<blockquote class="ref-quote">\u201E' + esc(t.quote) + '\u201C</blockquote>' +
+                '<span class="ref-source">' + esc(t.author).toUpperCase() + (t.role ? ' \u00B7 ' + esc(t.role).toUpperCase() : '') + '</span>';
+              refSide.innerHTML = rh;
             }
           }
         })

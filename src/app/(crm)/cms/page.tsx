@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { getSession } from "@/lib/crm/auth";
-import { getEmissions, getStats, getContents } from "@/app/actions/crm/cms";
+import { getEmissions, getProjects, getStats, getContents, getNews, getTestimonials } from "@/app/actions/crm/cms";
 import CmsPageClient from "@/components/crm/cms/cms-page-client";
 
 export default async function CmsRoute() {
@@ -11,17 +11,23 @@ export default async function CmsRoute() {
     redirect("/dashboard");
   }
 
-  const [emissions, stats, contents] = await Promise.all([
+  const [emissions, projects, stats, contents, news, testimonials] = await Promise.all([
     getEmissions(),
+    getProjects(),
     getStats(),
     getContents(),
+    getNews(),
+    getTestimonials(),
   ]);
 
   return (
     <CmsPageClient
       emissions={emissions}
+      projects={projects}
       stats={stats}
       contents={contents}
+      news={news}
+      testimonials={testimonials}
     />
   );
 }
