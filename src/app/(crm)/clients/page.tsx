@@ -1,4 +1,5 @@
 import { getSession } from "@/lib/crm/auth";
+import { redirect } from "next/navigation";
 import { prisma } from "@/lib/crm/db";
 import { calculateScore } from "@/lib/crm/scoring";
 import { getPoolUserId } from "@/lib/crm/pool-user";
@@ -11,7 +12,7 @@ interface PageProps {
 
 export default async function ClientsRoute({ searchParams }: PageProps) {
   const session = await getSession();
-  if (!session) return null;
+  if (!session) redirect("/login");
 
   const params = await searchParams;
   const search = typeof params.q === "string" ? params.q.trim() : "";

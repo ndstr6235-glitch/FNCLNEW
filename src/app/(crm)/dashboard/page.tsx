@@ -1,4 +1,5 @@
 import { getSession } from "@/lib/crm/auth";
+import { redirect } from "next/navigation";
 import { prisma } from "@/lib/crm/db";
 import { fmtCZK } from "@/lib/crm/utils";
 import { Users, Landmark, TrendingUp, CalendarClock } from "lucide-react";
@@ -28,7 +29,7 @@ const EVENT_TYPE_MAP: Record<string, EventType> = {
 
 export default async function DashboardPage() {
   const session = await getSession();
-  if (!session) return null;
+  if (!session) redirect("/login");
 
   const isBroker = session.role === "broker";
   const now = new Date();

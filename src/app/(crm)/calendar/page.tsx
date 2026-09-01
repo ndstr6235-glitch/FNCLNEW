@@ -1,11 +1,12 @@
 import { getSession } from "@/lib/crm/auth";
+import { redirect } from "next/navigation";
 import { prisma } from "@/lib/crm/db";
 import { getMonthEvents } from "@/app/actions/crm/calendar";
 import CalendarPageClient from "@/components/crm/calendar/calendar-page-client";
 
 export default async function CalendarRoute() {
   const session = await getSession();
-  if (!session) return null;
+  if (!session) redirect("/login");
 
   const now = new Date();
   const year = now.getFullYear();

@@ -5,7 +5,7 @@ import UsersPageClient from "@/components/crm/users/users-page-client";
 
 export default async function UsersRoute() {
   const session = await getSession();
-  if (!session) return null;
+  if (!session) redirect("/login");
 
   // Only admin + supervisor can access
   if (session.role === "broker") {

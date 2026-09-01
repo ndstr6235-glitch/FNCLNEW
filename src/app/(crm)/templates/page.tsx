@@ -5,7 +5,7 @@ import TemplatesPageClient from "@/components/crm/templates/templates-page-clien
 
 export default async function TemplatesRoute() {
   const session = await getSession();
-  if (!session) return null;
+  if (!session) redirect("/login");
 
   // Admin only
   if (session.role !== "administrator") {

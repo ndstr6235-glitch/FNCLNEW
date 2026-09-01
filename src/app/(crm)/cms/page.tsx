@@ -5,7 +5,7 @@ import CmsPageClient from "@/components/crm/cms/cms-page-client";
 
 export default async function CmsRoute() {
   const session = await getSession();
-  if (!session) return null;
+  if (!session) redirect("/login");
 
   if (session.role !== "administrator") {
     redirect("/dashboard");
