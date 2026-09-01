@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { jwtVerify } from "jose";
 
 const CRM_ROUTES = [
   "/dashboard", "/clients", "/cms", "/emails", "/calendar",
@@ -7,7 +8,11 @@ const CRM_ROUTES = [
   "/tickets", "/audit", "/calling", "/database",
 ];
 
-export function middleware(request: NextRequest) {
+function isCrmRoute(pathname: string): boolean {
+  return CRM_ROUTES.some((r) => pathname === r || pathname.startsWith(r + "/"));
+}
+
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // Serve the static investment website at root
@@ -15,11 +20,21 @@ export function middleware(request: NextRequest) {
     return NextResponse.rewrite(new URL("/static/index.html", request.url));
   }
 
-  // Protect CRM routes — redirect to /login if no session cookie
-  if (CRM_ROUTES.some((r) => pathname === r || pathname.startsWith(r + "/"))) {
-    const session = request.cookies.get("session");
-    if (!session?.value) {
+  // Protect CRM routes — verify session JWT
+  if (isCrmRoute(pathname)) {
+    const token = request.cookies.get("session")?.value;
+    if (!token) {
       return NextResponse.redirect(new URL("/login", request.url));
+    }
+
+    try {
+      const secret = new TextEncoder().encode(process.env.SESSION_SECRET);
+      await jwtVerify(token, secret);
+    } catch {
+      // Invalid or expired token — clear cookie and redirect
+      const response = NextResponse.redirect(new URL("/login", request.url));
+      response.cookies.delete("session");
+      return response;
     }
   }
 }
