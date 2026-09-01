@@ -452,54 +452,41 @@ ul, ol {
    04 — Emissions table
    ======================================== */
 
-.emissions-table {
+.emissions-list {
+  width: 100%;
+}
+
+.emissions-header {
   display: grid;
   grid-template-columns: 1.7fr .9fr .8fr .9fr 1fr;
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.emissions-table thead,
-.emissions-table tbody {
-  display: contents;
-}
-
-.emissions-table-head {
-  display: contents;
-}
-
-.emissions-table-head th {
+  padding-bottom: 18px;
+  border-bottom: var(--rule-strong);
   font-family: var(--sans);
   font-size: 11.5px;
   font-weight: 400;
   letter-spacing: .2em;
   text-transform: uppercase;
   color: var(--text-3);
-  padding-bottom: 18px;
-  border-bottom: var(--rule-strong);
-  text-align: left;
 }
 
-.emissions-row {
-  display: contents;
-}
-
-.emissions-row > td {
+.emissions-item {
+  display: grid;
+  grid-template-columns: 1.7fr .9fr .8fr .9fr 1fr;
+  align-items: center;
   padding: 34px 0;
   border-bottom: var(--rule-soft);
   font-family: var(--sans);
   font-size: 16px;
   color: var(--text-2);
-  align-self: center;
   transition: background 150ms ease;
 }
 
-.emissions-row:hover > td {
+.emissions-item:hover {
   background: rgba(22,33,29,.03);
 }
 
-.emissions-row .emission-name,
-.emissions-row .emission-yield {
+.emission-name,
+.emission-yield {
   font-family: var(--serif);
   font-size: 27px;
   color: var(--ink);
@@ -942,11 +929,6 @@ ul, ol {
     gap: 56px;
   }
 
-  /* Emissions */
-  .emissions-table {
-    grid-template-columns: 1.7fr .9fr .8fr .9fr 1fr;
-  }
-
   /* Process */
   .process-grid {
     grid-template-columns: 1fr;
@@ -1021,7 +1003,7 @@ ul, ol {
   }
 
   /* Emissions: table -> cards */
-  .emissions-table {
+  .emissions-list {
     display: none;
   }
 

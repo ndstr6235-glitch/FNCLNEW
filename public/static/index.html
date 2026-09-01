@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Display&family=Libre+Franklin:wght@300;400;500&display=swap">
   <link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="/static/css/style.css">
+  <link rel="stylesheet" href="/static/css/style.css?v=2">
 </head>
 <body>
 
@@ -133,41 +133,45 @@
         <h2>Aktuální emise</h2>
       </div>
 
-      <!-- Desktop table -->
-      <table class="emissions-table" aria-label="Přehled aktuálních emisí">
-        <thead>
-          <tr class="emissions-table-head">
-            <th scope="col">PROJEKT</th>
-            <th scope="col">LOKALITA</th>
-            <th scope="col">VÝNOS P.A.</th>
-            <th scope="col">SPLATNOST</th>
-            <th scope="col">MINIMÁLNÍ VSTUP</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr class="emissions-row">
-            <td class="emission-name">Villa Uhříněves</td>
-            <td>Praha 10</td>
-            <td class="emission-yield">9,0 %</td>
-            <td>2029</td>
-            <td>500 000 Kč</td>
-          </tr>
-          <tr class="emissions-row">
-            <td class="emission-name">Villa Chýně</td>
-            <td>Praha-západ</td>
-            <td class="emission-yield">8,5 %</td>
-            <td>2029</td>
-            <td>500 000 Kč</td>
-          </tr>
-          <tr class="emissions-row">
-            <td class="emission-name">Villa Brandýsek</td>
-            <td>Kladno</td>
-            <td class="emission-yield">8,0 %</td>
-            <td>2028</td>
-            <td>300 000 Kč</td>
-          </tr>
-        </tbody>
-      </table>
+      <!-- Desktop emissions -->
+      <style>
+        .emi-list{width:100%}
+        .emi-head{display:grid;grid-template-columns:1.7fr .9fr .8fr .9fr 1fr;padding-bottom:18px;border-bottom:1px solid rgba(22,33,29,.25);font-family:'Libre Franklin',system-ui,sans-serif;font-size:11.5px;font-weight:400;letter-spacing:.2em;text-transform:uppercase;color:#6E6A61}
+        .emi-row{display:grid;grid-template-columns:1.7fr .9fr .8fr .9fr 1fr;align-items:center;padding:34px 0;border-bottom:1px solid rgba(22,33,29,.12);font-family:'Libre Franklin',system-ui,sans-serif;font-size:16px;color:#3B4842;transition:background 150ms ease}
+        .emi-row:hover{background:rgba(22,33,29,.03)}
+        .emi-name,.emi-yield{font-family:'Libre Caslon Display',Georgia,serif;font-size:27px;color:#16211D}
+        @media(max-width:640px){.emi-list{display:none}}
+      </style>
+      <div class="emi-list" aria-label="Přehled aktuálních emisí">
+        <div class="emi-head">
+          <span>PROJEKT</span>
+          <span>LOKALITA</span>
+          <span>VÝNOS P.A.</span>
+          <span>SPLATNOST</span>
+          <span>MINIMÁLNÍ VSTUP</span>
+        </div>
+        <div class="emi-row">
+          <span class="emi-name">Villa Uhříněves</span>
+          <span>Praha 10</span>
+          <span class="emi-yield">9,0 %</span>
+          <span>2029</span>
+          <span>500 000 Kč</span>
+        </div>
+        <div class="emi-row">
+          <span class="emi-name">Villa Chýně</span>
+          <span>Praha-západ</span>
+          <span class="emi-yield">8,5 %</span>
+          <span>2029</span>
+          <span>500 000 Kč</span>
+        </div>
+        <div class="emi-row">
+          <span class="emi-name">Villa Brandýsek</span>
+          <span>Kladno</span>
+          <span class="emi-yield">8,0 %</span>
+          <span>2028</span>
+          <span>300 000 Kč</span>
+        </div>
+      </div>
 
       <!-- Mobile cards -->
       <div class="emissions-cards">
