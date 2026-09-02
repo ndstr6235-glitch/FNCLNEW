@@ -399,14 +399,22 @@
 
       <div class="ref-showcase">
         <div class="ref-card">
-          <div class="ref-card-images">
-            <div class="ref-card-img">
-              <div class="photo ref-photo" style="background-image:url('https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?w=800&q=80');background-size:cover;background-position:center;" role="img" aria-label="Stav před rekonstrukcí"></div>
-              <span class="ref-card-badge">PŘED</span>
+          <div class="ref-card-row">
+            <span class="ref-card-row-label">PŘED</span>
+            <div class="ref-card-grid">
+              <div class="photo ref-thumb" style="background-image:url('https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?w=600&q=75');background-size:cover;background-position:center;"></div>
+              <div class="photo ref-thumb" style="background-image:url('https://images.unsplash.com/photo-1565538810643-b5bdb714032a?w=600&q=75');background-size:cover;background-position:center;"></div>
+              <div class="photo ref-thumb" style="background-image:url('https://images.unsplash.com/photo-1523413363574-c5cc1e820de4?w=600&q=75');background-size:cover;background-position:center;"></div>
+              <div class="photo ref-thumb" style="background-image:url('https://images.unsplash.com/photo-1504615755583-2916b52192a3?w=600&q=75');background-size:cover;background-position:center;"></div>
             </div>
-            <div class="ref-card-img">
-              <div class="photo ref-photo" style="background-image:url('https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&q=80');background-size:cover;background-position:center;" role="img" aria-label="Stav po rekonstrukci"></div>
-              <span class="ref-card-badge ref-card-badge-after">PO</span>
+          </div>
+          <div class="ref-card-row">
+            <span class="ref-card-row-label ref-card-row-label-after">PO</span>
+            <div class="ref-card-grid">
+              <div class="photo ref-thumb" style="background-image:url('https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=600&q=75');background-size:cover;background-position:center;"></div>
+              <div class="photo ref-thumb" style="background-image:url('https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=600&q=75');background-size:cover;background-position:center;"></div>
+              <div class="photo ref-thumb" style="background-image:url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&q=75');background-size:cover;background-position:center;"></div>
+              <div class="photo ref-thumb" style="background-image:url('https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=600&q=75');background-size:cover;background-position:center;"></div>
             </div>
           </div>
           <div class="ref-card-body">
@@ -417,14 +425,22 @@
         </div>
 
         <div class="ref-card">
-          <div class="ref-card-images">
-            <div class="ref-card-img">
-              <div class="photo ref-photo" style="background-image:url('https://images.unsplash.com/photo-1565538810643-b5bdb714032a?w=800&q=80');background-size:cover;background-position:center;" role="img" aria-label="Stav před rekonstrukcí"></div>
-              <span class="ref-card-badge">PŘED</span>
+          <div class="ref-card-row">
+            <span class="ref-card-row-label">PŘED</span>
+            <div class="ref-card-grid">
+              <div class="photo ref-thumb" style="background-image:url('https://images.unsplash.com/photo-1560448205-4d9b3e6bb6db?w=600&q=75');background-size:cover;background-position:center;"></div>
+              <div class="photo ref-thumb" style="background-image:url('https://images.unsplash.com/photo-1513694203232-719a280e022f?w=600&q=75');background-size:cover;background-position:center;"></div>
+              <div class="photo ref-thumb" style="background-image:url('https://images.unsplash.com/photo-1505691938895-1758d7feb511?w=600&q=75');background-size:cover;background-position:center;"></div>
+              <div class="photo ref-thumb" style="background-image:url('https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=600&q=75');background-size:cover;background-position:center;"></div>
             </div>
-            <div class="ref-card-img">
-              <div class="photo ref-photo" style="background-image:url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80');background-size:cover;background-position:center;" role="img" aria-label="Stav po rekonstrukci"></div>
-              <span class="ref-card-badge ref-card-badge-after">PO</span>
+          </div>
+          <div class="ref-card-row">
+            <span class="ref-card-row-label ref-card-row-label-after">PO</span>
+            <div class="ref-card-grid">
+              <div class="photo ref-thumb" style="background-image:url('https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600&q=75');background-size:cover;background-position:center;"></div>
+              <div class="photo ref-thumb" style="background-image:url('https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=600&q=75');background-size:cover;background-position:center;"></div>
+              <div class="photo ref-thumb" style="background-image:url('https://images.unsplash.com/photo-1616137466211-f736a1ab0755?w=600&q=75');background-size:cover;background-position:center;"></div>
+              <div class="photo ref-thumb" style="background-image:url('https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=600&q=75');background-size:cover;background-position:center;"></div>
             </div>
           </div>
           <div class="ref-card-body">
@@ -587,26 +603,28 @@
             }
           }
 
-          // --- Testimonials / References (before/after) ---
+          // --- Testimonials / References (before/after grid) ---
           if (data.testimonials && data.testimonials.length > 0) {
             var showcase = document.querySelector('.ref-showcase');
             if (showcase) {
               var rh = '';
               data.testimonials.forEach(function(t) {
+                var beforeUrls = t.imageBefore ? t.imageBefore.split(',').map(function(u) { return u.trim(); }).filter(Boolean) : [];
+                var afterUrls = t.imageAfter ? t.imageAfter.split(',').map(function(u) { return u.trim(); }).filter(Boolean) : [];
                 rh += '<div class="ref-card">';
-                if (t.imageBefore || t.imageAfter) {
-                  rh += '<div class="ref-card-images">';
-                  if (t.imageBefore) {
-                    rh += '<div class="ref-card-img">' +
-                      '<div class="photo ref-photo" style="background-image:url(\'' + esc(t.imageBefore) + '\');background-size:cover;background-position:center;" role="img" aria-label="Stav p\u0159ed rekonstrukc\u00ed"></div>' +
-                      '<span class="ref-card-badge">P\u0158ED</span></div>';
-                  }
-                  if (t.imageAfter) {
-                    rh += '<div class="ref-card-img">' +
-                      '<div class="photo ref-photo" style="background-image:url(\'' + esc(t.imageAfter) + '\');background-size:cover;background-position:center;" role="img" aria-label="Stav po rekonstrukci"></div>' +
-                      '<span class="ref-card-badge ref-card-badge-after">PO</span></div>';
-                  }
-                  rh += '</div>';
+                if (beforeUrls.length > 0) {
+                  rh += '<div class="ref-card-row"><span class="ref-card-row-label">P\u0158ED</span><div class="ref-card-grid">';
+                  beforeUrls.forEach(function(url) {
+                    rh += '<div class="photo ref-thumb" style="background-image:url(\'' + esc(url) + '\');background-size:cover;background-position:center;"></div>';
+                  });
+                  rh += '</div></div>';
+                }
+                if (afterUrls.length > 0) {
+                  rh += '<div class="ref-card-row"><span class="ref-card-row-label ref-card-row-label-after">PO</span><div class="ref-card-grid">';
+                  afterUrls.forEach(function(url) {
+                    rh += '<div class="photo ref-thumb" style="background-image:url(\'' + esc(url) + '\');background-size:cover;background-position:center;"></div>';
+                  });
+                  rh += '</div></div>';
                 }
                 rh += '<div class="ref-card-body">';
                 if (t.description) {

@@ -713,16 +713,18 @@ function TestimonialsTab({ testimonials }: { testimonials: Testimonial[] }) {
               />
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              <input
-                placeholder="URL fotky PŘED rekonstrukcí"
+              <textarea
+                placeholder="URL fotek PŘED (oddělené čárkou)"
                 value={editing.imageBefore || ""}
                 onChange={(e) => setEditing({ ...editing, imageBefore: e.target.value })}
+                rows={3}
                 className="px-3 py-2 border border-border text-sm"
               />
-              <input
-                placeholder="URL fotky PO rekonstrukci"
+              <textarea
+                placeholder="URL fotek PO (oddělené čárkou)"
                 value={editing.imageAfter || ""}
                 onChange={(e) => setEditing({ ...editing, imageAfter: e.target.value })}
+                rows={3}
                 className="px-3 py-2 border border-border text-sm"
               />
             </div>
@@ -761,17 +763,25 @@ function TestimonialsTab({ testimonials }: { testimonials: Testimonial[] }) {
                 </div>
                 {t.description && <div className="text-xs text-text-dim mt-2">{t.description}</div>}
                 {(t.imageBefore || t.imageAfter) && (
-                  <div className="flex gap-3 mt-3">
+                  <div className="mt-3 space-y-2">
                     {t.imageBefore && (
-                      <div className="relative">
-                        <img src={t.imageBefore} alt="Před" className="w-24 h-16 object-cover border border-border" />
-                        <span className="absolute bottom-0.5 left-0.5 text-[9px] bg-black/60 text-white px-1 rounded">PŘED</span>
+                      <div>
+                        <span className="text-[9px] uppercase tracking-wider text-text-dim font-medium">Před ({t.imageBefore.split(',').length})</span>
+                        <div className="flex gap-1.5 mt-1">
+                          {t.imageBefore.split(',').slice(0, 4).map((url: string, i: number) => (
+                            <img key={i} src={url.trim()} alt={`Před ${i + 1}`} className="w-16 h-11 object-cover border border-border" />
+                          ))}
+                        </div>
                       </div>
                     )}
                     {t.imageAfter && (
-                      <div className="relative">
-                        <img src={t.imageAfter} alt="Po" className="w-24 h-16 object-cover border border-border" />
-                        <span className="absolute bottom-0.5 left-0.5 text-[9px] bg-black/60 text-white px-1 rounded">PO</span>
+                      <div>
+                        <span className="text-[9px] uppercase tracking-wider text-text-dim font-medium">Po ({t.imageAfter.split(',').length})</span>
+                        <div className="flex gap-1.5 mt-1">
+                          {t.imageAfter.split(',').slice(0, 4).map((url: string, i: number) => (
+                            <img key={i} src={url.trim()} alt={`Po ${i + 1}`} className="w-16 h-11 object-cover border border-border" />
+                          ))}
+                        </div>
                       </div>
                     )}
                   </div>

@@ -765,34 +765,22 @@ ul, ol {
 .ref-showcase {
   display: flex;
   flex-direction: column;
-  gap: 64px;
+  gap: 72px;
 }
 
 .ref-card {
-  display: grid;
-  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
-  gap: 48px;
-  align-items: start;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
-.ref-card-images {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
+.ref-card-row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
 }
 
-.ref-card-img {
-  position: relative;
-}
-
-.ref-photo {
-  height: 320px;
-}
-
-.ref-card-badge {
-  position: absolute;
-  top: 16px;
-  left: 16px;
+.ref-card-row-label {
   font-family: var(--sans);
   font-size: 10px;
   font-weight: 500;
@@ -801,15 +789,30 @@ ul, ol {
   background: rgba(22,33,29,.75);
   color: var(--on-dark);
   padding: 6px 14px;
+  min-width: 64px;
+  text-align: center;
+  flex-shrink: 0;
 }
 
-.ref-card-badge-after {
+.ref-card-row-label-after {
   background: var(--brass);
   color: #fff;
 }
 
+.ref-card-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  flex: 1;
+}
+
+.ref-thumb {
+  height: 160px;
+}
+
 .ref-card-body {
-  padding-top: 8px;
+  padding-top: 12px;
+  max-width: 72ch;
 }
 
 .ref-card-desc {
@@ -817,7 +820,7 @@ ul, ol {
   font-size: 16px;
   line-height: 1.7;
   color: var(--text-2);
-  margin-bottom: 28px;
+  margin-bottom: 20px;
 }
 
 .ref-card-quote {
@@ -825,7 +828,7 @@ ul, ol {
   font-weight: 400;
   font-size: 22px;
   line-height: 1.5;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 .ref-card-source {
@@ -1102,13 +1105,16 @@ ul, ol {
   }
 
   /* References */
-  .ref-card {
-    grid-template-columns: 1fr;
-    gap: 32px;
+  .ref-thumb {
+    height: 130px;
   }
 
-  .ref-photo {
-    height: 260px;
+  .ref-card-row {
+    gap: 12px;
+  }
+
+  .ref-card-grid {
+    gap: 8px;
   }
 
   /* Contact */
@@ -1250,13 +1256,23 @@ ul, ol {
   }
 
   /* References */
-  .ref-card-images {
-    grid-template-columns: 1fr 1fr;
+  .ref-card-row {
+    flex-direction: column;
+    align-items: stretch;
     gap: 8px;
   }
 
-  .ref-photo {
-    height: 180px;
+  .ref-card-row-label {
+    align-self: flex-start;
+  }
+
+  .ref-card-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+  }
+
+  .ref-thumb {
+    height: 120px;
   }
 
   .ref-card-quote {
@@ -1265,12 +1281,5 @@ ul, ol {
 
   .ref-showcase {
     gap: 48px;
-  }
-
-  .ref-card-badge {
-    font-size: 9px;
-    padding: 4px 10px;
-    top: 8px;
-    left: 8px;
   }
 }
