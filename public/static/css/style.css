@@ -585,58 +585,7 @@ ul, ol {
    06 — Portfolio
    ======================================== */
 
-.portfolio-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
-  gap: 32px;
-  margin-top: 0;
-}
-
-.portfolio-item-large .photo {
-  height: 460px;
-}
-
-.portfolio-item-small-group {
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
-}
-
-.portfolio-item-small .photo {
-  height: 214px;
-}
-
-.portfolio-caption {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  padding-top: 22px;
-  border-top: 1px solid rgba(22,33,29,.16);
-}
-
-.portfolio-item-small .portfolio-caption {
-  padding-top: 16px;
-}
-
-.portfolio-caption-name {
-  font-family: var(--serif);
-  font-weight: 400;
-  font-size: 24px;
-}
-
-.portfolio-item-small .portfolio-caption-name {
-  font-size: 20px;
-}
-
-.portfolio-caption-meta {
-  font-family: var(--sans);
-  font-size: 11px;
-  font-weight: 400;
-  letter-spacing: .18em;
-  text-transform: uppercase;
-  color: var(--text-3);
-  white-space: nowrap;
-}
+/* (portfolio removed — merged into references/realizace) */
 
 /* ========================================
    06b — Story / Timeline
@@ -774,6 +723,29 @@ ul, ol {
   gap: 20px;
 }
 
+.ref-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(22,33,29,.16);
+}
+
+.ref-card-name {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 26px;
+}
+
+.ref-card-location {
+  font-family: var(--sans);
+  font-size: 11.5px;
+  font-weight: 400;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
 .ref-card-row {
   display: flex;
   align-items: center;
@@ -823,22 +795,7 @@ ul, ol {
   margin-bottom: 20px;
 }
 
-.ref-card-quote {
-  font-family: var(--serif);
-  font-weight: 400;
-  font-size: 22px;
-  line-height: 1.5;
-  margin-bottom: 16px;
-}
-
-.ref-card-source {
-  font-family: var(--sans);
-  font-size: 11.5px;
-  font-weight: 400;
-  letter-spacing: .18em;
-  text-transform: uppercase;
-  color: var(--text-3);
-}
+/* quote + source removed — merged layout uses header instead */
 
 /* ========================================
    09 — Contact (dark)
@@ -1034,11 +991,6 @@ ul, ol {
     min-height: 400px;
   }
 
-  /* Portfolio */
-  .portfolio-grid {
-    grid-template-columns: 1fr;
-  }
-
   /* Team */
   .team-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -1164,17 +1116,22 @@ ul, ol {
     gap: 40px;
   }
 
-  /* Portfolio */
-  .portfolio-grid {
-    grid-template-columns: 1fr;
+  /* Ref card header mobile */
+  .ref-card-header {
+    flex-direction: column;
+    gap: 4px;
   }
 
-  .portfolio-item-large .photo {
-    height: 320px;
+  .ref-card-name {
+    font-size: 22px;
   }
 
-  .portfolio-item-small .photo {
-    height: 240px;
+  .ref-card-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .ref-thumb {
+    height: 120px;
   }
 
   /* Contact */
