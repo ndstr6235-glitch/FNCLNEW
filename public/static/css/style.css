@@ -639,6 +639,50 @@ ul, ol {
 }
 
 /* ========================================
+   06b — Story / Timeline
+   ======================================== */
+
+.story-timeline {
+  display: flex;
+  flex-direction: column;
+}
+
+.story-step {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 40px;
+  padding: 36px 0;
+  border-top: var(--rule-soft);
+}
+
+.story-step:last-child {
+  border-bottom: var(--rule-soft);
+}
+
+.story-year {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 34px;
+  color: var(--brass);
+  padding-top: 2px;
+}
+
+.story-body h3 {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 22px;
+  margin-bottom: 10px;
+}
+
+.story-body p {
+  font-family: var(--sans);
+  font-size: 15.5px;
+  line-height: 1.7;
+  color: var(--text-2);
+  max-width: 52ch;
+}
+
+/* ========================================
    07 — Team
    ======================================== */
 
@@ -953,6 +997,17 @@ ul, ol {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
+  /* Story */
+  .story-step {
+    grid-template-columns: 90px 1fr;
+    gap: 28px;
+    padding: 28px 0;
+  }
+
+  .story-year {
+    font-size: 28px;
+  }
+
   /* Ref & News */
   .ref-news-grid {
     grid-template-columns: 1fr;
@@ -1079,6 +1134,21 @@ ul, ol {
 
   .contact-disclaimer {
     padding: 0 var(--pad-x) 32px;
+  }
+
+  /* Story */
+  .story-step {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 24px 0;
+  }
+
+  .story-year {
+    font-size: 24px;
+  }
+
+  .story-body h3 {
+    font-size: 20px;
   }
 
   /* Ref quote */
