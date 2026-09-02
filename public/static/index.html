@@ -390,28 +390,70 @@
       </div>
     </section>
 
-    <!-- 09 — References & News -->
-    <section class="ref-news">
-      <div class="ref-news-grid">
-        <div class="ref-side">
-          <span class="section-label">VI — REFERENCE</span>
-          <blockquote class="ref-quote">„Dohodnuté termíny platily, rekonstrukce byla provedena dle požadavků a ve výborné kvalitě."</blockquote>
-          <span class="ref-source">ROMAN UNZEITIG · REKONSTRUKCE BYTU, PRAHA</span>
+    <!-- 09 — References (before/after showcase) -->
+    <section class="section references" id="reference">
+      <div class="section-header">
+        <span class="section-label">VI — REFERENCE</span>
+        <h2>Naše realizace</h2>
+      </div>
+
+      <div class="ref-showcase">
+        <div class="ref-card">
+          <div class="ref-card-images">
+            <div class="ref-card-img">
+              <div class="photo ref-photo" style="background-image:url('https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?w=800&q=80');background-size:cover;background-position:center;" role="img" aria-label="Stav před rekonstrukcí"></div>
+              <span class="ref-card-badge">PŘED</span>
+            </div>
+            <div class="ref-card-img">
+              <div class="photo ref-photo" style="background-image:url('https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&q=80');background-size:cover;background-position:center;" role="img" aria-label="Stav po rekonstrukci"></div>
+              <span class="ref-card-badge ref-card-badge-after">PO</span>
+            </div>
+          </div>
+          <div class="ref-card-body">
+            <p class="ref-card-desc">Kompletní rekonstrukce bytu v centru Prahy. Nové rozvody, podlahy, kuchyně a koupelna.</p>
+            <blockquote class="ref-card-quote">&bdquo;Dohodnuté termíny platily, rekonstrukce byla provedena dle požadavků a ve výborné kvalitě.&ldquo;</blockquote>
+            <span class="ref-card-source">ROMAN UNZEITIG &middot; REKONSTRUKCE BYTU, PRAHA</span>
+          </div>
         </div>
-        <div class="news-side">
-          <span class="section-label">NOVINKY</span>
-          <div class="news-item">
-            <span class="news-item-title">Villa Uhříněves: hrubá stavba dokončena</span>
-            <span class="news-item-date">08 / 2026</span>
+
+        <div class="ref-card">
+          <div class="ref-card-images">
+            <div class="ref-card-img">
+              <div class="photo ref-photo" style="background-image:url('https://images.unsplash.com/photo-1565538810643-b5bdb714032a?w=800&q=80');background-size:cover;background-position:center;" role="img" aria-label="Stav před rekonstrukcí"></div>
+              <span class="ref-card-badge">PŘED</span>
+            </div>
+            <div class="ref-card-img">
+              <div class="photo ref-photo" style="background-image:url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80');background-size:cover;background-position:center;" role="img" aria-label="Stav po rekonstrukci"></div>
+              <span class="ref-card-badge ref-card-badge-after">PO</span>
+            </div>
           </div>
-          <div class="news-item">
-            <span class="news-item-title">Trendy v interiérovém designu pro rok 2026</span>
-            <span class="news-item-date">02 / 2026</span>
+          <div class="ref-card-body">
+            <p class="ref-card-desc">Rekonstrukce podkrovního bytu — nová střešní okna, zateplení, moderní interiér.</p>
+            <blockquote class="ref-card-quote">&bdquo;Profesionální přístup od začátku do konce. Výsledek předčil naše očekávání.&ldquo;</blockquote>
+            <span class="ref-card-source">ING. MARTIN DVOŘÁK &middot; MAJITEL BYTU, PRAHA 5</span>
           </div>
-          <div class="news-item">
-            <span class="news-item-title">Jak nemovitosti posilují investiční portfolio</span>
-            <span class="news-item-date">05 / 2025</span>
-          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 10 — Novinky -->
+    <section class="section news-section">
+      <div class="section-header">
+        <span class="section-label">VII — NOVINKY</span>
+        <h2>Aktuality</h2>
+      </div>
+      <div class="news-list">
+        <div class="news-item">
+          <span class="news-item-title">Villa Uhříněves: hrubá stavba dokončena</span>
+          <span class="news-item-date">08 / 2026</span>
+        </div>
+        <div class="news-item">
+          <span class="news-item-title">Trendy v interiérovém designu pro rok 2026</span>
+          <span class="news-item-date">02 / 2026</span>
+        </div>
+        <div class="news-item">
+          <span class="news-item-title">Jak nemovitosti posilují investiční portfolio</span>
+          <span class="news-item-date">05 / 2025</span>
         </div>
       </div>
     </section>
@@ -532,28 +574,49 @@
 
           // --- News ---
           if (data.news && data.news.length > 0) {
-            var newsSide = document.querySelector('.news-side');
-            if (newsSide) {
-              var nh = '<span class="section-label">NOVINKY</span>';
+            var newsList = document.querySelector('.news-list');
+            if (newsList) {
+              var nh = '';
               data.news.forEach(function(n) {
                 nh += '<div class="news-item">' +
                   '<span class="news-item-title">' + esc(n.title) + '</span>' +
                   '<span class="news-item-date">' + esc(n.date) + '</span>' +
                   '</div>';
               });
-              newsSide.innerHTML = nh;
+              newsList.innerHTML = nh;
             }
           }
 
-          // --- Testimonials ---
+          // --- Testimonials / References (before/after) ---
           if (data.testimonials && data.testimonials.length > 0) {
-            var refSide = document.querySelector('.ref-side');
-            if (refSide) {
-              var t = data.testimonials[0];
-              var rh = '<span class="section-label">V — REFERENCE</span>' +
-                '<blockquote class="ref-quote">\u201E' + esc(t.quote) + '\u201C</blockquote>' +
-                '<span class="ref-source">' + esc(t.author).toUpperCase() + (t.role ? ' \u00B7 ' + esc(t.role).toUpperCase() : '') + '</span>';
-              refSide.innerHTML = rh;
+            var showcase = document.querySelector('.ref-showcase');
+            if (showcase) {
+              var rh = '';
+              data.testimonials.forEach(function(t) {
+                rh += '<div class="ref-card">';
+                if (t.imageBefore || t.imageAfter) {
+                  rh += '<div class="ref-card-images">';
+                  if (t.imageBefore) {
+                    rh += '<div class="ref-card-img">' +
+                      '<div class="photo ref-photo" style="background-image:url(\'' + esc(t.imageBefore) + '\');background-size:cover;background-position:center;" role="img" aria-label="Stav p\u0159ed rekonstrukc\u00ed"></div>' +
+                      '<span class="ref-card-badge">P\u0158ED</span></div>';
+                  }
+                  if (t.imageAfter) {
+                    rh += '<div class="ref-card-img">' +
+                      '<div class="photo ref-photo" style="background-image:url(\'' + esc(t.imageAfter) + '\');background-size:cover;background-position:center;" role="img" aria-label="Stav po rekonstrukci"></div>' +
+                      '<span class="ref-card-badge ref-card-badge-after">PO</span></div>';
+                  }
+                  rh += '</div>';
+                }
+                rh += '<div class="ref-card-body">';
+                if (t.description) {
+                  rh += '<p class="ref-card-desc">' + esc(t.description) + '</p>';
+                }
+                rh += '<blockquote class="ref-card-quote">\u201E' + esc(t.quote) + '\u201C</blockquote>' +
+                  '<span class="ref-card-source">' + esc(t.author).toUpperCase() + (t.role ? ' \u00B7 ' + esc(t.role).toUpperCase() : '') + '</span>' +
+                  '</div></div>';
+              });
+              showcase.innerHTML = rh;
             }
           }
         })

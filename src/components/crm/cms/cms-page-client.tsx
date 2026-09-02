@@ -66,6 +66,9 @@ interface Testimonial {
   quote: string;
   author: string;
   role: string;
+  description: string;
+  imageBefore: string;
+  imageAfter: string;
   active: boolean;
   sortOrder: number;
 }
@@ -632,6 +635,9 @@ function TestimonialsTab({ testimonials }: { testimonials: Testimonial[] }) {
       quote: editing.quote,
       author: editing.author,
       role: editing.role || "",
+      description: editing.description || "",
+      imageBefore: editing.imageBefore || "",
+      imageAfter: editing.imageAfter || "",
       active: editing.active !== false,
       sortOrder: editing.sortOrder || 0,
     });
@@ -652,7 +658,7 @@ function TestimonialsTab({ testimonials }: { testimonials: Testimonial[] }) {
       <div className="flex items-center justify-between">
         <p className="text-sm text-text-mid">{testimonials.length} referencí</p>
         <button
-          onClick={() => setEditing({ quote: "", author: "", role: "", active: true, sortOrder: testimonials.length + 1 })}
+          onClick={() => setEditing({ quote: "", author: "", role: "", description: "", imageBefore: "", imageAfter: "", active: true, sortOrder: testimonials.length + 1 })}
           className="flex items-center gap-2 px-4 py-2 bg-brass text-white text-sm font-semibold"
         >
           <Plus size={15} />
@@ -678,6 +684,13 @@ function TestimonialsTab({ testimonials }: { testimonials: Testimonial[] }) {
               rows={3}
               className="w-full px-3 py-2 border border-border text-sm"
             />
+            <textarea
+              placeholder="Popis projektu (např. Kompletní rekonstrukce bytu v centru Prahy...)"
+              value={editing.description || ""}
+              onChange={(e) => setEditing({ ...editing, description: e.target.value })}
+              rows={2}
+              className="w-full px-3 py-2 border border-border text-sm"
+            />
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
               <input
                 placeholder="Autor"
@@ -696,6 +709,20 @@ function TestimonialsTab({ testimonials }: { testimonials: Testimonial[] }) {
                 type="number"
                 value={editing.sortOrder ?? 0}
                 onChange={(e) => setEditing({ ...editing, sortOrder: parseInt(e.target.value) || 0 })}
+                className="px-3 py-2 border border-border text-sm"
+              />
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <input
+                placeholder="URL fotky PŘED rekonstrukcí"
+                value={editing.imageBefore || ""}
+                onChange={(e) => setEditing({ ...editing, imageBefore: e.target.value })}
+                className="px-3 py-2 border border-border text-sm"
+              />
+              <input
+                placeholder="URL fotky PO rekonstrukci"
+                value={editing.imageAfter || ""}
+                onChange={(e) => setEditing({ ...editing, imageAfter: e.target.value })}
                 className="px-3 py-2 border border-border text-sm"
               />
             </div>
@@ -732,6 +759,23 @@ function TestimonialsTab({ testimonials }: { testimonials: Testimonial[] }) {
                   <span className="font-medium text-text-mid">{t.author}</span>
                   {t.role && <span> &middot; {t.role}</span>}
                 </div>
+                {t.description && <div className="text-xs text-text-dim mt-2">{t.description}</div>}
+                {(t.imageBefore || t.imageAfter) && (
+                  <div className="flex gap-3 mt-3">
+                    {t.imageBefore && (
+                      <div className="relative">
+                        <img src={t.imageBefore} alt="Před" className="w-24 h-16 object-cover border border-border" />
+                        <span className="absolute bottom-0.5 left-0.5 text-[9px] bg-black/60 text-white px-1 rounded">PŘED</span>
+                      </div>
+                    )}
+                    {t.imageAfter && (
+                      <div className="relative">
+                        <img src={t.imageAfter} alt="Po" className="w-24 h-16 object-cover border border-border" />
+                        <span className="absolute bottom-0.5 left-0.5 text-[9px] bg-black/60 text-white px-1 rounded">PO</span>
+                      </div>
+                    )}
+                  </div>
+                )}
                 {!t.active && (
                   <span className="inline-flex mt-2 px-2 py-0.5 text-[10px] font-medium bg-text-faint/10 text-text-dim rounded">Skrytá</span>
                 )}

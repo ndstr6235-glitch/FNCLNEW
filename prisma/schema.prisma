@@ -357,12 +357,15 @@ model WebNews {
 }
 
 model WebTestimonial {
-  id        String  @id @default(cuid())
-  quote     String
-  author    String
-  role      String  @default("")
-  active    Boolean @default(true)
-  sortOrder Int     @default(0)
+  id          String  @id @default(cuid())
+  quote       String
+  author      String
+  role        String  @default("")
+  description String  @default("")
+  imageBefore String  @default("")
+  imageAfter  String  @default("")
+  active      Boolean @default(true)
+  sortOrder   Int     @default(0)
 }
 
 model WebContent {

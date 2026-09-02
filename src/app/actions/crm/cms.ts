@@ -185,6 +185,9 @@ export async function upsertTestimonial(data: {
   quote: string;
   author: string;
   role?: string;
+  description?: string;
+  imageBefore?: string;
+  imageAfter?: string;
   active: boolean;
   sortOrder: number;
 }) {

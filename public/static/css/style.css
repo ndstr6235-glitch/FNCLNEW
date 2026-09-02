@@ -759,37 +759,76 @@ ul, ol {
 }
 
 /* ========================================
-   08 — References & News
+   08 — References (before/after showcase)
    ======================================== */
 
-.ref-news {
-  padding: 0;
-  border-bottom: var(--rule);
+.ref-showcase {
+  display: flex;
+  flex-direction: column;
+  gap: 64px;
 }
 
-.ref-news-grid {
+.ref-card {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: 48px;
+  align-items: start;
 }
 
-.ref-side {
-  padding: 100px 72px 100px var(--pad-x);
-  border-right: var(--rule);
+.ref-card-images {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
 }
 
-.ref-side .section-label {
-  margin-bottom: 40px;
+.ref-card-img {
+  position: relative;
 }
 
-.ref-quote {
+.ref-photo {
+  height: 320px;
+}
+
+.ref-card-badge {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  font-family: var(--sans);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  background: rgba(22,33,29,.75);
+  color: var(--on-dark);
+  padding: 6px 14px;
+}
+
+.ref-card-badge-after {
+  background: var(--brass);
+  color: #fff;
+}
+
+.ref-card-body {
+  padding-top: 8px;
+}
+
+.ref-card-desc {
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--text-2);
+  margin-bottom: 28px;
+}
+
+.ref-card-quote {
   font-family: var(--serif);
   font-weight: 400;
-  font-size: 28px;
+  font-size: 22px;
   line-height: 1.5;
-  margin-bottom: 32px;
+  margin-bottom: 20px;
 }
 
-.ref-source {
+.ref-card-source {
   font-family: var(--sans);
   font-size: 11.5px;
   font-weight: 400;
@@ -798,12 +837,12 @@ ul, ol {
   color: var(--text-3);
 }
 
-.news-side {
-  padding: 100px var(--pad-x) 100px 72px;
-}
+/* ========================================
+   08b — News
+   ======================================== */
 
-.news-side .section-label {
-  margin-bottom: 40px;
+.news-list {
+  width: 100%;
 }
 
 .news-item {
@@ -1062,19 +1101,14 @@ ul, ol {
     font-size: 28px;
   }
 
-  /* Ref & News */
-  .ref-news-grid {
+  /* References */
+  .ref-card {
     grid-template-columns: 1fr;
+    gap: 32px;
   }
 
-  .ref-side {
-    border-right: none;
-    border-bottom: var(--rule);
-    padding: var(--pad-y) var(--pad-x);
-  }
-
-  .news-side {
-    padding: var(--pad-y) var(--pad-x);
+  .ref-photo {
+    height: 260px;
   }
 
   /* Contact */
@@ -1215,8 +1249,28 @@ ul, ol {
     font-size: 20px;
   }
 
-  /* Ref quote */
-  .ref-quote {
-    font-size: 22px;
+  /* References */
+  .ref-card-images {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .ref-photo {
+    height: 180px;
+  }
+
+  .ref-card-quote {
+    font-size: 18px;
+  }
+
+  .ref-showcase {
+    gap: 48px;
+  }
+
+  .ref-card-badge {
+    font-size: 9px;
+    padding: 4px 10px;
+    top: 8px;
+    left: 8px;
   }
 }
