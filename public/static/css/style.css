@@ -687,16 +687,21 @@ ul, ol {
    ======================================== */
 
 .services-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1px;
-  background: rgba(22,33,29,.12);
-  border: 1px solid rgba(22,33,29,.12);
+  display: flex;
+  flex-direction: column;
 }
 
 .service-card {
-  background: var(--paper);
-  padding: 40px 32px;
+  display: grid;
+  grid-template-columns: 60px 200px 1fr;
+  gap: 24px;
+  align-items: baseline;
+  padding: 32px 0;
+  border-top: var(--rule-soft);
+}
+
+.service-card:last-child {
+  border-bottom: var(--rule-soft);
 }
 
 .service-num {
@@ -705,8 +710,6 @@ ul, ol {
   font-weight: 500;
   letter-spacing: .1em;
   color: var(--brass);
-  display: block;
-  margin-bottom: 16px;
 }
 
 .service-card h3 {
@@ -714,7 +717,6 @@ ul, ol {
   font-weight: 400;
   font-size: 22px;
   color: var(--ink);
-  margin-bottom: 12px;
 }
 
 .service-card p {
@@ -722,6 +724,7 @@ ul, ol {
   font-size: 15px;
   line-height: 1.7;
   color: var(--text-2);
+  max-width: 52ch;
 }
 
 /* ========================================
@@ -1046,8 +1049,13 @@ ul, ol {
     padding: 28px 0;
   }
 
-  .services-grid {
-    grid-template-columns: repeat(2, 1fr);
+  .service-card {
+    grid-template-columns: 50px 1fr;
+    gap: 16px;
+  }
+
+  .service-card p {
+    grid-column: 2;
   }
 
   .story-year {
@@ -1189,12 +1197,14 @@ ul, ol {
     padding: 24px 0;
   }
 
-  .services-grid {
+  .service-card {
     grid-template-columns: 1fr;
+    gap: 8px;
+    padding: 24px 0;
   }
 
-  .service-card {
-    padding: 28px 24px;
+  .service-card p {
+    grid-column: 1;
   }
 
   .story-year {
