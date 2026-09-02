@@ -841,46 +841,6 @@ ul, ol {
 }
 
 /* ========================================
-   08b — News
-   ======================================== */
-
-.news-list {
-  width: 100%;
-}
-
-.news-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 32px;
-  padding: 24px 0;
-  border-top: var(--rule);
-  transition: background 150ms ease;
-}
-
-.news-item:last-child {
-  border-bottom: var(--rule);
-}
-
-.news-item:hover {
-  background: rgba(22,33,29,.03);
-}
-
-.news-item-title {
-  font-family: var(--serif);
-  font-weight: 400;
-  font-size: 20px;
-}
-
-.news-item-date {
-  font-family: var(--sans);
-  font-size: 12px;
-  font-weight: 400;
-  color: var(--text-3);
-  white-space: nowrap;
-}
-
-/* ========================================
    09 — Contact (dark)
    ======================================== */
 

@@ -452,28 +452,6 @@
       </div>
     </section>
 
-    <!-- 10 — Novinky -->
-    <section class="section news-section">
-      <div class="section-header">
-        <span class="section-label">VII — NOVINKY</span>
-        <h2>Aktuality</h2>
-      </div>
-      <div class="news-list">
-        <div class="news-item">
-          <span class="news-item-title">Villa Uhříněves: hrubá stavba dokončena</span>
-          <span class="news-item-date">08 / 2026</span>
-        </div>
-        <div class="news-item">
-          <span class="news-item-title">Trendy v interiérovém designu pro rok 2026</span>
-          <span class="news-item-date">02 / 2026</span>
-        </div>
-        <div class="news-item">
-          <span class="news-item-title">Jak nemovitosti posilují investiční portfolio</span>
-          <span class="news-item-date">05 / 2025</span>
-        </div>
-      </div>
-    </section>
-
     <!-- 09 — Contact (dark) -->
     <section class="contact" id="kontakt">
       <div class="contact-grid">
@@ -585,21 +563,6 @@
               });
               if (data.projects.length > 1) ph += '</div>';
               grid.innerHTML = ph;
-            }
-          }
-
-          // --- News ---
-          if (data.news && data.news.length > 0) {
-            var newsList = document.querySelector('.news-list');
-            if (newsList) {
-              var nh = '';
-              data.news.forEach(function(n) {
-                nh += '<div class="news-item">' +
-                  '<span class="news-item-title">' + esc(n.title) + '</span>' +
-                  '<span class="news-item-date">' + esc(n.date) + '</span>' +
-                  '</div>';
-              });
-              newsList.innerHTML = nh;
             }
           }
 
