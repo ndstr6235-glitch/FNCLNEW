@@ -683,6 +683,48 @@ ul, ol {
 }
 
 /* ========================================
+   Services
+   ======================================== */
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: rgba(22,33,29,.12);
+  border: 1px solid rgba(22,33,29,.12);
+}
+
+.service-card {
+  background: var(--paper);
+  padding: 40px 32px;
+}
+
+.service-num {
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: .1em;
+  color: var(--brass);
+  display: block;
+  margin-bottom: 16px;
+}
+
+.service-card h3 {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 22px;
+  color: var(--ink);
+  margin-bottom: 12px;
+}
+
+.service-card p {
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--text-2);
+}
+
+/* ========================================
    07 — Team
    ======================================== */
 
@@ -1004,6 +1046,10 @@ ul, ol {
     padding: 28px 0;
   }
 
+  .services-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
   .story-year {
     font-size: 28px;
   }
@@ -1141,6 +1187,14 @@ ul, ol {
     grid-template-columns: 1fr;
     gap: 12px;
     padding: 24px 0;
+  }
+
+  .services-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .service-card {
+    padding: 28px 24px;
   }
 
   .story-year {
