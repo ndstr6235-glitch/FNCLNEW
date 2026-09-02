@@ -20,6 +20,18 @@ export async function middleware(request: NextRequest) {
     return NextResponse.rewrite(new URL("/static/index.html", request.url));
   }
 
+  // Serve static subpages (services etc.)
+  const staticPages: Record<string, string> = {
+    "/sluzby/development": "/static/sluzby/development.html",
+    "/sluzby/rekonstrukce": "/static/sluzby/rekonstrukce.html",
+    "/sluzby/investice": "/static/sluzby/investice.html",
+    "/sluzby/reality": "/static/sluzby/reality.html",
+    "/sluzby/pronajem": "/static/sluzby/pronajem.html",
+  };
+  if (staticPages[pathname]) {
+    return NextResponse.rewrite(new URL(staticPages[pathname], request.url));
+  }
+
   // Protect CRM routes — verify session JWT
   if (isCrmRoute(pathname)) {
     const token = request.cookies.get("session")?.value;
@@ -40,7 +52,7 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/", "/dashboard/:path*", "/clients/:path*", "/cms/:path*",
+  matcher: ["/", "/sluzby/:path*", "/dashboard/:path*", "/clients/:path*", "/cms/:path*",
     "/emails/:path*", "/calendar/:path*", "/contracts/:path*",
     "/documents/:path*", "/users/:path*", "/settings/:path*",
     "/templates/:path*", "/tickets/:path*", "/audit/:path*",

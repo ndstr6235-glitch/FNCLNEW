@@ -1,0 +1,277 @@
+/* ========================================
+   Subpage styles — service detail pages
+   ======================================== */
+
+/* Hero */
+.subpage-hero {
+  padding: 160px var(--pad-x) 80px;
+  border-bottom: var(--rule);
+}
+
+.subpage-hero-inner {
+  max-width: 680px;
+}
+
+.subpage-hero h1 {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 56px;
+  line-height: 1.1;
+  color: var(--ink);
+  margin: 20px 0 28px;
+}
+
+.subpage-hero-lead {
+  font-family: var(--sans);
+  font-size: 17px;
+  line-height: 1.75;
+  color: var(--text-2);
+}
+
+/* Grid 3 columns */
+.subpage-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+}
+
+.subpage-card {
+  padding: 32px 0;
+  border-top: 1px solid rgba(22,33,29,.12);
+}
+
+.subpage-card h3 {
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin-bottom: 12px;
+}
+
+.subpage-card p {
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--text-3);
+}
+
+/* Process steps */
+.subpage-process {
+  max-width: 680px;
+}
+
+.subpage-process-step {
+  display: flex;
+  gap: 28px;
+  padding: 32px 0;
+  border-top: 1px solid rgba(22,33,29,.08);
+  align-items: flex-start;
+}
+
+.subpage-process-step:last-child {
+  border-bottom: 1px solid rgba(22,33,29,.08);
+}
+
+.subpage-step-num {
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: .1em;
+  color: var(--brass);
+  flex-shrink: 0;
+  padding-top: 4px;
+}
+
+.subpage-process-step h3 {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 22px;
+  color: var(--ink);
+  margin-bottom: 8px;
+}
+
+.subpage-process-step p {
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--text-3);
+}
+
+/* FAQ */
+.subpage-faq {
+  max-width: 680px;
+}
+
+.subpage-faq-item {
+  padding: 28px 0;
+  border-top: 1px solid rgba(22,33,29,.08);
+}
+
+.subpage-faq-item:last-child {
+  border-bottom: 1px solid rgba(22,33,29,.08);
+}
+
+.subpage-faq-item h3 {
+  font-family: var(--sans);
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--ink);
+  margin-bottom: 10px;
+}
+
+.subpage-faq-item p {
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--text-3);
+}
+
+/* Investment blocks */
+.subpage-invest-blocks {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 32px;
+}
+
+.subpage-invest-block {
+  padding: 40px;
+  border: 1px solid rgba(22,33,29,.12);
+}
+
+.subpage-invest-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 20px;
+  gap: 16px;
+}
+
+.subpage-invest-block h3 {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 24px;
+  color: var(--ink);
+}
+
+.subpage-invest-yield {
+  font-family: var(--sans);
+  font-size: 11.5px;
+  font-weight: 500;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--brass);
+  white-space: nowrap;
+}
+
+.subpage-invest-block > p {
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--text-2);
+  margin-bottom: 24px;
+}
+
+.subpage-invest-features {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.subpage-invest-features span {
+  font-family: var(--sans);
+  font-size: 13.5px;
+  color: var(--text-3);
+  padding-left: 20px;
+  position: relative;
+}
+
+.subpage-invest-features span::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 7px;
+  width: 8px;
+  height: 1px;
+  background: var(--brass);
+}
+
+/* CTA section */
+.subpage-cta {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 96px var(--pad-x);
+  text-align: center;
+}
+
+.subpage-cta h2 {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 36px;
+  color: var(--paper);
+  margin: 20px auto 16px;
+  max-width: 540px;
+}
+
+.subpage-cta p {
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.7;
+  color: rgba(242,238,230,.7);
+  margin-bottom: 36px;
+  max-width: 480px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ========================================
+   Responsive — tablet
+   ======================================== */
+@media (max-width: 1024px) {
+  .subpage-hero h1 {
+    font-size: 44px;
+  }
+
+  .subpage-grid-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .subpage-invest-blocks {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ========================================
+   Responsive — mobile
+   ======================================== */
+@media (max-width: 640px) {
+  .subpage-hero {
+    padding: 120px var(--pad-x) 56px;
+  }
+
+  .subpage-hero h1 {
+    font-size: 36px;
+  }
+
+  .subpage-grid-3 {
+    grid-template-columns: 1fr;
+  }
+
+  .subpage-invest-block {
+    padding: 28px;
+  }
+
+  .subpage-invest-header {
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .subpage-cta h2 {
+    font-size: 28px;
+  }
+
+  .subpage-process-step {
+    gap: 16px;
+  }
+}
