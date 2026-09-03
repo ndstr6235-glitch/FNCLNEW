@@ -603,44 +603,129 @@ ul, ol {
    06b — Story / Timeline
    ======================================== */
 
-.story-timeline {
-  display: flex;
-  flex-direction: column;
+/* Story section — full-width dark */
+.story-section {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 96px var(--pad-x);
+  overflow: hidden;
 }
 
-.story-step {
-  display: grid;
-  grid-template-columns: 120px 1fr;
-  gap: 40px;
-  padding: 36px 0;
-  border-top: var(--rule-soft);
+.story-header {
+  text-align: center;
+  margin-bottom: 64px;
 }
 
-.story-step:last-child {
-  border-bottom: var(--rule-soft);
-}
-
-.story-year {
-  font-family: var(--serif);
-  font-weight: 400;
-  font-size: 34px;
+.story-header .section-label {
   color: var(--brass);
-  padding-top: 2px;
 }
 
-.story-body h3 {
+.story-header h2 {
   font-family: var(--serif);
   font-weight: 400;
-  font-size: 22px;
+  font-size: 42px;
+  color: var(--paper);
+  margin: 20px 0 16px;
+}
+
+.story-subtitle {
+  font-family: var(--sans);
+  font-size: 17px;
+  line-height: 1.7;
+  color: rgba(242,238,230,.6);
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+/* Cards grid */
+.story-cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.story-card {
+  text-align: center;
+  padding: 0 24px;
+  position: relative;
+}
+
+/* Year */
+.story-card-year {
+  font-family: var(--serif);
+  font-size: 48px;
+  font-weight: 400;
+  color: var(--brass);
+  line-height: 1;
+  margin-bottom: 24px;
+}
+
+/* Connecting line + dot */
+.story-card-line {
+  position: relative;
+  height: 32px;
+  margin-bottom: 24px;
+}
+
+.story-card-line::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: rgba(169,136,78,.3);
+}
+
+.story-card:first-child .story-card-line::before {
+  left: 50%;
+}
+
+.story-card:last-child .story-card-line::before {
+  right: 50%;
+}
+
+.story-card-dot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--brass);
+  z-index: 1;
+  box-shadow: 0 0 0 4px var(--ink), 0 0 0 5px rgba(169,136,78,.3);
+}
+
+.story-card--now .story-card-dot {
+  width: 16px;
+  height: 16px;
+  box-shadow: 0 0 0 4px var(--ink), 0 0 0 5px var(--brass), 0 0 20px rgba(169,136,78,.3);
+}
+
+.story-card--now .story-card-year {
+  color: var(--paper);
+}
+
+/* Content */
+.story-card-content h3 {
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--paper);
   margin-bottom: 10px;
 }
 
-.story-body p {
+.story-card-content p {
   font-family: var(--sans);
-  font-size: 15.5px;
+  font-size: 14px;
   line-height: 1.7;
-  color: var(--text-2);
-  max-width: 52ch;
+  color: rgba(242,238,230,.55);
 }
 
 /* ========================================
@@ -1016,18 +1101,25 @@ ul, ol {
   }
 
   /* Story */
-  .story-step {
-    grid-template-columns: 90px 1fr;
-    gap: 28px;
-    padding: 28px 0;
+  .story-cards {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px 0;
+  }
+
+  .story-card-year {
+    font-size: 36px;
+  }
+
+  .story-card-line {
+    display: none;
+  }
+
+  .story-section {
+    padding: 72px var(--pad-x);
   }
 
   .services-cards {
     grid-template-columns: repeat(3, 1fr);
-  }
-
-  .story-year {
-    font-size: 28px;
   }
 
   /* References */
@@ -1168,10 +1260,34 @@ ul, ol {
   }
 
   /* Story */
-  .story-step {
-    grid-template-columns: 1fr;
-    gap: 12px;
-    padding: 24px 0;
+  .story-cards {
+    grid-template-columns: 1fr 1fr;
+    gap: 40px 0;
+  }
+
+  .story-card {
+    padding: 0 16px;
+  }
+
+  .story-card-year {
+    font-size: 32px;
+    margin-bottom: 16px;
+  }
+
+  .story-card-line {
+    display: none;
+  }
+
+  .story-header h2 {
+    font-size: 28px;
+  }
+
+  .story-section {
+    padding: 64px var(--pad-x);
+  }
+
+  .story-header {
+    margin-bottom: 40px;
   }
 
   .service-block {
@@ -1185,10 +1301,6 @@ ul, ol {
   .svc-card {
     margin-left: 0;
     margin-top: -1px;
-  }
-
-  .story-year {
-    font-size: 24px;
   }
 
   .story-body h3 {
