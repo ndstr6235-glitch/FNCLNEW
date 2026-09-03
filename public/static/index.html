@@ -120,7 +120,10 @@
       <style>
         .tr-list{width:100%}
         .tr-head{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr 1fr;padding-bottom:18px;border-bottom:1px solid rgba(22,33,29,.25);font-family:'Libre Franklin',system-ui,sans-serif;font-size:11.5px;font-weight:400;letter-spacing:.2em;text-transform:uppercase;color:#6E6A61}
-        .tr-row{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr 1fr;align-items:center;padding:34px 0;border-bottom:1px solid rgba(22,33,29,.12);font-family:'Libre Franklin',system-ui,sans-serif;font-size:16px;color:#3B4842}
+        .tr-row{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr 1fr;align-items:center;padding:34px 0;border-bottom:1px solid rgba(22,33,29,.12);font-family:'Libre Franklin',system-ui,sans-serif;font-size:16px;color:#3B4842;text-decoration:none;transition:background .15s ease;cursor:pointer}
+        .tr-row:hover{background:rgba(22,33,29,.03)}
+        a.emission-card{text-decoration:none;color:inherit;display:block;transition:background .15s ease}
+        a.emission-card:hover{background:rgba(22,33,29,.03)}
         .tr-name{font-family:'Libre Caslon Display',Georgia,serif;font-size:24px;color:#16211D}
         .tr-profit{font-family:'Libre Caslon Display',Georgia,serif;font-size:24px;color:#A9884E}
         .tr-status{font-family:'Libre Franklin',system-ui,sans-serif;font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:#A9884E;border:1px solid rgba(169,136,78,.3);padding:4px 10px;display:inline-block}
@@ -135,53 +138,53 @@
           <span>VÝNOS</span>
           <span>STAV</span>
         </div>
-        <div class="tr-row">
+        <a href="/projekty/velka-dobra" class="tr-row">
           <span class="tr-name">Velká Dobrá</span>
           <span>8 + 6 mil. Kč</span>
           <span>18 mil. Kč</span>
           <span class="tr-profit">+4 mil. Kč</span>
           <span><span class="tr-status">Prodáno</span></span>
-        </div>
-        <div class="tr-row">
+        </a>
+        <a href="/projekty/vila-bechovice" class="tr-row">
           <span class="tr-name">Vila Běchovice</span>
           <span>14 + 5 mil. Kč</span>
           <span>24 mil. Kč</span>
           <span class="tr-profit">+5 mil. Kč</span>
           <span><span class="tr-status">Prodáno</span></span>
-        </div>
-        <div class="tr-row">
+        </a>
+        <a href="/projekty/byt-praha-3" class="tr-row">
           <span class="tr-name">Byt Praha 3</span>
           <span>2,8 + 0,7 mil. Kč</span>
           <span>4,5 mil. Kč</span>
           <span class="tr-profit">+1,0 mil. Kč</span>
           <span><span class="tr-status">Prodáno</span></span>
-        </div>
-        <div class="tr-row">
+        </a>
+        <a href="/projekty/byt-praha-5" class="tr-row">
           <span class="tr-name">Byt Praha 5</span>
           <span>3,1 + 0,8 mil. Kč</span>
           <span>5,0 mil. Kč</span>
           <span class="tr-profit">+1,1 mil. Kč</span>
           <span><span class="tr-status">Prodáno</span></span>
-        </div>
-        <div class="tr-row">
+        </a>
+        <a href="/projekty/byt-praha-10" class="tr-row">
           <span class="tr-name">Byt Praha 10</span>
           <span>2,4 + 0,6 mil. Kč</span>
           <span>3,8 mil. Kč</span>
           <span class="tr-profit">+0,8 mil. Kč</span>
           <span><span class="tr-status">Prodáno</span></span>
-        </div>
-        <div class="tr-row">
+        </a>
+        <a href="/projekty/byt-praha-4" class="tr-row">
           <span class="tr-name">Byt Praha 4</span>
           <span>3,4 + 0,8 mil. Kč</span>
           <span>5,3 mil. Kč</span>
           <span class="tr-profit">+1,1 mil. Kč</span>
           <span><span class="tr-status">Prodáno</span></span>
-        </div>
+        </a>
       </div>
 
       <!-- Mobile cards -->
       <div class="emissions-cards">
-        <div class="emission-card">
+        <a href="/projekty/velka-dobra" class="emission-card">
           <div class="emission-card-name">Velká Dobrá</div>
           <div class="emission-card-rows">
             <div class="emission-card-row">
@@ -197,8 +200,8 @@
               <span class="emission-card-value" style="color:#A9884E;font-weight:500">+4 mil. Kč</span>
             </div>
           </div>
-        </div>
-        <div class="emission-card">
+        </a>
+        <a href="/projekty/vila-bechovice" class="emission-card">
           <div class="emission-card-name">Vila Běchovice</div>
           <div class="emission-card-rows">
             <div class="emission-card-row">
@@ -214,8 +217,8 @@
               <span class="emission-card-value" style="color:#A9884E;font-weight:500">+5 mil. Kč</span>
             </div>
           </div>
-        </div>
-        <div class="emission-card">
+        </a>
+        <a href="/projekty/byt-praha-3" class="emission-card">
           <div class="emission-card-name">Byt Praha 3</div>
           <div class="emission-card-rows">
             <div class="emission-card-row">
@@ -231,8 +234,8 @@
               <span class="emission-card-value" style="color:#A9884E;font-weight:500">+1,0 mil. Kč</span>
             </div>
           </div>
-        </div>
-        <div class="emission-card">
+        </a>
+        <a href="/projekty/byt-praha-5" class="emission-card">
           <div class="emission-card-name">Byt Praha 5</div>
           <div class="emission-card-rows">
             <div class="emission-card-row">
@@ -248,8 +251,8 @@
               <span class="emission-card-value" style="color:#A9884E;font-weight:500">+1,1 mil. Kč</span>
             </div>
           </div>
-        </div>
-        <div class="emission-card">
+        </a>
+        <a href="/projekty/byt-praha-10" class="emission-card">
           <div class="emission-card-name">Byt Praha 10</div>
           <div class="emission-card-rows">
             <div class="emission-card-row">
@@ -265,8 +268,8 @@
               <span class="emission-card-value" style="color:#A9884E;font-weight:500">+0,8 mil. Kč</span>
             </div>
           </div>
-        </div>
-        <div class="emission-card">
+        </a>
+        <a href="/projekty/byt-praha-4" class="emission-card">
           <div class="emission-card-name">Byt Praha 4</div>
           <div class="emission-card-rows">
             <div class="emission-card-row">
@@ -282,7 +285,7 @@
               <span class="emission-card-value" style="color:#A9884E;font-weight:500">+1,1 mil. Kč</span>
             </div>
           </div>
-        </div>
+        </a>
       </div>
     </section>
 
