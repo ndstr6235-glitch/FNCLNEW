@@ -188,6 +188,7 @@
 /* FAQ — accordion */
 .subpage-faq {
   max-width: 720px;
+  margin: 0 auto;
 }
 
 .subpage-faq-item {
