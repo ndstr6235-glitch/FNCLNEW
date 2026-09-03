@@ -546,6 +546,28 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 4px;
+  position: relative;
+}
+
+.project-compare-col::after {
+  content: attr(data-label);
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  font-family: var(--sans);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: #fff;
+  background: rgba(22,33,29,.7);
+  padding: 6px 14px;
+  z-index: 2;
+  backdrop-filter: blur(4px);
+}
+
+.project-compare-col--after::after {
+  background: rgba(169,136,78,.85);
 }
 
 .project-photo {
@@ -553,6 +575,7 @@
   background-size: cover;
   background-position: center;
   transition: transform .3s ease;
+  overflow: hidden;
 }
 
 .project-photo:hover {
