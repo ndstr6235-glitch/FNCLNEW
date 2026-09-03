@@ -1,0 +1,20 @@
+User-agent: *
+Allow: /
+Disallow: /dashboard
+Disallow: /clients
+Disallow: /cms
+Disallow: /emails
+Disallow: /calendar
+Disallow: /contracts
+Disallow: /documents
+Disallow: /users
+Disallow: /settings
+Disallow: /templates
+Disallow: /tickets
+Disallow: /audit
+Disallow: /calling
+Disallow: /database
+Disallow: /login
+Disallow: /api/
+
+Sitemap: https://fnclnew.vercel.app/sitemap.xml

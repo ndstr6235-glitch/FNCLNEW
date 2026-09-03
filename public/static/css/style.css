@@ -512,6 +512,71 @@ ul, ol {
   background: rgba(22,33,29,.04);
 }
 
+/* Track record table */
+.tr-list { width: 100%; }
+
+.tr-head {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr;
+  padding-bottom: 18px;
+  border-bottom: var(--rule-strong);
+  font-family: var(--sans);
+  font-size: 11.5px;
+  font-weight: 400;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+.tr-row {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr;
+  align-items: center;
+  padding: 34px 0;
+  border-bottom: var(--rule-soft);
+  font-family: var(--sans);
+  font-size: 16px;
+  color: var(--text-2);
+  text-decoration: none;
+  transition: background 150ms ease;
+  cursor: pointer;
+}
+
+.tr-row:hover { background: rgba(22,33,29,.03); }
+
+a.emission-card {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  transition: background 150ms ease;
+}
+
+a.emission-card:hover { background: rgba(22,33,29,.03); }
+
+.tr-name {
+  font-family: var(--serif);
+  font-size: 24px;
+  color: var(--ink);
+}
+
+.tr-profit {
+  font-family: var(--serif);
+  font-size: 24px;
+  color: var(--brass);
+}
+
+.tr-status {
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--brass);
+  border: 1px solid rgba(169,136,78,.3);
+  padding: 4px 10px;
+  display: inline-block;
+}
+
 /* Mobile emission cards — hidden on desktop */
 .emissions-cards {
   display: none;

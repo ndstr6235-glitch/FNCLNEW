@@ -22,10 +22,15 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Display&family=Libre+Franklin:wght@300;400;500&display=swap">
   <link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="/static/css/style.css?v=3">
+  <link rel="apple-touch-icon" href="/static/apple-touch-icon.png">
+  <meta name="theme-color" content="#16211D">
+  <link rel="canonical" href="https://fnclnew.vercel.app/projekty/byt-praha-10">
+  <link rel="stylesheet" href="/static/css/style.css?v=4">
   <link rel="stylesheet" href="/static/css/subpage.css?v=4">
 </head>
 <body>
+
+  <a href="#main" class="skip-link">Přeskočit na obsah</a>
 
   <header class="site-header">
     <a href="/" class="logo">
@@ -158,5 +163,12 @@
     <p>Alexandr Puškin, s.r.o. · IČO: 26740788 · Rybná 716/24, Staré Město, 110 00 Praha 1 · Spisová značka: C 90827, Městský soud v Praze</p>
   </footer>
 
+
+  <!-- Cookie consent bar -->
+  <div id="cookie-bar" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:998;background:#16211D;padding:16px 24px;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;font-family:'Libre Franklin',system-ui,sans-serif;font-size:13px;color:#EFEAE1;line-height:1.5;border-top:1px solid #A9884E;">
+    <p style="margin:0;flex:1;min-width:240px;">Tento web používá cookies pro zajištění funkčnosti a&nbsp;analýzu návštěvnosti.</p>
+    <button onclick="document.getElementById('cookie-bar').style.display='none';localStorage.setItem('cookie-accepted','1')" style="font-family:'Libre Franklin',system-ui,sans-serif;font-size:12px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;background:#EFEAE1;color:#16211D;border:none;padding:10px 24px;cursor:pointer;white-space:nowrap;">Rozumím</button>
+  </div>
+  <script>if(!localStorage.getItem('cookie-accepted'))document.getElementById('cookie-bar').style.display='flex';</script>
 </body>
 </html>
