@@ -440,8 +440,6 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 32px;
-  max-width: 1100px;
-  margin: 0 auto;
 }
 
 .project-finance-item {
