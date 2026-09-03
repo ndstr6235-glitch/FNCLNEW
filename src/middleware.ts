@@ -29,6 +29,7 @@ export async function middleware(request: NextRequest) {
     "/sluzby/pronajem": "/static/sluzby/pronajem.html",
     "/projekty/velka-dobra": "/static/projekty/velka-dobra.html",
     "/projekty/vila-bechovice": "/static/projekty/vila-bechovice.html",
+    "/projekty/vila-horomerice": "/static/projekty/vila-horomerice.html",
     "/projekty/byt-praha-3": "/static/projekty/byt-praha-3.html",
     "/projekty/byt-praha-5": "/static/projekty/byt-praha-5.html",
     "/projekty/byt-praha-10": "/static/projekty/byt-praha-10.html",
