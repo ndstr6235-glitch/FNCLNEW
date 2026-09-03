@@ -27,6 +27,12 @@ export async function middleware(request: NextRequest) {
     "/sluzby/investice": "/static/sluzby/investice.html",
     "/sluzby/reality": "/static/sluzby/reality.html",
     "/sluzby/pronajem": "/static/sluzby/pronajem.html",
+    "/projekty/velka-dobra": "/static/projekty/velka-dobra.html",
+    "/projekty/vila-bechovice": "/static/projekty/vila-bechovice.html",
+    "/projekty/byt-praha-3": "/static/projekty/byt-praha-3.html",
+    "/projekty/byt-praha-5": "/static/projekty/byt-praha-5.html",
+    "/projekty/byt-praha-10": "/static/projekty/byt-praha-10.html",
+    "/projekty/byt-praha-4": "/static/projekty/byt-praha-4.html",
   };
   if (staticPages[pathname]) {
     return NextResponse.rewrite(new URL(staticPages[pathname], request.url));
@@ -52,7 +58,7 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/", "/sluzby/:path*", "/dashboard/:path*", "/clients/:path*", "/cms/:path*",
+  matcher: ["/", "/sluzby/:path*", "/projekty/:path*", "/dashboard/:path*", "/clients/:path*", "/cms/:path*",
     "/emails/:path*", "/calendar/:path*", "/contracts/:path*",
     "/documents/:path*", "/users/:path*", "/settings/:path*",
     "/templates/:path*", "/tickets/:path*", "/audit/:path*",

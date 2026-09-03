@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Velká Dobrá — Puskin Partners</title>
+  <meta name="description" content="Developerský projekt Velká Dobrá. Nákup 8 mil. Kč, realizace 6 mil. Kč, prodej za 18 mil. Kč. Výnos +4 mil. Kč.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Display&family=Libre+Franklin:wght@300;400;500&display=swap">
+  <link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/static/css/style.css?v=3">
+  <link rel="stylesheet" href="/static/css/subpage.css?v=3">
+</head>
+<body>
+
+  <header class="site-header">
+    <a href="/" class="logo">
+      <span class="logo-primary">PUSKIN</span>
+      <span class="logo-secondary">PARTNERS</span>
+    </a>
+    <nav class="nav" aria-label="Hlavní navigace">
+      <a href="/#emise">Investice</a>
+      <a href="/#projekty">Projekty</a>
+      <a href="/#sluzby">Služby</a>
+      <a href="/#kontakt">Kontakt</a>
+    </nav>
+    <div class="header-right">
+      <input type="checkbox" id="mobile-nav-toggle" aria-hidden="true">
+      <label class="menu-toggle" for="mobile-nav-toggle" aria-label="Otevřít menu"><span></span></label>
+      <nav class="mobile-nav" aria-label="Mobilní navigace">
+        <a href="/#emise" onclick="document.getElementById('mobile-nav-toggle').checked=false">Investice</a>
+        <a href="/#projekty" onclick="document.getElementById('mobile-nav-toggle').checked=false">Projekty</a>
+        <a href="/#sluzby" onclick="document.getElementById('mobile-nav-toggle').checked=false">Služby</a>
+        <a href="/#kontakt" onclick="document.getElementById('mobile-nav-toggle').checked=false">Kontakt</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- Hero (no photo yet) -->
+    <section class="subpage-hero subpage-hero--simple">
+      <div class="subpage-hero-content">
+        <span class="section-label">DOKONČENÝ PROJEKT</span>
+        <h1>Velká Dobrá</h1>
+        <p class="subpage-hero-lead">Developerský projekt v&nbsp;obci Velká Dobrá u&nbsp;Kladna. Nákup nemovitosti, kompletní rekonstrukce a&nbsp;prodej s&nbsp;výnosem 4 mil. Kč. Náš největší dokončený projekt.</p>
+      </div>
+    </section>
+
+    <!-- Numbers -->
+    <section class="section">
+      <div class="subpage-numbers">
+        <div class="subpage-number">
+          <div class="subpage-number-value">8 mil.</div>
+          <div class="subpage-number-label">Nákupní cena</div>
+        </div>
+        <div class="subpage-number">
+          <div class="subpage-number-value">6 mil.</div>
+          <div class="subpage-number-label">Náklady na realizaci</div>
+        </div>
+        <div class="subpage-number">
+          <div class="subpage-number-value">18 mil.</div>
+          <div class="subpage-number-label">Prodejní cena</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Výnos highlight -->
+    <section class="section" style="text-align:center;padding-top:0;">
+      <div style="display:inline-block;border:1px solid rgba(169,136,78,.3);padding:12px 32px;">
+        <span style="font-family:var(--sans);font-size:11.5px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--brass);">Výnos +4 mil. Kč &middot; Prodáno</span>
+      </div>
+    </section>
+
+    <!-- Description -->
+    <section class="section">
+      <div style="max-width:720px;margin:0 auto;">
+        <h2 style="font-family:var(--serif);font-weight:400;font-size:32px;color:var(--ink);margin-bottom:20px;">O&nbsp;projektu</h2>
+        <p style="font-family:var(--sans);font-size:15px;line-height:1.7;color:var(--text-2);margin-bottom:16px;">Nemovitost ve&nbsp;Velké Dobré jsme koupili za&nbsp;8 mil. Kč. Provedli jsme rozsáhlou rekonstrukci za&nbsp;6 mil. Kč — jednalo se o&nbsp;náš dosud největší projekt co do&nbsp;objemu investice.</p>
+        <p style="font-family:var(--sans);font-size:15px;line-height:1.7;color:var(--text-2);margin-bottom:16px;">Po&nbsp;dokončení jsme nemovitost prodali za&nbsp;18 mil. Kč, což představuje čistý výnos 4 mil. Kč. Projekt potvrdil, že i&nbsp;mimo Prahu lze najít nemovitosti s&nbsp;výborným potenciálem zhodnocení.</p>
+        <p style="font-family:var(--sans);font-size:15px;line-height:1.7;color:var(--text-2);">Celý projekt jsme řídili od&nbsp;výkupu přes stavební práce až po&nbsp;předání novým majitelům — kompletně vlastními silami.</p>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="subpage-cta">
+      <span class="section-label section-label-dark">DALŠÍ PROJEKTY</span>
+      <h2>Chcete vidět další realizace?</h2>
+      <p>Podívejte se na&nbsp;naše dokončené projekty nebo nás kontaktujte ohledně investičních příležitostí.</p>
+      <a href="/#track-record" class="btn btn-light">TRACK RECORD</a>
+    </section>
+
+  </main>
+
+  <footer class="contact-disclaimer">
+    <p>Alexandr Puškin, s.r.o. · IČO: 26740788 · Rybná 716/24, Staré Město, 110 00 Praha 1 · Spisová značka: C 90827, Městský soud v Praze</p>
+  </footer>
+
+</body>
+</html>
