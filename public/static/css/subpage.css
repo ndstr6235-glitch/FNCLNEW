@@ -374,6 +374,287 @@
 }
 
 /* ========================================
+   Project detail page
+   ======================================== */
+
+/* Full-width hero with overlay */
+.project-hero {
+  position: relative;
+  min-height: 70vh;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: flex-end;
+}
+
+.project-hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, rgba(22,33,29,.85) 0%, rgba(22,33,29,.3) 50%, transparent 100%);
+}
+
+.project-hero-content {
+  position: relative;
+  z-index: 1;
+  padding: 0 var(--pad-x) 64px;
+  max-width: 700px;
+}
+
+.project-hero-content .section-label {
+  color: var(--brass);
+}
+
+.project-hero-content h1 {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 56px;
+  line-height: 1.1;
+  color: var(--paper);
+  margin: 16px 0 20px;
+}
+
+.project-hero-content p {
+  font-family: var(--sans);
+  font-size: 17px;
+  line-height: 1.7;
+  color: rgba(242,238,230,.7);
+  max-width: 520px;
+}
+
+/* Financial strip */
+.project-finance {
+  background: var(--ink);
+  padding: 48px var(--pad-x);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 32px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.project-finance-item {
+  text-align: center;
+}
+
+.project-finance-value {
+  font-family: var(--serif);
+  font-size: 40px;
+  font-weight: 400;
+  color: var(--paper);
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.project-finance-value--highlight {
+  color: var(--brass);
+}
+
+.project-finance-label {
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: rgba(242,238,230,.45);
+}
+
+/* Yield bar */
+.project-yield-bar {
+  background: var(--ink);
+  padding: 0 var(--pad-x) 48px;
+  text-align: center;
+}
+
+.project-yield-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid rgba(169,136,78,.35);
+  padding: 14px 36px;
+}
+
+.project-yield-badge span {
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--brass);
+}
+
+/* Before/After comparison */
+.project-compare {
+  padding: 80px var(--pad-x);
+}
+
+.project-compare-header {
+  display: flex;
+  justify-content: center;
+  gap: 64px;
+  margin-bottom: 40px;
+}
+
+.project-compare-label {
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  position: relative;
+  padding-left: 20px;
+}
+
+.project-compare-label::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.project-compare-label--before::before {
+  background: var(--text-3);
+}
+
+.project-compare-label--after::before {
+  background: var(--brass);
+}
+
+.project-compare-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+}
+
+.project-compare-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+}
+
+.project-photo {
+  aspect-ratio: 4/3;
+  background-size: cover;
+  background-position: center;
+  transition: transform .3s ease;
+}
+
+.project-photo:hover {
+  transform: scale(1.02);
+}
+
+/* Project story */
+.project-story {
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.project-story-photo {
+  background-size: cover;
+  background-position: center;
+  min-height: 500px;
+}
+
+.project-story-content {
+  padding: 80px 64px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: var(--paper);
+}
+
+.project-story-content h2 {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 32px;
+  color: var(--ink);
+  margin-bottom: 24px;
+}
+
+.project-story-content p {
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.8;
+  color: var(--text-2);
+  margin-bottom: 16px;
+}
+
+/* Project details list */
+.project-details {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(22,33,29,.1);
+}
+
+.project-detail-row {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--sans);
+  font-size: 14px;
+}
+
+.project-detail-row dt {
+  color: var(--text-3);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.project-detail-row dd {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+/* Project nav (prev/next) */
+.project-nav {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-top: var(--rule);
+}
+
+.project-nav a {
+  padding: 32px var(--pad-x);
+  text-decoration: none;
+  transition: background .15s ease;
+}
+
+.project-nav a:hover {
+  background: rgba(22,33,29,.03);
+}
+
+.project-nav-label {
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  display: block;
+  margin-bottom: 6px;
+}
+
+.project-nav-name {
+  font-family: var(--serif);
+  font-size: 22px;
+  color: var(--ink);
+}
+
+.project-nav a:last-child {
+  text-align: right;
+  border-left: var(--rule);
+}
+
+/* ========================================
    Responsive — tablet
    ======================================== */
 @media (max-width: 1024px) {
@@ -428,6 +709,45 @@
 
   .subpage-number-value {
     font-size: 36px;
+  }
+
+  /* Project detail */
+  .project-hero {
+    min-height: 50vh;
+  }
+
+  .project-hero-content h1 {
+    font-size: 42px;
+  }
+
+  .project-finance {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+
+  .project-finance-value {
+    font-size: 32px;
+  }
+
+  .project-compare-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .project-story {
+    grid-template-columns: 1fr;
+  }
+
+  .project-story-photo {
+    min-height: 350px;
+  }
+
+  .project-story-content {
+    padding: 48px var(--pad-x);
+  }
+
+  .project-nav-name {
+    font-size: 18px;
   }
 }
 
@@ -492,5 +812,75 @@
 
   .subpage-number-value {
     font-size: 36px;
+  }
+
+  /* Project detail */
+  .project-hero {
+    min-height: 60vh;
+  }
+
+  .project-hero-content h1 {
+    font-size: 36px;
+  }
+
+  .project-hero-content p {
+    font-size: 15px;
+  }
+
+  .project-finance {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    padding: 32px var(--pad-x);
+  }
+
+  .project-finance-value {
+    font-size: 28px;
+  }
+
+  .project-yield-bar {
+    padding: 0 var(--pad-x) 32px;
+  }
+
+  .project-compare {
+    padding: 48px var(--pad-x);
+  }
+
+  .project-compare-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .project-compare-col {
+    grid-template-columns: 1fr 1fr;
+    gap: 4px;
+  }
+
+  .project-compare-header {
+    gap: 32px;
+    margin-bottom: 24px;
+  }
+
+  .project-story {
+    grid-template-columns: 1fr;
+  }
+
+  .project-story-photo {
+    min-height: 280px;
+  }
+
+  .project-story-content {
+    padding: 32px var(--pad-x);
+  }
+
+  .project-story-content h2 {
+    font-size: 26px;
+  }
+
+  .project-nav-name {
+    font-size: 17px;
+  }
+
+  .project-nav a {
+    padding: 24px var(--pad-x);
   }
 }
