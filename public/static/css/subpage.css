@@ -2,20 +2,25 @@
    Subpage styles — service detail pages
    ======================================== */
 
-/* Hero */
+/* Hero with photo */
 .subpage-hero {
-  padding: 160px var(--pad-x) 80px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 520px;
   border-bottom: var(--rule);
 }
 
-.subpage-hero-inner {
-  max-width: 680px;
+.subpage-hero-content {
+  padding: 160px var(--pad-x) 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .subpage-hero h1 {
   font-family: var(--serif);
   font-weight: 400;
-  font-size: 56px;
+  font-size: 48px;
   line-height: 1.1;
   color: var(--ink);
   margin: 20px 0 28px;
@@ -26,6 +31,24 @@
   font-size: 17px;
   line-height: 1.75;
   color: var(--text-2);
+  max-width: 540px;
+}
+
+.subpage-hero-photo {
+  background-size: cover;
+  background-position: center;
+  min-height: 400px;
+}
+
+/* Fallback for pages without hero photo */
+.subpage-hero--simple {
+  display: block;
+  padding: 160px var(--pad-x) 80px;
+}
+
+.subpage-hero--simple .subpage-hero-content {
+  padding: 0;
+  max-width: 680px;
 }
 
 /* Grid 3 columns */
@@ -57,39 +80,102 @@
   color: var(--text-3);
 }
 
-/* Process steps */
+/* Photo + text side by side */
+.subpage-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  border-top: var(--rule);
+  border-bottom: var(--rule);
+}
+
+.subpage-split-photo {
+  background-size: cover;
+  background-position: center;
+  min-height: 480px;
+}
+
+.subpage-split-content {
+  padding: 64px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.subpage-split-content h2 {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 32px;
+  color: var(--ink);
+  margin-bottom: 20px;
+}
+
+.subpage-split-content p {
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--text-2);
+  margin-bottom: 16px;
+}
+
+.subpage-split--reverse .subpage-split-photo {
+  order: 2;
+}
+
+.subpage-split--reverse .subpage-split-content {
+  order: 1;
+}
+
+/* Photo gallery strip */
+.subpage-gallery {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+}
+
+.subpage-gallery-item {
+  aspect-ratio: 4/3;
+  background-size: cover;
+  background-position: center;
+}
+
+/* Process steps — visual timeline */
 .subpage-process {
-  max-width: 680px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 0;
 }
 
 .subpage-process-step {
-  display: flex;
-  gap: 28px;
-  padding: 32px 0;
-  border-top: 1px solid rgba(22,33,29,.08);
-  align-items: flex-start;
+  padding: 48px 40px;
+  border: 1px solid rgba(22,33,29,.08);
+  margin: -1px 0 0 -1px;
+  position: relative;
+  transition: background .2s ease;
 }
 
-.subpage-process-step:last-child {
-  border-bottom: 1px solid rgba(22,33,29,.08);
+.subpage-process-step:hover {
+  background: rgba(22,33,29,.02);
 }
 
 .subpage-step-num {
-  font-family: var(--sans);
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: .1em;
-  color: var(--brass);
-  flex-shrink: 0;
-  padding-top: 4px;
+  font-family: var(--serif);
+  font-size: 48px;
+  font-weight: 400;
+  color: rgba(169,136,78,.2);
+  line-height: 1;
+  margin-bottom: 20px;
+  display: block;
 }
 
 .subpage-process-step h3 {
-  font-family: var(--serif);
-  font-weight: 400;
-  font-size: 22px;
+  font-family: var(--sans);
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: .06em;
+  text-transform: uppercase;
   color: var(--ink);
-  margin-bottom: 8px;
+  margin-bottom: 12px;
 }
 
 .subpage-process-step p {
@@ -99,26 +185,54 @@
   color: var(--text-3);
 }
 
-/* FAQ */
+/* FAQ — accordion */
 .subpage-faq {
-  max-width: 680px;
+  max-width: 720px;
 }
 
 .subpage-faq-item {
-  padding: 28px 0;
-  border-top: 1px solid rgba(22,33,29,.08);
+  border-top: 1px solid rgba(22,33,29,.12);
 }
 
 .subpage-faq-item:last-child {
-  border-bottom: 1px solid rgba(22,33,29,.08);
+  border-bottom: 1px solid rgba(22,33,29,.12);
 }
 
-.subpage-faq-item h3 {
+.subpage-faq-item summary {
   font-family: var(--sans);
-  font-size: 16px;
+  font-size: 17px;
   font-weight: 500;
   color: var(--ink);
-  margin-bottom: 10px;
+  padding: 24px 40px 24px 0;
+  cursor: pointer;
+  list-style: none;
+  position: relative;
+  transition: color .15s ease;
+}
+
+.subpage-faq-item summary::-webkit-details-marker {
+  display: none;
+}
+
+.subpage-faq-item summary::after {
+  content: '+';
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: var(--sans);
+  font-size: 24px;
+  font-weight: 300;
+  color: var(--brass);
+  transition: transform .2s ease;
+}
+
+.subpage-faq-item[open] summary::after {
+  transform: translateY(-50%) rotate(45deg);
+}
+
+.subpage-faq-item summary:hover {
+  color: var(--brass);
 }
 
 .subpage-faq-item p {
@@ -126,6 +240,7 @@
   font-size: 15px;
   line-height: 1.7;
   color: var(--text-3);
+  padding: 0 40px 24px 0;
 }
 
 /* Investment blocks */
@@ -197,6 +312,38 @@
   background: var(--brass);
 }
 
+/* Numbers / stats row */
+.subpage-numbers {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+  padding: 64px 0;
+  border-top: var(--rule);
+  border-bottom: var(--rule);
+}
+
+.subpage-number {
+  text-align: center;
+}
+
+.subpage-number-value {
+  font-family: var(--serif);
+  font-size: 48px;
+  font-weight: 400;
+  color: var(--ink);
+  line-height: 1;
+  margin-bottom: 12px;
+}
+
+.subpage-number-label {
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
 /* CTA section */
 .subpage-cta {
   background: var(--ink);
@@ -229,8 +376,16 @@
    Responsive — tablet
    ======================================== */
 @media (max-width: 1024px) {
+  .subpage-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .subpage-hero-photo {
+    min-height: 300px;
+  }
+
   .subpage-hero h1 {
-    font-size: 44px;
+    font-size: 40px;
   }
 
   .subpage-grid-3 {
@@ -240,18 +395,59 @@
   .subpage-invest-blocks {
     grid-template-columns: 1fr;
   }
+
+  .subpage-split {
+    grid-template-columns: 1fr;
+  }
+
+  .subpage-split-photo {
+    min-height: 300px;
+  }
+
+  .subpage-split--reverse .subpage-split-photo {
+    order: 0;
+  }
+
+  .subpage-split--reverse .subpage-split-content {
+    order: 0;
+  }
+
+  .subpage-split-content {
+    padding: 48px var(--pad-x);
+  }
+
+  .subpage-gallery {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .subpage-numbers {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .subpage-number-value {
+    font-size: 36px;
+  }
 }
 
 /* ========================================
    Responsive — mobile
    ======================================== */
 @media (max-width: 640px) {
-  .subpage-hero {
-    padding: 120px var(--pad-x) 56px;
+  .subpage-hero-content {
+    padding: 120px var(--pad-x) 48px;
+  }
+
+  .subpage-hero--simple {
+    padding: 120px var(--pad-x) 48px;
   }
 
   .subpage-hero h1 {
-    font-size: 36px;
+    font-size: 32px;
+  }
+
+  .subpage-hero-photo {
+    min-height: 240px;
   }
 
   .subpage-grid-3 {
@@ -273,5 +469,27 @@
 
   .subpage-process-step {
     gap: 16px;
+  }
+
+  .subpage-split-content {
+    padding: 32px var(--pad-x);
+  }
+
+  .subpage-split-photo {
+    min-height: 220px;
+  }
+
+  .subpage-gallery {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .subpage-numbers {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    padding: 48px 0;
+  }
+
+  .subpage-number-value {
+    font-size: 36px;
   }
 }

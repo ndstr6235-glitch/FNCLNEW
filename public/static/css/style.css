@@ -36,6 +36,7 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 body {
@@ -45,6 +46,7 @@ body {
   background: var(--paper);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
 }
 
 img {
@@ -984,7 +986,7 @@ ul, ol {
   }
 
   .hero-photo {
-    min-height: 520px;
+    min-height: 320px;
     order: 2;
   }
 
@@ -1058,7 +1060,12 @@ ul, ol {
   }
 
   .hero h1 {
-    font-size: 46px;
+    font-size: 36px;
+  }
+
+  .hero .eyebrow {
+    font-size: 10px;
+    white-space: normal;
   }
 
   .section-header h2,
@@ -1067,7 +1074,7 @@ ul, ol {
   }
 
   .trust-claim {
-    font-size: 30px;
+    font-size: 24px;
   }
 
   .hero-stats {
@@ -1075,9 +1082,10 @@ ul, ol {
     gap: 28px;
   }
 
-  /* Emissions: table -> cards */
-  .emissions-list {
-    display: none;
+  /* Tables -> cards on mobile */
+  .emissions-list,
+  .tr-list {
+    display: none !important;
   }
 
   .emissions-cards {
