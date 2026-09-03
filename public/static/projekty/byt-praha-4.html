@@ -23,7 +23,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Display&family=Libre+Franklin:wght@300;400;500&display=swap">
   <link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/static/css/style.css?v=3">
-  <link rel="stylesheet" href="/static/css/subpage.css?v=3">
+  <link rel="stylesheet" href="/static/css/subpage.css?v=4">
 </head>
 <body>
 
@@ -52,70 +52,104 @@
 
   <main id="main">
 
-    <!-- Hero -->
-    <section class="subpage-hero">
-      <div class="subpage-hero-content">
+    <!-- Full-width hero -->
+    <section class="project-hero" style="background-image:url('https://rrzgyqfi9tvpzzdh.public.blob.vercel-storage.com/references/byt4/po-1.png')">
+      <div class="project-hero-content">
         <span class="section-label">DOKONČENÝ PROJEKT</span>
         <h1>Byt Praha&nbsp;4</h1>
-        <p class="subpage-hero-lead">Kompletní rekonstrukce bytu v&nbsp;Praze 4 — kvalitní materiály, moderní řešení. Projekt dokončen a&nbsp;prodán se ziskem.</p>
+        <p>Kompletní rekonstrukce s&nbsp;důrazem na&nbsp;kvalitní materiály a&nbsp;moderní design. Koupeno, zrekonstruováno a&nbsp;prodáno se ziskem.</p>
       </div>
-      <div class="subpage-hero-photo" style="background-image:url('https://rrzgyqfi9tvpzzdh.public.blob.vercel-storage.com/references/byt4/po-1.png')" role="img" aria-label="Byt Praha 4 — po rekonstrukci"></div>
     </section>
 
-    <!-- Numbers -->
-    <section class="section">
-      <div class="subpage-numbers">
-        <div class="subpage-number">
-          <div class="subpage-number-value">3,4 mil.</div>
-          <div class="subpage-number-label">Nákupní cena</div>
+    <!-- Financial strip -->
+    <div class="project-finance">
+      <div class="project-finance-item">
+        <div class="project-finance-value">3,4</div>
+        <div class="project-finance-label">Nákup (mil. Kč)</div>
+      </div>
+      <div class="project-finance-item">
+        <div class="project-finance-value">0,8</div>
+        <div class="project-finance-label">Realizace (mil. Kč)</div>
+      </div>
+      <div class="project-finance-item">
+        <div class="project-finance-value">5,3</div>
+        <div class="project-finance-label">Prodej (mil. Kč)</div>
+      </div>
+      <div class="project-finance-item">
+        <div class="project-finance-value project-finance-value--highlight">+1,1</div>
+        <div class="project-finance-label">Čistý výnos (mil. Kč)</div>
+      </div>
+    </div>
+
+    <!-- Yield badge -->
+    <div class="project-yield-bar">
+      <div class="project-yield-badge">
+        <span>Výnos 26 %</span>
+        <span>&middot;</span>
+        <span>Prodáno</span>
+      </div>
+    </div>
+
+    <!-- After gallery only (no before photos) -->
+    <section class="project-compare">
+      <div class="project-compare-header">
+        <span class="project-compare-label project-compare-label--after">Po rekonstrukci</span>
+      </div>
+      <div class="project-compare-grid" style="grid-template-columns:1fr">
+        <div class="project-compare-col">
+          <div class="project-photo" style="background-image:url('https://rrzgyqfi9tvpzzdh.public.blob.vercel-storage.com/references/byt4/po-1.png')" role="img" aria-label="Po rekonstrukci 1"></div>
+          <div class="project-photo" style="background-image:url('https://rrzgyqfi9tvpzzdh.public.blob.vercel-storage.com/references/byt4/po-2.png')" role="img" aria-label="Po rekonstrukci 2"></div>
+          <div class="project-photo" style="background-image:url('https://rrzgyqfi9tvpzzdh.public.blob.vercel-storage.com/references/byt4/po-3.png')" role="img" aria-label="Po rekonstrukci 3"></div>
         </div>
-        <div class="subpage-number">
-          <div class="subpage-number-value">0,8 mil.</div>
-          <div class="subpage-number-label">Náklady na realizaci</div>
-        </div>
-        <div class="subpage-number">
-          <div class="subpage-number-value">5,3 mil.</div>
-          <div class="subpage-number-label">Prodejní cena</div>
-        </div>
       </div>
     </section>
 
-    <!-- Výnos highlight -->
-    <section class="section" style="text-align:center;padding-top:0;">
-      <div style="display:inline-block;border:1px solid rgba(169,136,78,.3);padding:12px 32px;">
-        <span style="font-family:var(--sans);font-size:11.5px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--brass);">Výnos +1,1 mil. Kč &middot; Prodáno</span>
-      </div>
-    </section>
-
-    <!-- After photos -->
-    <section class="section">
-      <div class="section-header">
-        <span class="section-label">PO REKONSTRUKCI</span>
-      </div>
-      <div class="subpage-gallery">
-        <div class="subpage-gallery-item" style="background-image:url('https://rrzgyqfi9tvpzzdh.public.blob.vercel-storage.com/references/byt4/po-1.png')"></div>
-        <div class="subpage-gallery-item" style="background-image:url('https://rrzgyqfi9tvpzzdh.public.blob.vercel-storage.com/references/byt4/po-2.png')"></div>
-        <div class="subpage-gallery-item" style="background-image:url('https://rrzgyqfi9tvpzzdh.public.blob.vercel-storage.com/references/byt4/po-3.png')"></div>
-      </div>
-    </section>
-
-    <!-- Description -->
-    <section class="subpage-split subpage-split--reverse">
-      <div class="subpage-split-photo" style="background-image:url('https://rrzgyqfi9tvpzzdh.public.blob.vercel-storage.com/references/byt4/po-2.png')" role="img" aria-label="Byt Praha 4 — detail"></div>
-      <div class="subpage-split-content">
+    <!-- Story -->
+    <section class="project-story">
+      <div class="project-story-photo" style="background-image:url('https://rrzgyqfi9tvpzzdh.public.blob.vercel-storage.com/references/byt4/po-2.png')" role="img" aria-label="Detail interiéru"></div>
+      <div class="project-story-content">
         <h2>O&nbsp;projektu</h2>
         <p>Byt v&nbsp;Praze 4 jsme koupili za&nbsp;3,4 mil. Kč. Provedli jsme kompletní rekonstrukci s&nbsp;důrazem na&nbsp;kvalitní materiály a&nbsp;moderní design.</p>
-        <p>Náklady na&nbsp;realizaci činily 0,8 mil. Kč. Po&nbsp;dokončení jsme byt prodali za&nbsp;5,3 mil. Kč s&nbsp;výnosem 1,1 mil. Kč.</p>
-        <p>Každý detail — od&nbsp;podlah přes koupelnu po&nbsp;kuchyňskou linku — jsme řešili s&nbsp;ohledem na&nbsp;maximální zhodnocení a&nbsp;atraktivitu pro kupce.</p>
+        <p>Náklady na&nbsp;realizaci činily 0,8 mil. Kč. Po&nbsp;dokončení jsme byt prodali za&nbsp;5,3 mil. Kč — každý detail řešíme s&nbsp;ohledem na&nbsp;maximální zhodnocení.</p>
+        <dl class="project-details">
+          <div class="project-detail-row">
+            <dt>Typ</dt>
+            <dd>Rekonstrukce bytu</dd>
+          </div>
+          <div class="project-detail-row">
+            <dt>Lokalita</dt>
+            <dd>Praha 4</dd>
+          </div>
+          <div class="project-detail-row">
+            <dt>Realizace</dt>
+            <dd>Vlastní tým</dd>
+          </div>
+          <div class="project-detail-row">
+            <dt>Stav</dt>
+            <dd>Prodáno</dd>
+          </div>
+        </dl>
       </div>
     </section>
+
+    <!-- Navigation between projects -->
+    <nav class="project-nav">
+      <a href="/projekty/byt-praha-10">
+        <span class="project-nav-label">Předchozí projekt</span>
+        <span class="project-nav-name">Byt Praha 10</span>
+      </a>
+      <a href="/#track-record">
+        <span class="project-nav-label">Zpět</span>
+        <span class="project-nav-name">Všechny projekty</span>
+      </a>
+    </nav>
 
     <!-- CTA -->
     <section class="subpage-cta">
-      <span class="section-label section-label-dark">DALŠÍ PROJEKTY</span>
-      <h2>Chcete vidět další realizace?</h2>
-      <p>Podívejte se na&nbsp;naše dokončené projekty nebo nás kontaktujte ohledně investičních příležitostí.</p>
-      <a href="/#track-record" class="btn btn-light">TRACK RECORD</a>
+      <span class="section-label section-label-dark">INVESTICE</span>
+      <h2>Chcete investovat do&nbsp;podobného projektu?</h2>
+      <p>Představíme vám aktuální příležitosti — rozpočet, harmonogram, očekávaný výnos. Osobně, bez závazků.</p>
+      <a href="mailto:info@puskinpartners.cz" class="btn btn-light">NAPIŠTE NÁM</a>
     </section>
 
   </main>

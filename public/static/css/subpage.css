@@ -422,6 +422,17 @@
   max-width: 520px;
 }
 
+/* Hero without photo — text on dark bg */
+.project-hero--simple {
+  background: var(--ink);
+  min-height: auto;
+  padding: 160px var(--pad-x) 64px;
+}
+
+.project-hero--simple::after {
+  display: none;
+}
+
 /* Financial strip */
 .project-finance {
   background: var(--ink);

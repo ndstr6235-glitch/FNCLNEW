@@ -23,7 +23,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Display&family=Libre+Franklin:wght@300;400;500&display=swap">
   <link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/static/css/style.css?v=3">
-  <link rel="stylesheet" href="/static/css/subpage.css?v=3">
+  <link rel="stylesheet" href="/static/css/subpage.css?v=4">
 </head>
 <body>
 
@@ -52,56 +52,89 @@
 
   <main id="main">
 
-    <!-- Hero (no photo yet) -->
-    <section class="subpage-hero subpage-hero--simple">
-      <div class="subpage-hero-content">
+    <!-- Full-width hero (no photo) -->
+    <section class="project-hero project-hero--simple">
+      <div class="project-hero-content">
         <span class="section-label">DOKONČENÝ PROJEKT</span>
         <h1>Velká Dobrá</h1>
-        <p class="subpage-hero-lead">Developerský projekt v&nbsp;obci Velká Dobrá u&nbsp;Kladna. Nákup nemovitosti, kompletní rekonstrukce a&nbsp;prodej s&nbsp;výnosem 4 mil. Kč. Náš největší dokončený projekt.</p>
+        <p>Developerský projekt v&nbsp;obci Velká Dobrá u&nbsp;Kladna. Nákup nemovitosti, kompletní rekonstrukce a&nbsp;prodej s&nbsp;výnosem 4 mil. Kč.</p>
       </div>
     </section>
 
-    <!-- Numbers -->
-    <section class="section">
-      <div class="subpage-numbers">
-        <div class="subpage-number">
-          <div class="subpage-number-value">8 mil.</div>
-          <div class="subpage-number-label">Nákupní cena</div>
-        </div>
-        <div class="subpage-number">
-          <div class="subpage-number-value">6 mil.</div>
-          <div class="subpage-number-label">Náklady na realizaci</div>
-        </div>
-        <div class="subpage-number">
-          <div class="subpage-number-value">18 mil.</div>
-          <div class="subpage-number-label">Prodejní cena</div>
-        </div>
+    <!-- Financial strip -->
+    <div class="project-finance">
+      <div class="project-finance-item">
+        <div class="project-finance-value">8</div>
+        <div class="project-finance-label">Nákup (mil. Kč)</div>
+      </div>
+      <div class="project-finance-item">
+        <div class="project-finance-value">6</div>
+        <div class="project-finance-label">Realizace (mil. Kč)</div>
+      </div>
+      <div class="project-finance-item">
+        <div class="project-finance-value">18</div>
+        <div class="project-finance-label">Prodej (mil. Kč)</div>
+      </div>
+      <div class="project-finance-item">
+        <div class="project-finance-value project-finance-value--highlight">+4</div>
+        <div class="project-finance-label">Čistý výnos (mil. Kč)</div>
+      </div>
+    </div>
+
+    <!-- Yield badge -->
+    <div class="project-yield-bar">
+      <div class="project-yield-badge">
+        <span>Výnos 29 %</span>
+        <span>&middot;</span>
+        <span>Prodáno</span>
+      </div>
+    </div>
+
+    <!-- Story (no photo — text only) -->
+    <section class="project-story" style="grid-template-columns:1fr">
+      <div class="project-story-content">
+        <h2>O&nbsp;projektu</h2>
+        <p>Nemovitost ve&nbsp;Velké Dobré jsme koupili za&nbsp;8 mil. Kč. Provedli jsme rozsáhlou rekonstrukci za&nbsp;6 mil. Kč — jednalo se o&nbsp;náš dosud největší projekt co do&nbsp;objemu investice.</p>
+        <p>Po&nbsp;dokončení jsme nemovitost prodali za&nbsp;18 mil. Kč, což představuje čistý výnos 4 mil. Kč. Projekt potvrdil, že i&nbsp;mimo Prahu lze najít nemovitosti s&nbsp;výborným potenciálem zhodnocení.</p>
+        <dl class="project-details">
+          <div class="project-detail-row">
+            <dt>Typ</dt>
+            <dd>Developerský projekt</dd>
+          </div>
+          <div class="project-detail-row">
+            <dt>Lokalita</dt>
+            <dd>Velká Dobrá u Kladna</dd>
+          </div>
+          <div class="project-detail-row">
+            <dt>Realizace</dt>
+            <dd>Vlastní tým</dd>
+          </div>
+          <div class="project-detail-row">
+            <dt>Stav</dt>
+            <dd>Prodáno</dd>
+          </div>
+        </dl>
       </div>
     </section>
 
-    <!-- Výnos highlight -->
-    <section class="section" style="text-align:center;padding-top:0;">
-      <div style="display:inline-block;border:1px solid rgba(169,136,78,.3);padding:12px 32px;">
-        <span style="font-family:var(--sans);font-size:11.5px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--brass);">Výnos +4 mil. Kč &middot; Prodáno</span>
-      </div>
-    </section>
-
-    <!-- Description -->
-    <section class="section">
-      <div style="max-width:720px;margin:0 auto;">
-        <h2 style="font-family:var(--serif);font-weight:400;font-size:32px;color:var(--ink);margin-bottom:20px;">O&nbsp;projektu</h2>
-        <p style="font-family:var(--sans);font-size:15px;line-height:1.7;color:var(--text-2);margin-bottom:16px;">Nemovitost ve&nbsp;Velké Dobré jsme koupili za&nbsp;8 mil. Kč. Provedli jsme rozsáhlou rekonstrukci za&nbsp;6 mil. Kč — jednalo se o&nbsp;náš dosud největší projekt co do&nbsp;objemu investice.</p>
-        <p style="font-family:var(--sans);font-size:15px;line-height:1.7;color:var(--text-2);margin-bottom:16px;">Po&nbsp;dokončení jsme nemovitost prodali za&nbsp;18 mil. Kč, což představuje čistý výnos 4 mil. Kč. Projekt potvrdil, že i&nbsp;mimo Prahu lze najít nemovitosti s&nbsp;výborným potenciálem zhodnocení.</p>
-        <p style="font-family:var(--sans);font-size:15px;line-height:1.7;color:var(--text-2);">Celý projekt jsme řídili od&nbsp;výkupu přes stavební práce až po&nbsp;předání novým majitelům — kompletně vlastními silami.</p>
-      </div>
-    </section>
+    <!-- Navigation between projects -->
+    <nav class="project-nav">
+      <a href="/#track-record">
+        <span class="project-nav-label">Zpět</span>
+        <span class="project-nav-name">Všechny projekty</span>
+      </a>
+      <a href="/projekty/vila-bechovice">
+        <span class="project-nav-label">Další projekt</span>
+        <span class="project-nav-name">Vila Běchovice</span>
+      </a>
+    </nav>
 
     <!-- CTA -->
     <section class="subpage-cta">
-      <span class="section-label section-label-dark">DALŠÍ PROJEKTY</span>
-      <h2>Chcete vidět další realizace?</h2>
-      <p>Podívejte se na&nbsp;naše dokončené projekty nebo nás kontaktujte ohledně investičních příležitostí.</p>
-      <a href="/#track-record" class="btn btn-light">TRACK RECORD</a>
+      <span class="section-label section-label-dark">INVESTICE</span>
+      <h2>Chcete investovat do&nbsp;podobného projektu?</h2>
+      <p>Představíme vám aktuální příležitosti — rozpočet, harmonogram, očekávaný výnos. Osobně, bez závazků.</p>
+      <a href="mailto:info@puskinpartners.cz" class="btn btn-light">NAPIŠTE NÁM</a>
     </section>
 
   </main>
