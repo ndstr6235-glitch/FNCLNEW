@@ -504,6 +504,12 @@ ul, ol {
   font-style: italic;
 }
 
+.tr-status-new {
+  color: #16211D;
+  border-color: rgba(22,33,29,.25);
+  background: rgba(22,33,29,.04);
+}
+
 /* Mobile emission cards — hidden on desktop */
 .emissions-cards {
   display: none;
