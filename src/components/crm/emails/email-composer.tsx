@@ -227,8 +227,8 @@ export default function EmailComposer({
   const isNavrhSmlouva =
     selectedTemplate?.label.toLowerCase().includes("návrh") ?? false;
 
-  // Show ALL contract parameter fields only for "Smlouva finální"
-  const showContractFields = isSmlouvaTemplate && !isNavrhSmlouva;
+  // Show contract parameter fields for ALL smlouva templates (Návrh i Finální)
+  const showContractFields = isSmlouvaTemplate;
 
   // Calculate payout amount based on contract fields
   const calculatedPayout = useMemo(() => {

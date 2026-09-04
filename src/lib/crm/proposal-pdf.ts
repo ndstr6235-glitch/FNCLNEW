@@ -402,7 +402,7 @@ export async function generateProposalPdf(data: ProposalPdfData): Promise<Buffer
   drawSectionHeader("II", "Předmět smlouvy");
   drawNumberedItem("2.1", `Předmětem této smlouvy je poskytnutí peněžní zápůjčky ve výši ${fmtAmount(data.amount)}.`);
   drawNumberedItem("2.2", "Účelem zápůjčky je financování podnikatelské činnosti Dlužníka.");
-  drawNumberedItem("2.3", "Peněžní zápůjčku vyplatí Věřitel Dlužníkovi bezhotovostně na číslo účtu: .");
+  drawNumberedItem("2.3", "Peněžní zápůjčku vyplatí Věřitel Dlužníkovi bezhotovostně na číslo účtu: 7141812004/5500.");
 
   // ── ČLÁNEK III ──
   ensureSpace(100);

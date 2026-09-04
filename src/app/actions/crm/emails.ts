@@ -323,8 +323,8 @@ export async function sendEmail(
         }
       }
     } else if (label.includes("smlouv")) {
-      // Návrh smlouvy → completely blank PDF (vzor smlouvy, klient doplní)
-      // Smlouva finální → filled PDF with all client data
+      // Návrh smlouvy i Smlouva finální → vyplněný PDF s daty z composeru
+      // Prázdná pole zůstanou jako tečkované čáry k doplnění
       // PDF is MANDATORY for smlouva templates — if it fails, don't send email
       try {
         const { generateProposalPdf } = await import("@/lib/crm/proposal-pdf");
@@ -335,24 +335,19 @@ export async function sendEmail(
               .join(" ")
               .trim()
           : "";
-        const pdfBuffer = await generateProposalPdf(
-          isNavrh
-            ? {}
-            : {
-                // Smlouva finální — jméno je z composeru, NE z CRM Client recordu
-                clientName: contractFullName || undefined,
-                clientEmail: to,
-                amount: contractMeta?.investmentAmount,
-                interestRate: contractMeta?.interestRate,
-                duration: contractMeta?.duration,
-                payoutFrequency: contractMeta?.payoutFrequency,
-                birthDate: contractMeta?.birthDate,
-                street: contractMeta?.street,
-                city: contractMeta?.city,
-                zip: contractMeta?.zip,
-                bankAccount: contractMeta?.bankAccount,
-              }
-        );
+        const pdfBuffer = await generateProposalPdf({
+          clientName: contractFullName || undefined,
+          clientEmail: to,
+          amount: contractMeta?.investmentAmount,
+          interestRate: contractMeta?.interestRate,
+          duration: contractMeta?.duration,
+          payoutFrequency: contractMeta?.payoutFrequency,
+          birthDate: contractMeta?.birthDate,
+          street: contractMeta?.street,
+          city: contractMeta?.city,
+          zip: contractMeta?.zip,
+          bankAccount: contractMeta?.bankAccount,
+        });
 
         // Build a descriptive filename: "Smlouva-Jmeno-Prijmeni-2026-05-28.pdf"
         const docTypeLabel = isNavrh ? "Navrh-smlouvy" : "Smlouva";
