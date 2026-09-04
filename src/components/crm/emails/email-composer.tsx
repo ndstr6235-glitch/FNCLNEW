@@ -294,7 +294,7 @@ export default function EmailComposer({
         subject: subjectOverride || selectedTemplate.subject,
         body: finalBody,
         replyTo: "info@puskinpartners.cz",
-        senderName: selectedMember?.name || "Alexandr Puškin, s.r.o.",
+        senderName: "Puskin and Partners",
         templateLabel: selectedTemplate.label,
         contractMeta,
         clientId,
