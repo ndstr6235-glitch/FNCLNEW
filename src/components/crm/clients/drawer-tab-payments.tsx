@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { Plus, Pencil, Check, X, Landmark, CircleCheck, Clock, Copy } from "lucide-react";
+import { Plus, Pencil, Check, X, Landmark, CircleCheck, Clock, Copy, CalendarClock } from "lucide-react";
 import { fmtCZK, fmtDate } from "@/lib/crm/utils";
 import { useToast } from "@/components/crm/ui/toast";
-import { updatePaymentBankAccount, setPaymentPaid } from "@/app/actions/crm/clients";
+import { updatePaymentBankAccount, setPaymentPaid, schedulePayoutsFromClient } from "@/app/actions/crm/clients";
 import type { ClientDetail } from "@/app/actions/crm/clients";
 
 interface DrawerTabPaymentsProps {
@@ -233,6 +233,25 @@ export default function DrawerTabPayments({
             );
           })}
         </div>
+      )}
+
+      {/* Reschedule payouts button */}
+      {client.paymentReceivedDate && client.payments.some(p => p.paid && p.duration > 0) && (
+        <button
+          onClick={async () => {
+            const result = await schedulePayoutsFromClient(client.id);
+            if (result.success) {
+              toast(`Naplánováno ${result.eventsCreated} výplat`);
+              onRefresh?.();
+            } else {
+              toast(result.error || "Chyba", "error");
+            }
+          }}
+          className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-gold/10 text-gold text-sm font-medium hover:bg-gold/20 transition-colors"
+        >
+          <CalendarClock size={16} />
+          Přeplánovat výplaty od data připsání
+        </button>
       )}
 
       {/* Add payment button */}

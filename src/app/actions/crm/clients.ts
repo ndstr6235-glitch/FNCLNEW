@@ -37,6 +37,8 @@ export interface ClientDetail {
   /** Sensitive data — populated only for admin/supervisor; brokers receive empty object */
   metadataSensitive: Record<string, string>;
   bankAccount: string;
+  investmentAmount: number;
+  paymentReceivedDate: string;
   dnc: boolean;
   lastCallOutcome: string;
   lastCalledAt: string;
@@ -155,6 +157,8 @@ export async function getClientDetail(
     brokerName: `${client.user.firstName} ${client.user.lastName}`,
     brokerId: client.user.id,
     bankAccount: client.bankAccount,
+    investmentAmount: client.investmentAmount,
+    paymentReceivedDate: client.paymentReceivedDate,
     dnc: client.dnc,
     lastCallOutcome: client.lastCallOutcome,
     lastCalledAt: client.lastCalledAt,
@@ -203,6 +207,8 @@ export async function createClient(data: {
   city?: string;
   zip?: string;
   bankAccount?: string;
+  investmentAmount?: number;
+  paymentReceivedDate?: string;
   callDate: string;
   nextPaymentDate: string;
   paymentFreq: number;
@@ -230,6 +236,8 @@ export async function createClient(data: {
       city: data.city?.trim() ?? "",
       zip: data.zip?.trim() ?? "",
       bankAccount: data.bankAccount?.trim() ?? "",
+      investmentAmount: data.investmentAmount || 0,
+      paymentReceivedDate: data.paymentReceivedDate?.trim() ?? "",
       callDate: data.callDate || new Date().toISOString().split("T")[0],
       nextPaymentDate:
         data.nextPaymentDate || new Date().toISOString().split("T")[0],
@@ -268,6 +276,8 @@ export async function updateClient(
     city?: string;
     zip?: string;
     bankAccount?: string;
+    investmentAmount?: number;
+    paymentReceivedDate?: string;
     callDate: string;
     nextPaymentDate: string;
     paymentFreq: number;
@@ -307,6 +317,8 @@ export async function updateClient(
       city: data.city?.trim() ?? "",
       zip: data.zip?.trim() ?? "",
       bankAccount: data.bankAccount?.trim() ?? "",
+      investmentAmount: data.investmentAmount || 0,
+      paymentReceivedDate: data.paymentReceivedDate?.trim() ?? "",
       callDate: data.callDate,
       nextPaymentDate: data.nextPaymentDate,
       paymentFreq: data.paymentFreq,
@@ -344,9 +356,142 @@ export async function updateClient(
   await logActivity(clientId, session.id, "CLIENT_UPDATED", "Klient upraven");
   await logAudit(session.id, "UPDATE", "client", clientId, `${data.firstName} ${data.lastName}`);
 
+  // If paymentReceivedDate changed and client has investments, reschedule payouts
+  if (
+    data.paymentReceivedDate &&
+    data.paymentReceivedDate !== existing.paymentReceivedDate &&
+    data.paymentReceivedDate.trim() !== ""
+  ) {
+    try {
+      await _rescheduleFromDate(clientId, session.id);
+    } catch (err) {
+      console.error("_rescheduleFromDate failed:", err);
+    }
+  }
+
   revalidatePath("/clients");
   revalidatePath("/dashboard");
   return { success: true };
+}
+
+// ---------------------------------------------------------------------------
+// Internal: reschedule payouts from paymentReceivedDate (no session check)
+// ---------------------------------------------------------------------------
+async function _rescheduleFromDate(
+  clientId: string,
+  sessionUserId: string
+): Promise<{ eventsCreated: number }> {
+  const client = await prisma.client.findUnique({
+    where: { id: clientId },
+    include: {
+      payments: {
+        where: { paid: true, duration: { gt: 0 } },
+        orderBy: { date: "desc" },
+        take: 1,
+      },
+    },
+  });
+
+  if (!client || !client.paymentReceivedDate || client.payments.length === 0) {
+    return { eventsCreated: 0 };
+  }
+
+  const deposit = client.payments[0];
+
+  // Delete existing INTEREST events for this payment
+  await prisma.calEvent.deleteMany({
+    where: { paymentId: deposit.id, type: "INTEREST" },
+  });
+
+  const payoutFrequency =
+    deposit.payoutFrequency === "quarterly" ? "quarterly" : "monthly";
+
+  const schedule = computePayoutSchedule({
+    startDate: client.paymentReceivedDate,
+    amount: deposit.amount,
+    interestRate: deposit.percent,
+    durationMonths: deposit.duration,
+    payoutFrequency,
+  });
+
+  const clientName = `${client.firstName} ${client.lastName}`;
+  const bankAccount = client.bankAccount || "(účet nezadán)";
+
+  const eventsData = schedule.map((e, i) => ({
+    clientId,
+    userId: client.assignedTo,
+    paymentId: deposit.id,
+    type: "INTEREST" as const,
+    title: `Výplata úroku — ${clientName} — ${e.amount.toLocaleString("cs-CZ")} Kč`,
+    date: e.date,
+    time: "09:00",
+    note: `${e.label} • vklad ${deposit.amount.toLocaleString("cs-CZ")} Kč • ${deposit.percent}% p.a.\nÚčet klienta: ${bankAccount}${deposit.variableSymbol ? `\nVS: ${deposit.variableSymbol}` : ""} • Splátka ${i + 1}/${schedule.length}`,
+  }));
+
+  if (eventsData.length > 0) {
+    await prisma.calEvent.createMany({ data: eventsData });
+    await prisma.client.update({
+      where: { id: clientId },
+      data: { nextPaymentDate: eventsData[0].date },
+    });
+  }
+
+  // Notify admins about the new schedule
+  const admins = await prisma.user.findMany({
+    where: { active: true, role: { in: ["ADMINISTRATOR", "SUPERVISOR"] } },
+    select: { id: true },
+  });
+
+  if (admins.length > 0 && eventsData.length > 0) {
+    await prisma.notification.createMany({
+      data: admins.map((u) => ({
+        userId: u.id,
+        type: "payout_scheduled",
+        title: `Výplatní harmonogram vytvořen`,
+        message: `${clientName} — ${eventsData.length} výplat naplánováno od ${client.paymentReceivedDate}`,
+        link: `/clients?open=${clientId}`,
+      })),
+    });
+  }
+
+  await logActivity(
+    clientId,
+    sessionUserId,
+    "PAYOUT_SCHEDULED",
+    `Přeplánováno ${eventsData.length} výplat od ${client.paymentReceivedDate}`
+  );
+
+  return { eventsCreated: eventsData.length };
+}
+
+// ---------------------------------------------------------------------------
+// Schedule payouts from client card (public, checks session)
+// ---------------------------------------------------------------------------
+export async function schedulePayoutsFromClient(
+  clientId: string
+): Promise<{ success: boolean; eventsCreated?: number; error?: string }> {
+  const session = await getSession();
+  if (!session) return { success: false, error: "Nepřihlášen" };
+
+  const client = await prisma.client.findUnique({
+    where: { id: clientId },
+    select: { paymentReceivedDate: true },
+  });
+
+  if (!client) return { success: false, error: "Klient nenalezen" };
+  if (!client.paymentReceivedDate) return { success: false, error: "Datum připsání platby není zadáno" };
+
+  const result = await _rescheduleFromDate(clientId, session.id);
+
+  if (result.eventsCreated === 0) {
+    return { success: false, error: "Klient nemá žádnou aktivní investici" };
+  }
+
+  revalidatePath("/clients");
+  revalidatePath("/calendar");
+  revalidatePath("/dashboard");
+
+  return { success: true, eventsCreated: result.eventsCreated };
 }
 
 // ---------------------------------------------------------------------------

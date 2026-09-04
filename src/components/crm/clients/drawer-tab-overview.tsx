@@ -10,8 +10,10 @@ import {
   Trash2,
   MapPin,
   ShieldAlert,
+  Banknote,
+  CalendarCheck,
 } from "lucide-react";
-import { fmtDate } from "@/lib/crm/utils";
+import { fmtDate, fmtCZK } from "@/lib/crm/utils";
 import CallOutcomeModal from "./call-outcome-modal";
 import { getOutcomeMeta } from "@/lib/crm/call-outcomes";
 import CallOutcomeBadge from "./call-outcome-badge";
@@ -128,6 +130,20 @@ export default function DrawerTabOverview({
           label="Příští platba"
           value={fmtDate(client.nextPaymentDate) || "—"}
         />
+        {client.investmentAmount > 0 && (
+          <InfoCard
+            icon={<Banknote size={14} className="text-text-dim" />}
+            label="Plánovaný vklad"
+            value={fmtCZK(client.investmentAmount)}
+          />
+        )}
+        {client.paymentReceivedDate && (
+          <InfoCard
+            icon={<CalendarCheck size={14} className="text-text-dim" />}
+            label="Platba připsána"
+            value={fmtDate(client.paymentReceivedDate)}
+          />
+        )}
       </div>
 
       {/* Address */}

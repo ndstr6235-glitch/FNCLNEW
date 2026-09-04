@@ -77,7 +77,7 @@ async function generateAutoNotifications(userId: string) {
   const existingToday = await prisma.notification.count({
     where: {
       userId,
-      type: { in: ["payment_due", "call_today"] },
+      type: { in: ["payment_due", "call_today", "payout_due"] },
       createdAt: { gte: todayStart },
     },
   });
@@ -156,6 +156,62 @@ async function generateAutoNotifications(userId: string) {
         title: "Připomínka",
         message: `${clientName} — ${event.title}`,
         link: `/calendar`,
+      },
+    });
+  }
+
+  // Find upcoming INTEREST CalEvents in next 3 days for this user
+  const threeDaysFromNow = new Date(Date.now() + 3 * 86400000).toISOString().split("T")[0];
+
+  const upcomingInterestEvents = await prisma.calEvent.findMany({
+    where: {
+      userId,
+      type: "INTEREST",
+      date: { gte: today, lte: threeDaysFromNow },
+    },
+    include: {
+      client: {
+        select: {
+          id: true,
+          firstName: true,
+          lastName: true,
+          bankAccount: true,
+        },
+      },
+    },
+  });
+
+  for (const event of upcomingInterestEvents) {
+    const clientName = event.client
+      ? `${event.client.firstName} ${event.client.lastName}`
+      : "Neznámý klient";
+    const bankAccount = event.client?.bankAccount || "(účet nezadán)";
+
+    // Parse amount from event title: "Výplata úroku — Jméno — 1 234 Kč"
+    const amountMatch = event.title.match(/—\s*([\d\s]+)\s*Kč/);
+    const amountStr = amountMatch ? amountMatch[1].replace(/\s/g, "") : "?";
+
+    // Find associated payment for VS
+    let vs = "";
+    if (event.paymentId) {
+      const payment = await prisma.payment.findUnique({
+        where: { id: event.paymentId },
+        select: { variableSymbol: true },
+      });
+      vs = payment?.variableSymbol || "";
+    }
+
+    const isToday = event.date === today;
+    const isTomorrow = event.date === tomorrow;
+    const dateLabel = isToday ? "dnes" : isTomorrow ? "zítra" : event.date;
+
+    await prisma.notification.create({
+      data: {
+        userId,
+        type: "payout_due",
+        title: `Výplata úroku ${dateLabel}`,
+        message: `${clientName} — ${amountStr} Kč\nÚčet: ${bankAccount}${vs ? `\nVS: ${vs}` : ""}`,
+        link: `/clients?open=${event.client?.id || ""}`,
       },
     });
   }

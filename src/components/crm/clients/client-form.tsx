@@ -38,6 +38,8 @@ export default function ClientForm({
   const [city, setCity] = useState(editData?.city ?? "");
   const [zip, setZip] = useState(editData?.zip ?? "");
   const [bankAccount, setBankAccount] = useState(editData?.bankAccount ?? "");
+  const [investmentAmount, setInvestmentAmount] = useState(editData?.investmentAmount ?? 0);
+  const [paymentReceivedDate, setPaymentReceivedDate] = useState(editData?.paymentReceivedDate ?? "");
   const [callDate, setCallDate] = useState(
     editData?.callDate ?? new Date().toISOString().split("T")[0]
   );
@@ -64,6 +66,8 @@ export default function ClientForm({
       setCity(editData?.city ?? "");
       setZip(editData?.zip ?? "");
       setBankAccount(editData?.bankAccount ?? "");
+      setInvestmentAmount(editData?.investmentAmount ?? 0);
+      setPaymentReceivedDate(editData?.paymentReceivedDate ?? "");
       setCallDate(
         editData?.callDate ?? new Date().toISOString().split("T")[0]
       );
@@ -100,6 +104,8 @@ export default function ClientForm({
       city,
       zip,
       bankAccount,
+      investmentAmount: investmentAmount || undefined,
+      paymentReceivedDate: paymentReceivedDate || undefined,
       callDate,
       nextPaymentDate,
       paymentFreq,
@@ -257,6 +263,27 @@ export default function ClientForm({
           </p>
         </div>
 
+        {/* Výše vkladu — only show when editing */}
+        {isEdit && (
+          <div>
+            <label className="block text-xs font-medium text-text-mid mb-1">
+              Výše vkladu (Kč)
+            </label>
+            <input
+              type="number"
+              min={0}
+              step="any"
+              value={investmentAmount || ""}
+              onChange={(e) => setInvestmentAmount(parseFloat(e.target.value) || 0)}
+              placeholder="500000"
+              className="w-full px-3 py-2.5 min-h-[44px] border border-border bg-surface text-sm text-text placeholder:text-text-faint focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
+            />
+            <p className="mt-1 text-[11px] text-text-faint">
+              Kolik klient plánuje vložit. Slouží k výpočtu úroků a výplat.
+            </p>
+          </div>
+        )}
+
         {/* Dates & Freq — only show when editing */}
         {isEdit && (
           <>
@@ -283,6 +310,21 @@ export default function ClientForm({
                   className="w-full px-3 py-2.5 min-h-[44px] border border-border bg-surface text-sm text-text focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
                 />
               </div>
+            </div>
+
+            <div>
+              <label className="block text-xs font-medium text-text-mid mb-1">
+                Datum připsání platby
+              </label>
+              <input
+                type="date"
+                value={paymentReceivedDate}
+                onChange={(e) => setPaymentReceivedDate(e.target.value)}
+                className="w-full px-3 py-2.5 min-h-[44px] border border-border bg-surface text-sm text-text focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
+              />
+              <p className="mt-1 text-[11px] text-text-faint">
+                Skutečné datum, kdy peníze přišly na účet. Od tohoto data se počítá výplatní harmonogram.
+              </p>
             </div>
 
             <div>

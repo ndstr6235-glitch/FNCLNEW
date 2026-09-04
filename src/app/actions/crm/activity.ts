@@ -16,7 +16,8 @@ export type ActivityType =
   | "EVENT_CREATED"
   | "NOTE_CHANGED"
   | "ASSIGNED_TO_CHANGED"
-  | "GDPR_UNSUBSCRIBE";
+  | "GDPR_UNSUBSCRIBE"
+  | "PAYOUT_SCHEDULED";
 
 export interface ActivityRow {
   id: string;
