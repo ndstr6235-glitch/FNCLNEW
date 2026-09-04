@@ -309,7 +309,19 @@ export async function sendEmail(
         });
       } catch (err) {
         console.error("generateInvestmentPdf failed:", err);
-        // Do not fallback to static PDF — it contains outdated content
+        // Fallback to static Puskin Partners PDF
+        try {
+          const { PREZENTACE_PDF_BASE64 } = await import("@/lib/crm/prezentace-pdf");
+          if (PREZENTACE_PDF_BASE64) {
+            attachments.push({
+              filename: "Prezentace-Puskin-Partners.pdf",
+              content: PREZENTACE_PDF_BASE64,
+              contentType: "application/pdf",
+            });
+          }
+        } catch {
+          // PDF module not available
+        }
       }
     } else if (label.includes("smlouv")) {
       // Návrh smlouvy i Smlouva finální → vyplněný PDF s daty z composeru
