@@ -1,4 +1,5 @@
 export const projects = [
+  { title: "Byt Praha 10", location: "Praha 10", type: "Rekonstrukce bytu" },
   { title: "Byt Biskoupová", location: "Praha", type: "Rekonstrukce bytu" },
   { title: "Byt Kladno", location: "Kladno", type: "Rekonstrukce bytu" },
   { title: "Byt Běchovice", location: "Praha-východ", type: "Rekonstrukce bytu" },
