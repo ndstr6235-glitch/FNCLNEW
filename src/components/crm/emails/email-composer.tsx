@@ -251,9 +251,11 @@ export default function EmailComposer({
     const effectiveAmount = investmentAmount ? Number(investmentAmount) : totalDeposit;
 
     return raw
+      .replace(/\[OSLOVENI\]/gi, salutation || "[OSLOVENI]")
       .replace(/\[OSLOVENÍ\]/g, salutation || "[OSLOVENÍ]")
       .replace(/\[PODPIS\]/g, signature || "[PODPIS]")
       .replace(/\[VKLAD\]/g, fmtCZK(effectiveAmount))
+      .replace(/\[CASTKA\]/gi, calculatedPayout > 0 ? fmtCZK(calculatedPayout) : "–")
       .replace(/\[ČÁSTKA\]/g, calculatedPayout > 0 ? fmtCZK(calculatedPayout) : "–")
       .replace(/\[ÚROK\]/g, interestRate ? `${interestRate} %` : "–")
       .replace(/\[DOBA\]/g, durationLabel)
