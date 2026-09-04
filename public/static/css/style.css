@@ -1178,6 +1178,38 @@ a.tr-card:hover {
   margin-top: 12px;
 }
 
+/* --- Partners / suppliers logos --- */
+.partners {
+  padding: 64px var(--pad-x);
+  text-align: center;
+  border-top: var(--rule);
+  border-bottom: var(--rule);
+}
+
+.partners .section-label {
+  display: block;
+  margin-bottom: 40px;
+}
+
+.partners-logos {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 64px;
+  flex-wrap: wrap;
+}
+
+.partner-logo {
+  height: 32px;
+  width: auto;
+  filter: grayscale(100%) opacity(0.4);
+  transition: filter .3s ease;
+}
+
+.partner-logo:hover {
+  filter: grayscale(0%) opacity(1);
+}
+
 /* ========================================
    Responsive — tablet (<=1024px)
    ======================================== */
@@ -1356,6 +1388,15 @@ a.tr-card:hover {
   /* Track record slider — 2 per view */
   .tr-slide {
     flex: 0 0 calc(50% - 10px);
+  }
+
+  /* Partners */
+  .partners-logos {
+    gap: 40px;
+  }
+
+  .partner-logo {
+    height: 28px;
   }
 
   /* Contact */
@@ -1552,6 +1593,19 @@ a.tr-card:hover {
 
   .ref-card-quote {
     font-size: 18px;
+  }
+
+  /* Partners */
+  .partners {
+    padding: 48px var(--pad-x);
+  }
+
+  .partners-logos {
+    gap: 32px;
+  }
+
+  .partner-logo {
+    height: 24px;
   }
 
   /* Track record slider — 1 per view */

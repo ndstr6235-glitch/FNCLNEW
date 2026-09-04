@@ -298,18 +298,29 @@ export async function sendEmail(
     }
 
     if (label.includes("prezentace")) {
-      // Prezentace → attach presentation PDF
+      // Prezentace → generate dynamic investment PDF
       try {
-        const { PREZENTACE_PDF_BASE64 } = await import("@/lib/crm/prezentace-pdf");
-        if (PREZENTACE_PDF_BASE64) {
-          attachments.push({
-            filename: "Prezentace-Puskin-Partners.pdf",
-            content: PREZENTACE_PDF_BASE64,
-            contentType: "application/pdf",
-          });
-        }
+        const { generateInvestmentPdf } = await import("@/lib/crm/investment-pdf");
+        const pdfBuffer = await generateInvestmentPdf();
+        attachments.push({
+          filename: "Prezentace-Puskin-Partners.pdf",
+          content: pdfBuffer,
+          contentType: "application/pdf",
+        });
       } catch {
-        // PDF module not available
+        // Fallback to static PDF if dynamic generation fails
+        try {
+          const { PREZENTACE_PDF_BASE64 } = await import("@/lib/crm/prezentace-pdf");
+          if (PREZENTACE_PDF_BASE64) {
+            attachments.push({
+              filename: "Prezentace-Puskin-Partners.pdf",
+              content: PREZENTACE_PDF_BASE64,
+              contentType: "application/pdf",
+            });
+          }
+        } catch {
+          // PDF module not available
+        }
       }
     } else if (label.includes("smlouv")) {
       // Návrh smlouvy → completely blank PDF (vzor smlouvy, klient doplní)
