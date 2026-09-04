@@ -123,22 +123,15 @@ export async function generateProposalPdf(data: ProposalPdfData): Promise<Buffer
     color: gold,
   });
 
-  // Right side company info
-  const headerInfoFaded = rgb(0.937, 0.918, 0.882); // on-dark at 60% visual
-  const headerRight = [
-    { text: "Alexandr Puškin, s.r.o.", size: 9.5, font: fontSemi, color: white },
-    { text: "IČO: 26740788  |  DS: ", size: 8.5, font: fontRegular, color: headerInfoFaded },
-    { text: "Rybná 716/24, 110 00 Praha 1", size: 8.5, font: fontRegular, color: headerInfoFaded },
-  ];
-  headerRight.forEach((line, i) => {
-    const w = line.font.widthOfTextAtSize(line.text, line.size);
-    page.drawText(line.text, {
-      x: pageWidth - margin - w,
-      y: pageHeight - 28 - i * 13,
-      size: line.size,
-      font: line.font,
-      color: line.color,
-    });
+  // Right side — "Smlouva o zápůjčce" label
+  const headerLabel = "Smlouva o zápůjčce";
+  const hlW = fontSemi.widthOfTextAtSize(headerLabel, 10);
+  page.drawText(headerLabel, {
+    x: pageWidth - margin - hlW,
+    y: pageHeight - 42,
+    size: 10,
+    font: fontSemi,
+    color: gold,
   });
 
   // Brass accent line under header
@@ -150,11 +143,11 @@ export async function generateProposalPdf(data: ProposalPdfData): Promise<Buffer
     color: gold,
   });
 
-  y = pageHeight - headerH - 1 - 75;
+  y = pageHeight - headerH - 1 - 40;
 
   // ── TITLE ──
   const title = "Smlouva o zápůjčce";
-  const titleSize = 28;
+  const titleSize = 22;
   const titleW = fontBold.widthOfTextAtSize(title, titleSize);
   page.drawText(title, {
     x: (pageWidth - titleW) / 2,
@@ -163,10 +156,10 @@ export async function generateProposalPdf(data: ProposalPdfData): Promise<Buffer
     font: fontBold,
     color: navy,
   });
-  y -= 30;
+  y -= 22;
 
   const subtitle = "uzavřená dle § 2390 a násl. zákona č. 89/2012 Sb., občanský zákoník";
-  const subtitleSize = 10.5;
+  const subtitleSize = 9.5;
   const subtitleW = fontRegular.widthOfTextAtSize(subtitle, subtitleSize);
   page.drawText(subtitle, {
     x: (pageWidth - subtitleW) / 2,
@@ -175,7 +168,7 @@ export async function generateProposalPdf(data: ProposalPdfData): Promise<Buffer
     font: fontRegular,
     color: grey,
   });
-  y -= 58;
+  y -= 36;
 
   // ── Helper: text wrapping ──
   function wrapText(text: string, maxWidth: number, font: PDFFont, fontSize: number): string[] {
@@ -240,65 +233,37 @@ export async function generateProposalPdf(data: ProposalPdfData): Promise<Buffer
     y -= lines.length * lineHeight + 12;
   }
 
-  // ── Helper: party box ──
+  // ── Helper: party section (plain text, no boxes) ──
   function drawPartyBox(label: string, fields: [string, string][], filled: boolean) {
-    const padTop = 20;
-    const padBottom = 22;
-    const padLeft = 24;
-    const rowHeight = 22;
-    const labelGap = 22;
-    const boxH = padTop + labelGap + fields.length * rowHeight + padBottom - rowHeight;
+    const rowHeight = 16;
 
-    const boxTop = y + 10;
-    const boxBottom = boxTop - boxH;
-
-    // Background
-    page.drawRectangle({
-      x: margin,
-      y: boxBottom,
-      width: contentWidth,
-      height: boxH,
-      color: greyBg,
-    });
-    // Left gold accent bar
-    page.drawRectangle({
-      x: margin,
-      y: boxBottom,
-      width: 3,
-      height: boxH,
-      color: gold,
-    });
-
-    // Label
-    let cursorY = boxTop - padTop;
     page.drawText(label, {
-      x: margin + padLeft,
-      y: cursorY,
-      size: 10,
+      x: margin,
+      y,
+      size: 9,
       font: fontBold,
       color: gold,
     });
-    cursorY -= labelGap;
+    y -= 16;
 
-    // Fields
     for (const [key, val] of fields) {
       page.drawText(key, {
-        x: margin + padLeft,
-        y: cursorY,
-        size: 10,
+        x: margin,
+        y,
+        size: 9.5,
         font: fontRegular,
         color: grey,
       });
       page.drawText(val, {
-        x: margin + 190,
-        y: cursorY,
-        size: 10,
+        x: margin + 140,
+        y,
+        size: 9.5,
         font: filled ? fontSemi : fontRegular,
         color: filled ? black : grey,
       });
-      cursorY -= rowHeight;
+      y -= rowHeight;
     }
-    y = boxBottom - 22;
+    y -= 10;
   }
 
   // ── Helper: page break ──
@@ -455,86 +420,35 @@ export async function generateProposalPdf(data: ProposalPdfData): Promise<Buffer
   drawNumberedItem("9.4", "Smlouva nabývá účinnosti dnem podpisu oběma smluvními stranami.");
 
   // ── SIGNATURES ──
-  ensureSpace(180);
-  y -= 24;
+  ensureSpace(110);
+  y -= 16;
   page.drawLine({
     start: { x: margin, y },
     end: { x: pageWidth - margin, y },
-    thickness: 1,
+    thickness: 0.5,
     color: greyLight,
   });
-  y -= 32;
+  y -= 22;
 
-  // Column positions
-  const leftCol = margin + 20;
-  const rightCol = pageWidth / 2 + 20;
-  const leftLineEnd = pageWidth / 2 - 30;
-  const rightLineEnd = pageWidth - margin - 20;
+  const leftCol = margin;
+  const rightCol = pageWidth / 2 + 10;
+  const leftLineEnd = pageWidth / 2 - 20;
+  const rightLineEnd = pageWidth - margin;
 
-  // Headers
-  page.drawText("VĚŘITEL", {
-    x: leftCol,
-    y,
-    size: 10,
-    font: fontSemi,
-    color: gold,
-  });
-  page.drawText("DLUŽNÍK", {
-    x: rightCol,
-    y,
-    size: 10,
-    font: fontSemi,
-    color: gold,
-  });
+  page.drawText("VĚŘITEL", { x: leftCol, y, size: 9, font: fontSemi, color: gold });
+  page.drawText("DLUŽNÍK", { x: rightCol, y, size: 9, font: fontSemi, color: gold });
 
-  // Signature space
-  y -= 75;
+  y -= 50;
 
-  // Signature lines
-  page.drawLine({
-    start: { x: leftCol, y },
-    end: { x: leftLineEnd, y },
-    thickness: 0.7,
-    color: gold,
-  });
-  page.drawLine({
-    start: { x: rightCol, y },
-    end: { x: rightLineEnd, y },
-    thickness: 0.7,
-    color: gold,
-  });
+  page.drawLine({ start: { x: leftCol, y }, end: { x: leftLineEnd, y }, thickness: 0.5, color: gold });
+  page.drawLine({ start: { x: rightCol, y }, end: { x: rightLineEnd, y }, thickness: 0.5, color: gold });
 
-  // Right side — Miroslav Fencl name
-  page.drawText("Miroslav Fencl, jednatel", {
-    x: rightCol,
-    y: y - 14,
-    size: 10,
-    font: fontSemi,
-    color: black,
-  });
+  page.drawText("Miroslav Fencl, jednatel", { x: rightCol, y: y - 12, size: 9.5, font: fontSemi, color: black });
 
-  // Date lines — VĚŘITEL stays blank for client to fill in by hand;
-  // DLUŽNÍK (Miroslav Fencl) gets today's date pre-filled.
-  y -= 30;
-  page.drawText("V Praze dne _______________", {
-    x: leftCol,
-    y,
-    size: 9.5,
-    font: fontRegular,
-    color: grey,
-  });
-  const today = new Date().toLocaleDateString("cs-CZ", {
-    day: "numeric",
-    month: "numeric",
-    year: "numeric",
-  });
-  page.drawText(`V Praze dne ${today}`, {
-    x: rightCol,
-    y,
-    size: 9.5,
-    font: fontRegular,
-    color: grey,
-  });
+  const today = new Date().toLocaleDateString("cs-CZ", { day: "numeric", month: "numeric", year: "numeric" });
+  y -= 24;
+  page.drawText("V Praze dne _______________", { x: leftCol, y, size: 9, font: fontRegular, color: grey });
+  page.drawText(`V Praze dne ${today}`, { x: rightCol, y, size: 9, font: fontRegular, color: grey });
 
   // ── FOOTER ──
   drawFooter(page);
