@@ -92,6 +92,11 @@ export default function ClientForm({
       return;
     }
 
+    if (!email.trim()) {
+      setError("Email je povinný");
+      return;
+    }
+
     setSubmitting(true);
 
     const formData = {
@@ -181,13 +186,14 @@ export default function ClientForm({
 
         <div>
           <label className="block text-xs font-medium text-text-mid mb-1">
-            Email
+            Email *
           </label>
           <input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="email@example.cz"
+            required
             className="w-full px-3 py-2.5 min-h-[44px] border border-border bg-surface text-sm text-text placeholder:text-text-faint focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
           />
         </div>

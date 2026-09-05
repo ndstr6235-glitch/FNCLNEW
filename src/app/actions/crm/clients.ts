@@ -222,6 +222,10 @@ export async function createClient(data: {
     return { success: false, error: "Jméno a příjmení jsou povinné" };
   }
 
+  if (!data.email.trim()) {
+    return { success: false, error: "Email je povinný" };
+  }
+
   const assignedTo =
     session.role === "broker" ? session.id : data.assignedTo || session.id;
 
@@ -300,6 +304,10 @@ export async function updateClient(
 
   if (!data.firstName.trim() || !data.lastName.trim()) {
     return { success: false, error: "Jméno a příjmení jsou povinné" };
+  }
+
+  if (!data.email.trim()) {
+    return { success: false, error: "Email je povinný" };
   }
 
   const newAssignedTo =
