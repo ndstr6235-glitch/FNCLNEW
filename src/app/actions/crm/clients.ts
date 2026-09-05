@@ -7,6 +7,7 @@ import { logActivity } from "./activity";
 import { calculateScore } from "@/lib/crm/scoring";
 import { createAssignmentNotification } from "./notifications";
 import { logAudit } from "./audit";
+import { sendEmail } from "./emails";
 import { SENSITIVE_METADATA_KEYS } from "@/lib/crm/lead-import";
 import { computePayoutSchedule } from "@/lib/crm/payout-schedule";
 import type { ClientScore, ClientStage } from "@/lib/crm/types";
@@ -259,6 +260,43 @@ export async function createClient(data: {
   );
 
   await logAudit(session.id, "CREATE", "client", client.id, `${data.firstName} ${data.lastName}`);
+
+  // Auto-send Prezentace PDF to new client
+  if (data.email.trim()) {
+    try {
+      const template = await prisma.emailTemplate.findFirst({
+        where: { label: "Prezentace" },
+      });
+      if (template) {
+        const sender = await prisma.user.findUnique({
+          where: { id: session.id },
+          select: { firstName: true, lastName: true, signature: true },
+        });
+        const senderName = sender
+          ? `${sender.firstName} ${sender.lastName}`
+          : "Puskin and Partners";
+        const signature = sender?.signature || "";
+        const salutation = `${data.firstName.trim()} ${data.lastName.trim()}`;
+
+        const body = template.body
+          .replace(/\[OSLOVENI\]/gi, salutation)
+          .replace(/\[OSLOVENÍ\]/g, salutation)
+          .replace(/\[PODPIS\]/g, signature);
+
+        await sendEmail({
+          to: data.email.trim(),
+          subject: template.subject,
+          body,
+          senderName,
+          templateLabel: template.label,
+          clientId: client.id,
+          clientName: salutation,
+        });
+      }
+    } catch (err) {
+      console.error("Auto-send prezentace failed:", err);
+    }
+  }
 
   revalidatePath("/clients");
   revalidatePath("/dashboard");
