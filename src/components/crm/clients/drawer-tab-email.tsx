@@ -11,6 +11,8 @@ import type { Role } from "@/lib/crm/types";
 interface DrawerTabEmailProps {
   client: ClientDetail;
   userRole: Role;
+  userName?: string;
+  userEmail?: string;
 }
 
 function relativeTime(iso: string): string {
@@ -38,6 +40,8 @@ function relativeTime(iso: string): string {
 export default function DrawerTabEmail({
   client,
   userRole,
+  userName,
+  userEmail,
 }: DrawerTabEmailProps) {
   const [templates, setTemplates] = useState<EmailTemplateRow[]>([]);
   const [composerOpen, setComposerOpen] = useState(false);
@@ -248,6 +252,8 @@ export default function DrawerTabEmail({
         prefillCity={client.city}
         prefillZip={client.zip}
         prefillBankAccount={client.bankAccount}
+        userName={userName}
+        userEmail={userEmail}
       />
     </div>
   );

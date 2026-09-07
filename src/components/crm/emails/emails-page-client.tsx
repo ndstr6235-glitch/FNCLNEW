@@ -29,6 +29,8 @@ interface EmailsPageClientProps {
   clients: EmailClientRow[];
   templates: EmailTemplateRow[];
   userRole: Role;
+  userName?: string;
+  userEmail?: string;
 }
 
 interface ComposerState {
@@ -40,6 +42,8 @@ export default function EmailsPageClient({
   clients,
   templates,
   userRole,
+  userName,
+  userEmail,
 }: EmailsPageClientProps) {
   const [composerState, setComposerState] = useState<ComposerState | null>(
     null
@@ -102,6 +106,10 @@ export default function EmailsPageClient({
           clientNote={composerState.client.note}
           brokerName={composerState.client.brokerName}
           clientId={composerState.client.id}
+          prefillFirstName={composerState.client.firstName}
+          prefillLastName={composerState.client.lastName}
+          userName={userName}
+          userEmail={userEmail}
         />
       )}
     </div>

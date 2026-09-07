@@ -41,6 +41,8 @@ interface ClientsPageClientProps {
   isPoolView?: boolean;
   currentPage?: number;
   pageSize?: number;
+  userName?: string;
+  userEmail?: string;
 }
 
 export default function ClientsPageClient({
@@ -55,6 +57,8 @@ export default function ClientsPageClient({
   isPoolView,
   currentPage = 1,
   pageSize = 200,
+  userName,
+  userEmail,
 }: ClientsPageClientProps) {
   // Read ?open=<id> on mount AND react to URL changes so links from
   // dashboard / notifications open the drawer even when already on /clients
@@ -287,6 +291,8 @@ export default function ClientsPageClient({
         brokers={brokers}
         isBroker={isBroker}
         userRole={userRole}
+        userName={userName}
+        userEmail={userEmail}
       />
 
       {/* Create Client Form */}

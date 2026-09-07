@@ -38,6 +38,21 @@ interface EmailComposerProps {
   prefillCity?: string;
   prefillZip?: string;
   prefillBankAccount?: string;
+  /** Logged-in user name for broker auto-signature */
+  userName?: string;
+  /** Logged-in user email */
+  userEmail?: string;
+}
+
+/** Czech gender detection from first name — names ending in -a/-e are typically female */
+function buildAutoSalutation(firstName: string, lastName: string): string {
+  if (!firstName || !lastName) return "";
+  const name = firstName.trim().toLowerCase();
+  const isFemale = name.endsWith("a") || name.endsWith("e");
+  if (isFemale) {
+    return `Vážená paní ${lastName}`;
+  }
+  return `Vážený pane ${lastName}`;
 }
 
 // Duration options for contract fields
@@ -103,6 +118,8 @@ export default function EmailComposer({
   prefillCity,
   prefillZip,
   prefillBankAccount,
+  userName,
+  userEmail,
 }: EmailComposerProps) {
   const { toast } = useToast();
 
@@ -151,6 +168,11 @@ export default function EmailComposer({
     return lines.join("\n");
   }
 
+  // Build signature from logged-in user data (for brokers not in TEAM_SIGNATURES)
+  function buildCustomSignature(name: string) {
+    return ["S pozdravem,", "", name, "Alexandr Puškin, s.r.o.", SIGNATURE_DISPLAY_EMAIL, "www.puskinpartners.cz"].join("\n");
+  }
+
   // When a team member pill is selected, auto-generate signature
   function handleSelectSignature(id: string) {
     if (id === selectedSignatureId) return;
@@ -163,17 +185,49 @@ export default function EmailComposer({
     }
   }
 
+  // Detect if "Smlouva finální" template is selected (for auto-signature override)
+  const isFinalSmlouva = (templateId: string) => {
+    const t = allowedTemplates.find((tpl) => tpl.id === templateId);
+    if (!t) return false;
+    const label = t.label.toLowerCase();
+    return label.includes("smlouv") && !label.includes("návrh") && !label.includes("navrh");
+  };
+
   // Reset when template or open changes
   /* eslint-disable react-hooks/set-state-in-effect -- intentional form reset on open */
   useEffect(() => {
     if (open) {
-      setSelectedTemplateId(initialTemplateId || allowedTemplates[0]?.id || "");
-      setSalutation("");
+      const tid = initialTemplateId || allowedTemplates[0]?.id || "";
+      setSelectedTemplateId(tid);
+      // Auto-fill salutation from client name
+      setSalutation(buildAutoSalutation(prefillFirstName || "", prefillLastName || ""));
       setBodyOverride("");
-      // Auto-select first team member so replyTo is always set
-      const defaultMember = TEAM_SIGNATURES[0];
-      setSelectedSignatureId(defaultMember.id);
-      setSignature(buildTeamSignature(defaultMember));
+
+      // Auto-signature logic:
+      // - Smlouva finální → always Fencl (jednatel signs contracts)
+      // - Broker → auto-signature from logged-in user, no pill selector
+      // - Admin/supervisor → pill selector, default Fencl
+      if (isFinalSmlouva(tid)) {
+        const fencl = TEAM_SIGNATURES.find((m) => m.id === "fencl") || TEAM_SIGNATURES[0];
+        setSelectedSignatureId(fencl.id);
+        setSignature(buildTeamSignature(fencl));
+      } else if (userRole === "broker" && userName) {
+        const matched = TEAM_SIGNATURES.find(
+          (m) => m.name.toLowerCase() === userName.toLowerCase()
+        );
+        if (matched) {
+          setSelectedSignatureId(matched.id);
+          setSignature(buildTeamSignature(matched));
+        } else {
+          setSelectedSignatureId("broker-auto");
+          setSignature(buildCustomSignature(userName));
+        }
+      } else {
+        const defaultMember = TEAM_SIGNATURES[0];
+        setSelectedSignatureId(defaultMember.id);
+        setSignature(buildTeamSignature(defaultMember));
+      }
+
       setRecipientEmail(clientEmail);
       setSubjectOverride("");
       setInvestmentAmount("");
@@ -181,9 +235,6 @@ export default function EmailComposer({
       setDuration("12");
       setStartDate("");
       setPayoutFrequency("monthly");
-      // Pre-fill from existing Client data — admin doesn't re-type info we
-      // already know. Any change here will be auto-persisted back to Client
-      // after the e-mail is sent (see emails.ts).
       setClientBankAccount(prefillBankAccount ?? "");
       setContractFirstName(prefillFirstName ?? "");
       setContractLastName(prefillLastName ?? "");
@@ -197,6 +248,8 @@ export default function EmailComposer({
     initialTemplateId,
     allowedTemplates,
     clientEmail,
+    userName,
+    userRole,
     prefillFirstName,
     prefillLastName,
     prefillBirthDate,
@@ -237,8 +290,8 @@ export default function EmailComposer({
 
   // Show contract parameter fields for ALL smlouva templates (Návrh i Finální)
   const showContractFields = isSmlouvaTemplate;
-  // Návrh shows only amount + interest, Finální shows all personal fields too
-  const showPersonalFields = isSmlouvaTemplate && !isNavrhSmlouva;
+  // Personal fields are no longer shown — Smlouva finální uses data from client card
+  const showPersonalFields = false;
 
   // Calculate payout amount based on contract fields
   const calculatedPayout = useMemo(() => {
@@ -277,8 +330,31 @@ export default function EmailComposer({
       toast("Vyberte šablonu a zadejte email příjemce", "error");
       return;
     }
+
+    // Validate client data before sending
+    const missing: string[] = [];
+    if (!prefillFirstName?.trim()) missing.push("jméno");
+    if (!prefillLastName?.trim()) missing.push("příjmení");
+    if (!recipientEmail?.trim()) missing.push("email");
+
+    // Smlouva finální requires additional fields
+    if (isSmlouvaTemplate && !isNavrhSmlouva) {
+      if (!prefillBirthDate?.trim()) missing.push("datum narození");
+      if (!prefillStreet?.trim()) missing.push("ulice");
+      if (!prefillCity?.trim()) missing.push("město");
+      if (!prefillZip?.trim()) missing.push("PSČ");
+      if (!prefillBankAccount?.trim()) missing.push("bankovní účet");
+    }
+
+    if (missing.length > 0) {
+      toast(`Doplňte údaje klienta: ${missing.join(", ")}`, "error");
+      return;
+    }
+
     setSending(true);
     try {
+      // For Smlouva finální, use prefill props (from client card) instead of manual fields
+      const usePrefillForContract = isSmlouvaTemplate && !isNavrhSmlouva;
       const contractMeta = showContractFields
         ? {
             investmentAmount: investmentAmount ? Number(investmentAmount) : 0,
@@ -286,19 +362,19 @@ export default function EmailComposer({
             duration,
             startDate: startDate || undefined,
             payoutFrequency,
-            bankAccount: clientBankAccount || undefined,
-            firstName: contractFirstName || undefined,
-            lastName: contractLastName || undefined,
-            birthDate: birthDate || undefined,
-            street: street || undefined,
-            city: city || undefined,
-            zip: zip || undefined,
+            bankAccount: usePrefillForContract ? (prefillBankAccount || undefined) : (clientBankAccount || undefined),
+            firstName: usePrefillForContract ? (prefillFirstName || undefined) : (contractFirstName || undefined),
+            lastName: usePrefillForContract ? (prefillLastName || undefined) : (contractLastName || undefined),
+            birthDate: usePrefillForContract ? (prefillBirthDate || undefined) : (birthDate || undefined),
+            street: usePrefillForContract ? (prefillStreet || undefined) : (street || undefined),
+            city: usePrefillForContract ? (prefillCity || undefined) : (city || undefined),
+            zip: usePrefillForContract ? (prefillZip || undefined) : (zip || undefined),
           }
         : undefined;
 
       // Get selected team member for sender name + replyTo
       const selectedMember =
-        selectedSignatureId && selectedSignatureId !== "custom"
+        selectedSignatureId && selectedSignatureId !== "custom" && selectedSignatureId !== "broker-auto"
           ? TEAM_SIGNATURES.find((m) => m.id === selectedSignatureId)
           : null;
 
@@ -306,8 +382,8 @@ export default function EmailComposer({
         to: recipientEmail,
         subject: subjectOverride || selectedTemplate.subject,
         body: finalBody,
-        replyTo: selectedMember?.email || "info@puskinpartners.cz",
-        senderName: selectedMember ? `${selectedMember.name} | Puskin and Partners` : "Puskin and Partners",
+        replyTo: selectedMember?.email || userEmail || "info@puskinpartners.cz",
+        senderName: selectedMember ? `${selectedMember.name} | Puskin and Partners` : userName ? `${userName} | Puskin and Partners` : "Puskin and Partners",
         templateLabel: selectedTemplate.label,
         contractMeta,
         clientId,
@@ -805,7 +881,8 @@ export default function EmailComposer({
             <label className="block text-xs font-medium text-sapphire">
               Podpis
             </label>
-            {/* Signature pills — horizontal scroll */}
+            {/* Signature pills — hidden for broker (auto) and Smlouva finální (always Fencl) */}
+            {userRole !== "broker" && !(isSmlouvaTemplate && !isNavrhSmlouva) && (
             <div className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1">
               {TEAM_SIGNATURES.map((member) => (
                 <button
@@ -835,6 +912,7 @@ export default function EmailComposer({
                 Vlastní
               </button>
             </div>
+            )}
             {/* Signature textarea — editable after selecting */}
             <textarea
               value={signature}

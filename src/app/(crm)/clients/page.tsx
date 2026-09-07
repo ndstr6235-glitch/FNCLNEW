@@ -175,6 +175,8 @@ export default async function ClientsRoute({ searchParams }: PageProps) {
       outcomeCounts={outcomeCounts}
       currentOutcome={outcomeParam}
       isPoolView={showPool}
+      userName={`${session.firstName} ${session.lastName}`}
+      userEmail={session.email}
     />
   );
 }

@@ -24,6 +24,8 @@ interface ClientDrawerProps {
   brokers: { id: string; name: string }[];
   isBroker: boolean;
   userRole: "administrator" | "supervisor" | "broker";
+  userName?: string;
+  userEmail?: string;
 }
 
 type Tab = "overview" | "payments" | "events" | "email" | "history" | "documents" | "tickets";
@@ -34,6 +36,8 @@ export default function ClientDrawer({
   brokers,
   isBroker,
   userRole,
+  userName,
+  userEmail,
 }: ClientDrawerProps) {
   const { toast } = useToast();
   const [client, setClient] = useState<ClientDetail | null>(null);
@@ -178,7 +182,7 @@ export default function ClientDrawer({
                 <DrawerTabEvents client={client} />
               )}
               {activeTab === "email" && (
-                <DrawerTabEmail client={client} userRole={userRole} />
+                <DrawerTabEmail client={client} userRole={userRole} userName={userName} userEmail={userEmail} />
               )}
               {activeTab === "documents" && userRole !== "broker" && (
                 <DrawerTabDocuments clientId={client.id} />

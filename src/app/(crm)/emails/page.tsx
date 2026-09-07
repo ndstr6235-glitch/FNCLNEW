@@ -16,6 +16,8 @@ export default async function EmailsRoute() {
       clients={data.clients}
       templates={data.templates}
       userRole={session.role as Role}
+      userName={`${session.firstName} ${session.lastName}`}
+      userEmail={session.email}
     />
   );
 }
