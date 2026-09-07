@@ -305,7 +305,10 @@ export async function sendEmail(
         console.log(`[sendEmail] Prezentace PDF generated: ${pdfBuffer.length} bytes`);
         attachments.push({
           filename: "Prezentace-Puskin-Partners.pdf",
-          content: pdfBuffer,
+          // Resend API serializes attachments via JSON.stringify — Buffer would
+          // become {"type":"Buffer",...}, so we must pass a base64 string
+          content: pdfBuffer.toString("base64"),
+          contentType: "application/pdf",
         });
       } catch (err) {
         console.error("generateInvestmentPdf failed:", err);
