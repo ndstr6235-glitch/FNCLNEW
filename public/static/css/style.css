@@ -804,7 +804,7 @@ a.emission-card:hover { background: rgba(22,33,29,.03); }
 .team-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 24px;
+  gap: 32px;
   margin-top: 48px;
 }
 
@@ -813,50 +813,74 @@ a.emission-card:hover { background: rgba(22,33,29,.03); }
 }
 
 .team-card-photo {
-  width: 100%;
-  aspect-ratio: 3 / 4;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
   background: var(--ink);
-  margin-bottom: 20px;
+  margin: 0 auto 18px;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  border: 3px solid transparent;
+  background-clip: padding-box;
+  position: relative;
+}
+
+.team-card-photo::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  border: 2px solid var(--brass);
+  pointer-events: none;
+}
+
+.team-card-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
 }
 
 .team-card-initials {
   font-family: var(--serif);
-  font-size: 36px;
+  font-size: 32px;
   color: var(--brass);
   letter-spacing: .05em;
 }
 
 .team-card-name {
-  font-family: var(--serif);
-  font-size: 18px;
+  font-family: var(--sans);
+  font-size: 15px;
+  font-weight: 600;
   color: var(--ink);
-  margin-bottom: 4px;
+  margin-bottom: 2px;
 }
 
 .team-card-role {
   font-family: var(--sans);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 500;
-  letter-spacing: .1em;
+  letter-spacing: .08em;
   text-transform: uppercase;
   color: var(--brass);
-  margin-bottom: 14px;
+  margin-bottom: 12px;
 }
 
 .team-card-bio {
   font-family: var(--sans);
-  font-size: 13px;
-  line-height: 1.7;
+  font-size: 12.5px;
+  line-height: 1.65;
   color: var(--text-3);
+  max-width: 220px;
+  margin: 0 auto;
 }
 
 @media (max-width: 1024px) {
   .team-grid {
     grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
   }
 }
 
@@ -866,13 +890,17 @@ a.emission-card:hover { background: rgba(22,33,29,.03); }
   }
   .team-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
+    gap: 24px;
+  }
+  .team-card-photo {
+    width: 96px;
+    height: 96px;
   }
   .team-card-name {
-    font-size: 16px;
+    font-size: 14px;
   }
   .team-card-bio {
-    font-size: 12px;
+    font-size: 11.5px;
   }
 }
 
