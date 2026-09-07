@@ -2,7 +2,7 @@
 // Inter supports full Czech diacritics. Works on Vercel serverless (no Puppeteer).
 
 import { PDFDocument, PDFFont, PDFPage, rgb } from "pdf-lib";
-import * as fontkit from "@pdf-lib/fontkit";
+import fontkit from "@pdf-lib/fontkit";
 import { INTER_REGULAR_B64, INTER_BOLD_B64, INTER_SEMIBOLD_B64 } from "./fonts-data";
 
 export interface ProposalPdfData {
