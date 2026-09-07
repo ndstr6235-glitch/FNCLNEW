@@ -284,7 +284,7 @@ export async function createClient(data: {
           .replace(/\[OSLOVENÍ\]/g, salutation)
           .replace(/\[PODPIS\]/g, signature);
 
-        await sendEmail({
+        const emailResult = await sendEmail({
           to: data.email.trim(),
           subject: template.subject,
           body,
@@ -293,6 +293,7 @@ export async function createClient(data: {
           clientId: client.id,
           clientName: fullName,
         });
+        console.log("[createClient] Auto-send prezentace result:", emailResult);
       }
     } catch (err) {
       console.error("Auto-send prezentace failed:", err);

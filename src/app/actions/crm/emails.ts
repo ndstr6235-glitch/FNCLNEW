@@ -302,12 +302,10 @@ export async function sendEmail(
       try {
         const { generateInvestmentPdf } = await import("@/lib/crm/investment-pdf");
         const pdfBuffer = await generateInvestmentPdf();
+        console.log(`[sendEmail] Prezentace PDF generated: ${pdfBuffer.length} bytes`);
         attachments.push({
           filename: "Prezentace-Puskin-Partners.pdf",
-          // Resend API serializes attachments via JSON.stringify — Buffer would
-          // become {"type":"Buffer",...}, so we must pass a base64 string
-          content: pdfBuffer.toString("base64"),
-          contentType: "application/pdf",
+          content: pdfBuffer,
         });
       } catch (err) {
         console.error("generateInvestmentPdf failed:", err);
