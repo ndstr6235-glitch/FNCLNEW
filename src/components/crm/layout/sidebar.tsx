@@ -18,10 +18,19 @@ import {
   Globe,
   type LucideIcon,
 } from "lucide-react";
+import Image from "next/image";
 import { NAV_SECTIONS, ROLE_META } from "@/lib/crm/constants";
 import { cn } from "@/lib/crm/utils";
 import { useSidebar } from "./sidebar-context";
 import type { Role } from "@/lib/crm/types";
+
+const USER_PHOTOS: Record<string, string> = {
+  fencl: "/static/team/fencl.jpg",
+  vacek: "/static/team/vacek.jpg",
+  novotna: "/static/team/novotna.jpg",
+  benes: "/static/team/benes.jpg",
+  jelinek: "/static/team/jelinek.jpg",
+};
 
 const ICON_MAP: Record<string, LucideIcon> = {
   dashboard: LayoutDashboard,
@@ -65,6 +74,7 @@ export default function Sidebar({ user }: SidebarProps) {
 
   const activeKey = pathname.split("/")[1] || "dashboard";
   const initials = `${user.firstName[0]}${user.lastName[0]}`;
+  const photoUrl = USER_PHOTOS[user.lastName.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")];
 
   function handleNav(key: string) {
     router.push(`/${key}`);
@@ -174,9 +184,19 @@ export default function Sidebar({ user }: SidebarProps) {
             "flex items-center gap-3 p-2.5 hover:bg-[rgba(239,234,225,0.04)] transition-colors cursor-pointer mb-3",
             isCompact && "justify-center p-2"
           )}>
-            <div className="w-8 h-8 bg-[rgba(169,136,78,0.15)] border border-brass/30 flex items-center justify-center text-[11px] font-bold text-brass shrink-0">
-              {initials}
-            </div>
+            {photoUrl ? (
+              <Image
+                src={photoUrl}
+                alt={`${user.firstName} ${user.lastName}`}
+                width={32}
+                height={32}
+                className="w-8 h-8 rounded-full object-cover border border-brass/30 shrink-0"
+              />
+            ) : (
+              <div className="w-8 h-8 bg-[rgba(169,136,78,0.15)] border border-brass/30 flex items-center justify-center text-[11px] font-bold text-brass shrink-0">
+                {initials}
+              </div>
+            )}
             {(isOverlay || !collapsed) && (
               <div className="flex-1 min-w-0">
                 <p className="text-[13px] font-semibold text-on-dark truncate leading-tight">
