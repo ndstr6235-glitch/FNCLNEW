@@ -95,7 +95,10 @@ export async function sendContractEmail(
             attachments: [
               {
                 filename: `Smlouva-${safeName}.pdf`,
-                content: pdfBuffer,
+                // Resend API serializes attachments via JSON.stringify — Buffer would
+                // become {"type":"Buffer",...}, so we must pass a base64 string
+                content: pdfBuffer.toString("base64"),
+                contentType: "application/pdf",
               },
             ],
           }
