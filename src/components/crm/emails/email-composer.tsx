@@ -223,12 +223,15 @@ export default function EmailComposer({
   const isSmlouvaTemplate =
     selectedTemplate?.label.toLowerCase().includes("smlouv") ?? false;
 
-  // "Návrh smlouvy" → blank PDF + data request email (no fields to fill)
+  // "Návrh smlouvy" → blank PDF + amount/interest in email
   const isNavrhSmlouva =
-    selectedTemplate?.label.toLowerCase().includes("návrh") ?? false;
+    selectedTemplate?.label.toLowerCase().includes("návrh") ||
+    selectedTemplate?.label.toLowerCase().includes("navrh") || false;
 
   // Show contract parameter fields for ALL smlouva templates (Návrh i Finální)
   const showContractFields = isSmlouvaTemplate;
+  // Návrh shows only amount + interest, Finální shows all personal fields too
+  const showPersonalFields = isSmlouvaTemplate && !isNavrhSmlouva;
 
   // Calculate payout amount based on contract fields
   const calculatedPayout = useMemo(() => {
@@ -435,7 +438,7 @@ export default function EmailComposer({
           {isNavrhSmlouva && (
             <div className=" border border-border bg-surface-hover p-3">
               <p className="text-xs text-text-mid leading-relaxed">
-                <strong className="text-text">Návrh smlouvy</strong> — klient dostane prázdný vzor smlouvy v PDF a emailem ho požádáme o údaje potřebné pro finální smlouvu. Částku ani parametry neznáme — vyplníš je až ve <strong className="text-text">Smlouvě finální</strong>.
+                <strong className="text-text">Návrh smlouvy</strong> — klient dostane v emailu parametry spolupráce (částka, úrok, výplata) a v příloze prázdný vzor smlouvy k prostudování.
               </p>
             </div>
           )}
@@ -453,7 +456,8 @@ export default function EmailComposer({
                 Vyplňuj přímo do PDF smlouvy. Hodnoty NEjsou taženy z karty klienta — co napíšeš, to bude ve smlouvě.
               </p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                {/* Jméno */}
+                {/* Jméno — only for Smlouva finální */}
+                {showPersonalFields && (
                 <div>
                   <label className="block text-xs font-medium text-text-mid mb-1">
                     Jméno klienta
@@ -466,8 +470,10 @@ export default function EmailComposer({
                     className="w-full px-3 py-2.5 min-h-[44px] border border-border bg-surface-hover text-sm text-text placeholder:text-text-faint focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
                   />
                 </div>
+                )}
 
-                {/* Příjmení */}
+                {/* Příjmení — only for Smlouva finální */}
+                {showPersonalFields && (
                 <div>
                   <label className="block text-xs font-medium text-text-mid mb-1">
                     Příjmení klienta
@@ -480,6 +486,7 @@ export default function EmailComposer({
                     className="w-full px-3 py-2.5 min-h-[44px] border border-border bg-surface-hover text-sm text-text placeholder:text-text-faint focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
                   />
                 </div>
+                )}
 
                 {/* Investment amount */}
                 <div>
@@ -577,7 +584,10 @@ export default function EmailComposer({
                   </select>
                 </div>
 
-                {/* Client bank account — for interest payout reminders + contract PDF */}
+                {/* Personal fields — only for Smlouva finální */}
+                {showPersonalFields && (
+                <>
+                {/* Client bank account */}
                 <div className="md:col-span-2">
                   <label className="block text-xs font-medium text-text-mid mb-1">
                     Číslo účtu klienta (kam posílat úroky)
@@ -594,7 +604,7 @@ export default function EmailComposer({
                   </p>
                 </div>
 
-                {/* Birth date — for contract VĚŘITEL block */}
+                {/* Birth date */}
                 <div>
                   <label className="block text-xs font-medium text-text-mid mb-1">
                     Datum narození klienta
@@ -653,6 +663,8 @@ export default function EmailComposer({
                 <p className="md:col-span-2 text-[11px] text-text-faint -mt-1">
                   Údaje (datum narození, adresa, číslo účtu) se propíší do PDF smlouvy do bloku VĚŘITEL. Když je necháš prázdné, ve smlouvě zůstanou tečkované čáry k doplnění.
                 </p>
+                </>
+                )}
 
                 {/* Calculated payout display */}
                 {calculatedPayout > 0 && (
