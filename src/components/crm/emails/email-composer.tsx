@@ -106,9 +106,9 @@ export default function EmailComposer({
 }: EmailComposerProps) {
   const { toast } = useToast();
 
-  // Filter templates by role
+  // Filter templates by role (allowedRoles are lowercase from server)
   const allowedTemplates = useMemo(
-    () => templates.filter((t) => t.allowedRoles.includes(userRole)),
+    () => templates.filter((t) => t.allowedRoles.includes(userRole.toLowerCase())),
     [templates, userRole]
   );
 
