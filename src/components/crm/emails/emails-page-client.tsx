@@ -11,6 +11,7 @@ export interface EmailClientRow {
   firstName: string;
   lastName: string;
   email: string;
+  phone: string;
   isInvestor: boolean;
   totalDeposit: number;
   note: string;
@@ -108,6 +109,7 @@ export default function EmailsPageClient({
           clientId={composerState.client.id}
           prefillFirstName={composerState.client.firstName}
           prefillLastName={composerState.client.lastName}
+          clientPhone={composerState.client.phone}
           userName={userName}
           userEmail={userEmail}
         />

@@ -6,6 +6,7 @@ interface EmailClientRow {
   firstName: string;
   lastName: string;
   email: string;
+  phone: string;
   isInvestor: boolean;
   totalDeposit: number;
 }

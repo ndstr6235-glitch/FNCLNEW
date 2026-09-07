@@ -252,6 +252,7 @@ export default function DrawerTabEmail({
         prefillCity={client.city}
         prefillZip={client.zip}
         prefillBankAccount={client.bankAccount}
+        clientPhone={client.phone}
         userName={userName}
         userEmail={userEmail}
       />

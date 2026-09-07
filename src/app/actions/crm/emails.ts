@@ -14,6 +14,7 @@ export interface EmailClientRow {
   firstName: string;
   lastName: string;
   email: string;
+  phone: string;
   isInvestor: boolean;
   totalDeposit: number;
   note: string;
@@ -64,6 +65,7 @@ export async function getEmailPageData(): Promise<EmailPageData | null> {
     firstName: c.firstName,
     lastName: c.lastName,
     email: c.email,
+    phone: c.phone,
     isInvestor: c.payments.some((p) => p.paid),
     totalDeposit: c.payments.filter((p) => p.paid).reduce((s, p) => s + p.amount, 0),
     note: c.note,
@@ -154,6 +156,7 @@ export async function getEmailClients(): Promise<EmailClientRow[]> {
     firstName: c.firstName,
     lastName: c.lastName,
     email: c.email,
+    phone: c.phone,
     isInvestor: c.payments.some((p) => p.paid),
     totalDeposit: c.payments.filter((p) => p.paid).reduce((s, p) => s + p.amount, 0),
     note: c.note,

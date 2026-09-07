@@ -38,6 +38,8 @@ interface EmailComposerProps {
   prefillCity?: string;
   prefillZip?: string;
   prefillBankAccount?: string;
+  /** Client phone number for validation */
+  clientPhone?: string;
   /** Logged-in user name for broker auto-signature */
   userName?: string;
   /** Logged-in user email */
@@ -118,6 +120,7 @@ export default function EmailComposer({
   prefillCity,
   prefillZip,
   prefillBankAccount,
+  clientPhone,
   userName,
   userEmail,
 }: EmailComposerProps) {
@@ -273,6 +276,16 @@ export default function EmailComposer({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedTemplateId, selectedTemplate?.subject]);
 
+  // When template changes to Smlouva finální, auto-switch signature to Fencl
+  useEffect(() => {
+    if (isFinalSmlouva(selectedTemplateId)) {
+      const fencl = TEAM_SIGNATURES.find((m) => m.id === "fencl") || TEAM_SIGNATURES[0];
+      setSelectedSignatureId(fencl.id);
+      setSignature(buildTeamSignature(fencl));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedTemplateId]);
+
   // Detect if selected template is "Smlouva" (admin-only contract)
   const isContractTemplate =
     selectedTemplate?.label.toLowerCase().includes("smlouv") &&
@@ -335,6 +348,7 @@ export default function EmailComposer({
     const missing: string[] = [];
     if (!prefillFirstName?.trim()) missing.push("jméno");
     if (!prefillLastName?.trim()) missing.push("příjmení");
+    if (!clientPhone?.trim()) missing.push("telefon");
     if (!recipientEmail?.trim()) missing.push("email");
 
     // Smlouva finální requires additional fields
