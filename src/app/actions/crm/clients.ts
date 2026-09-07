@@ -276,7 +276,8 @@ export async function createClient(data: {
           ? `${sender.firstName} ${sender.lastName}`
           : "Puskin and Partners";
         const signature = sender?.signature || "";
-        const salutation = `${data.firstName.trim()} ${data.lastName.trim()}`;
+        const salutation = data.lastName.trim();
+        const fullName = `${data.firstName.trim()} ${data.lastName.trim()}`;
 
         const body = template.body
           .replace(/\[OSLOVENI\]/gi, salutation)
@@ -290,7 +291,7 @@ export async function createClient(data: {
           senderName,
           templateLabel: template.label,
           clientId: client.id,
-          clientName: salutation,
+          clientName: fullName,
         });
       }
     } catch (err) {
