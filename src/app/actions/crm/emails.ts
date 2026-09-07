@@ -312,87 +312,103 @@ export async function sendEmail(
         console.error("Prezentace PDF load failed:", err);
       }
     } else if (label.includes("smlouv")) {
-      // Návrh smlouvy i Smlouva finální → vyplněný PDF s daty z composeru
-      // Prázdná pole zůstanou jako tečkované čáry k doplnění
-      // PDF is MANDATORY for smlouva templates — if it fails, don't send email
-      try {
-        const { generateProposalPdf } = await import("@/lib/crm/proposal-pdf");
-        const isNavrh = label.includes("návrh") || label.includes("navrh");
-        const contractFullName = contractMeta
-          ? [contractMeta.firstName, contractMeta.lastName]
-              .filter((s) => s && s.trim())
-              .join(" ")
+      const isNavrh = label.includes("návrh") || label.includes("navrh");
+
+      if (isNavrh) {
+        // Návrh smlouvy → use pre-built blank PDF (fontkit fails on Vercel serverless)
+        try {
+          const { NAVRH_PDF_B64 } = await import("@/lib/crm/navrh-pdf-data");
+          const safeName =
+            (clientName || "klient")
+              .normalize("NFD")
+              .replace(/[\u0300-\u036f]/g, "")
+              .replace(/[^\w\s-]/g, "")
               .trim()
-          : "";
-        const pdfBuffer = await generateProposalPdf({
-          clientName: contractFullName || undefined,
-          clientEmail: to,
-          amount: contractMeta?.investmentAmount,
-          interestRate: contractMeta?.interestRate,
-          duration: contractMeta?.duration,
-          payoutFrequency: contractMeta?.payoutFrequency,
-          birthDate: contractMeta?.birthDate,
-          street: contractMeta?.street,
-          city: contractMeta?.city,
-          zip: contractMeta?.zip,
-          bankAccount: contractMeta?.bankAccount,
-        });
+              .replace(/\s+/g, "-") || "klient";
+          const ts = new Date().toISOString().split("T")[0];
+          const pdfFilename = `Navrh-smlouvy-${safeName}-${ts}.pdf`;
 
-        // Build a descriptive filename: "Smlouva-Jmeno-Prijmeni-2026-05-28.pdf"
-        const docTypeLabel = isNavrh ? "Navrh-smlouvy" : "Smlouva";
-        const safeName =
-          (contractFullName || clientName || "klient")
-            .normalize("NFD")
-            .replace(/[̀-ͯ]/g, "")
-            .replace(/[^\w\s-]/g, "")
-            .trim()
-            .replace(/\s+/g, "-") || "klient";
-        const ts = new Date().toISOString().split("T")[0];
-        const pdfFilename = `${docTypeLabel}-${safeName}-${ts}.pdf`;
-
-        // Upload to Vercel Blob + persist as Document so the admin can
-        // download and sign it later. Done BEFORE sending email — if blob
-        // fails we still send (just log), so the client always gets the PDF.
-        if (clientId) {
-          try {
-            const blob = await put(
-              `smlouvy/${clientId}/${Date.now()}-${pdfFilename}`,
-              pdfBuffer,
-              {
-                access: "public",
-                contentType: "application/pdf",
-                addRandomSuffix: false,
-              }
-            );
-            await prisma.document.create({
-              data: {
-                clientId,
-                name: `${docTypeLabel === "Smlouva" ? "Smlouva finální" : "Návrh smlouvy"} – ${ts}${contractVS ? ` · VS ${contractVS}` : ""}`,
-                fileName: pdfFilename,
-                fileUrl: blob.url,
-                fileSize: pdfBuffer.length,
-                mimeType: "application/pdf",
-                uploadedBy: session.id,
-              },
-            });
-          } catch (e) {
-            console.error("Failed to archive generated PDF:", e);
-          }
+          attachments.push({
+            filename: pdfFilename,
+            content: NAVRH_PDF_B64,
+            contentType: "application/pdf",
+          });
+        } catch (err) {
+          console.error("Návrh PDF load failed:", err);
         }
+      } else {
+        // Smlouva finální → dynamically generated PDF (admin only, fontkit should work)
+        try {
+          const { generateProposalPdf } = await import("@/lib/crm/proposal-pdf");
+          const contractFullName = contractMeta
+            ? [contractMeta.firstName, contractMeta.lastName]
+                .filter((s) => s && s.trim())
+                .join(" ")
+                .trim()
+            : "";
+          const pdfBuffer = await generateProposalPdf({
+            clientName: contractFullName || undefined,
+            clientEmail: to,
+            amount: contractMeta?.investmentAmount,
+            interestRate: contractMeta?.interestRate,
+            duration: contractMeta?.duration,
+            payoutFrequency: contractMeta?.payoutFrequency,
+            birthDate: contractMeta?.birthDate,
+            street: contractMeta?.street,
+            city: contractMeta?.city,
+            zip: contractMeta?.zip,
+            bankAccount: contractMeta?.bankAccount,
+          });
 
-        attachments.push({
-          filename: pdfFilename,
-          // Resend API serializes attachments via JSON.stringify — Buffer would
-          // become {"type":"Buffer",...}, so we must pass a base64 string
-          content: pdfBuffer.toString("base64"),
-          contentType: "application/pdf",
-        });
-      } catch (err) {
-        console.error("Proposal PDF generation failed:", err);
-        return {
-          success: false,
-          error: `Nepodařilo se vygenerovat PDF smlouvy: ${err instanceof Error ? err.message : String(err)}`,
-        };
+          const safeName =
+            (contractFullName || clientName || "klient")
+              .normalize("NFD")
+              .replace(/[\u0300-\u036f]/g, "")
+              .replace(/[^\w\s-]/g, "")
+              .trim()
+              .replace(/\s+/g, "-") || "klient";
+          const ts = new Date().toISOString().split("T")[0];
+          const pdfFilename = `Smlouva-${safeName}-${ts}.pdf`;
+
+          if (clientId) {
+            try {
+              const blob = await put(
+                `smlouvy/${clientId}/${Date.now()}-${pdfFilename}`,
+                pdfBuffer,
+                {
+                  access: "public",
+                  contentType: "application/pdf",
+                  addRandomSuffix: false,
+                }
+              );
+              await prisma.document.create({
+                data: {
+                  clientId,
+                  name: `Smlouva finální – ${ts}${contractVS ? ` · VS ${contractVS}` : ""}`,
+                  fileName: pdfFilename,
+                  fileUrl: blob.url,
+                  fileSize: pdfBuffer.length,
+                  mimeType: "application/pdf",
+                  uploadedBy: session.id,
+                },
+              });
+            } catch (e) {
+              console.error("Failed to archive generated PDF:", e);
+            }
+          }
+
+          attachments.push({
+            filename: pdfFilename,
+            content: pdfBuffer.toString("base64"),
+            contentType: "application/pdf",
+          });
+        } catch (err) {
+          console.error("Proposal PDF generation failed:", err);
+          return {
+            success: false,
+            error: `Nepodařilo se vygenerovat PDF smlouvy: ${err instanceof Error ? err.message : String(err)}`,
+          };
+        }
       }
     }
 
