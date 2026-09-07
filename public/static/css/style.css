@@ -1578,12 +1578,6 @@ a.tr-card:hover {
     color: var(--text-2);
   }
 
-  /* Team */
-  .team-grid {
-    grid-template-columns: 1fr;
-    gap: 40px;
-  }
-
   /* Ref card header mobile */
   .ref-card-header {
     flex-direction: column;
