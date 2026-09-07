@@ -315,7 +315,7 @@ export default function EmailComposer({
       });
       if (result.success) {
         toast("Email byl odeslán");
-        onClose();
+        setTimeout(() => onClose(), 300);
       } else {
         const errMsg = "error" in result ? result.error : "Odeslání selhalo";
         toast(errMsg, "error");
