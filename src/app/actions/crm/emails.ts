@@ -298,20 +298,18 @@ export async function sendEmail(
     }
 
     if (label.includes("prezentace")) {
-      // Prezentace → generate dynamic investment PDF
+      // Prezentace → use pre-built PDF (runtime generation via pdf-lib/fontkit
+      // fails silently on Vercel serverless, so we ship a pre-built base64 blob)
       try {
-        const { generateInvestmentPdf } = await import("@/lib/crm/investment-pdf");
-        const pdfBuffer = await generateInvestmentPdf();
-        console.log(`[sendEmail] Prezentace PDF generated: ${pdfBuffer.length} bytes`);
+        const { PREZENTACE_PDF_B64 } = await import("@/lib/crm/prezentace-pdf-data");
+        console.log(`[sendEmail] Prezentace PDF base64 length: ${PREZENTACE_PDF_B64.length}`);
         attachments.push({
           filename: "Prezentace-Puskin-Partners.pdf",
-          // Resend API serializes attachments via JSON.stringify — Buffer would
-          // become {"type":"Buffer",...}, so we must pass a base64 string
-          content: pdfBuffer.toString("base64"),
+          content: PREZENTACE_PDF_B64,
           contentType: "application/pdf",
         });
       } catch (err) {
-        console.error("generateInvestmentPdf failed:", err);
+        console.error("Prezentace PDF load failed:", err);
       }
     } else if (label.includes("smlouv")) {
       // Návrh smlouvy i Smlouva finální → vyplněný PDF s daty z composeru
