@@ -215,9 +215,9 @@ export async function getEmailTemplates(): Promise<EmailTemplateRow[]> {
     const allTemplates = await prisma.emailTemplate.findMany();
     for (const t of allTemplates) {
       // Match variants: "Vazeny/a ", "Vážený/á ", "Vazeny/a\n", with/without diacritics
-      const salutationPrefix = /Va[zž]en[yý]\/[aá]\s*/gi;
+      const salutationPrefix = /V[aá][zž]en[yý]\/[aá]\s*/gi;
       if (salutationPrefix.test(t.body)) {
-        const cleaned = t.body.replace(salutationPrefix, "");
+        const cleaned = t.body.replace(/V[aá][zž]en[yý]\/[aá]\s*/gi, "");
         await prisma.emailTemplate.update({
           where: { id: t.id },
           data: { body: cleaned },
