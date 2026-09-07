@@ -208,6 +208,26 @@ export async function getEmailTemplates(): Promise<EmailTemplateRow[]> {
     // non-fatal
   }
 
+  // Auto-repair ALL templates: strip "Vazeny/a" prefix before [OSLOVENI]
+  // because buildAutoSalutation already produces "Vážený pane X" / "Vážená paní X".
+  // Without this, result is "Vážený/á Vážený pane Novák" — duplicate salutation.
+  try {
+    const allTemplates = await prisma.emailTemplate.findMany();
+    for (const t of allTemplates) {
+      // Match variants: "Vazeny/a ", "Vážený/á ", "Vazeny/a\n", with/without diacritics
+      const salutationPrefix = /Va[zž]en[yý]\/[aá]\s*/gi;
+      if (salutationPrefix.test(t.body)) {
+        const cleaned = t.body.replace(salutationPrefix, "");
+        await prisma.emailTemplate.update({
+          where: { id: t.id },
+          data: { body: cleaned },
+        });
+      }
+    }
+  } catch {
+    // non-fatal
+  }
+
   const rawTemplates = await prisma.emailTemplate.findMany({
     orderBy: { label: "asc" },
   });
