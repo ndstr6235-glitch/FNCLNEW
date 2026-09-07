@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { SidebarProvider } from "@/components/crm/layout/sidebar-context";
 import Sidebar from "@/components/crm/layout/sidebar";
 import DashboardMain from "@/components/crm/layout/dashboard-main";
+import { ToastProvider } from "@/components/crm/ui/toast";
 
 export default async function CrmLayout({
   children,
@@ -25,16 +26,18 @@ export default async function CrmLayout({
   };
 
   return (
-    <SidebarProvider>
-      <div className="flex min-h-dvh overflow-x-hidden max-w-[100dvw]">
-        <Sidebar user={user} />
-        <DashboardMain
-          firstName={user.firstName}
-          lastName={user.lastName}
-        >
-          {children}
-        </DashboardMain>
-      </div>
-    </SidebarProvider>
+    <ToastProvider>
+      <SidebarProvider>
+        <div className="flex min-h-dvh overflow-x-hidden max-w-[100dvw]">
+          <Sidebar user={user} />
+          <DashboardMain
+            firstName={user.firstName}
+            lastName={user.lastName}
+          >
+            {children}
+          </DashboardMain>
+        </div>
+      </SidebarProvider>
+    </ToastProvider>
   );
 }
