@@ -267,27 +267,11 @@ export async function generateInvestmentPdf(): Promise<Buffer> {
   p.drawText("Podílejte se na růstu Puskin Partners", { x: M, y: footerH - 32, size: 11, font: fB, color: onDark });
   p.drawText("Jasné smluvní podmínky, kompletní dokumentace a osobní přístup.", { x: M, y: footerH - 44, size: 7, font: fR, color: text3 });
 
-  const cLine = "Miroslav Fencl  |  info@puskinpartners.cz  |  +420 602 674 143  |  IČO: 26740788";
+  const cLine = "Miroslav Fencl  |  info@puskinpartners.cz  |  +420 721 602 265  |  IČO: 26740788";
   p.drawText(cLine, { x: M, y: 8, size: 6.5, font: fR, color: onDark });
   const footR = "Alexandr Puškin, s.r.o.  |  Rybná 716/24, Praha 1";
   p.drawText(footR, { x: W - M - fR.widthOfTextAtSize(footR, 6.5), y: 8, size: 6.5, font: fR, color: onDark });
 
-  const bigStats = [
-    { value: "130 mil.", sub: "CELKOVÁ\nINVESTICE" },
-    { value: "~30 %", sub: "PRŮMĚRNÝ\nVÝNOS" },
-    { value: "4", sub: "AKTUÁLNÍ\nPROJEKTY" },
-  ];
-  const bsStart = M + CW * 0.54;
-  const bsColW = (CW * 0.46) / 3;
-  bigStats.forEach((bs, i) => {
-    const bx = bsStart + i * bsColW;
-    const vw = fB.widthOfTextAtSize(bs.value, 18);
-    p.drawText(bs.value, { x: bx + (bsColW - vw) / 2, y: footerH - 28, size: 18, font: fB, color: brassLt });
-    bs.sub.split("\n").forEach((line, li) => {
-      const lw = fR.widthOfTextAtSize(line, 5.5);
-      p.drawText(line, { x: bx + (bsColW - lw) / 2, y: footerH - 42 - li * 7, size: 5.5, font: fR, color: text3 });
-    });
-  });
 
   doc.setTitle("Investiční příležitosti — Puskin Partners");
   doc.setAuthor("Alexandr Puškin, s.r.o.");
