@@ -273,7 +273,11 @@ export default function EmailComposer({
   }, [selectedTemplate, bodyOverride, salutation, signature, totalDeposit, investmentAmount, interestRate, calculatedPayout, durationLabel, frequencyLabel]);
 
   async function handleSendEmail() {
-    if (!selectedTemplate || !recipientEmail) return;
+    console.log("[handleSendEmail] called", { selectedTemplate: selectedTemplate?.label, recipientEmail, finalBody: finalBody?.substring(0, 50) });
+    if (!selectedTemplate || !recipientEmail) {
+      console.error("[handleSendEmail] early return — selectedTemplate:", !!selectedTemplate, "recipientEmail:", recipientEmail);
+      return;
+    }
     setSending(true);
     try {
       const contractMeta = showContractFields
@@ -299,6 +303,7 @@ export default function EmailComposer({
           ? TEAM_SIGNATURES.find((m) => m.id === selectedSignatureId)
           : null;
 
+      console.log("[handleSendEmail] calling sendEmail...", { to: recipientEmail, subject: subjectOverride || selectedTemplate.subject, templateLabel: selectedTemplate.label });
       const result = await sendEmail({
         to: recipientEmail,
         subject: subjectOverride || selectedTemplate.subject,
@@ -310,13 +315,17 @@ export default function EmailComposer({
         clientId,
         clientName,
       });
+      console.log("[handleSendEmail] result:", result);
       if (result.success) {
         toast("Email byl odeslán");
         onClose();
       } else {
-        toast("error" in result ? result.error : "Odeslání selhalo", "error");
+        const errMsg = "error" in result ? result.error : "Odeslání selhalo";
+        console.error("[handleSendEmail] error:", errMsg);
+        toast(errMsg, "error");
       }
-    } catch {
+    } catch (err) {
+      console.error("[handleSendEmail] exception:", err);
       toast("Neočekávaná chyba při odesílání", "error");
     } finally {
       setSending(false);
