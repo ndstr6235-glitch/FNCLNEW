@@ -159,6 +159,7 @@ export default async function DashboardPage() {
           subtitle={`${investorCount} investorů`}
           accentColor="sapphire"
           icon={<Users size={16} />}
+          href="/clients"
         />
         <StatCard
           label="Celkové vklady"
@@ -180,6 +181,7 @@ export default async function DashboardPage() {
           subtitle="příštích 7 dní"
           accentColor="amber"
           icon={<CalendarClock size={16} />}
+          href="/calendar"
         />
       </div>
 

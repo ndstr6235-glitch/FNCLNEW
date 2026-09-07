@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { EVENT_TYPES } from "@/lib/crm/constants";
 import type { EventType } from "@/lib/crm/types";
 
@@ -17,9 +18,14 @@ interface UpcomingEventsProps {
 export default function UpcomingEvents({ events }: UpcomingEventsProps) {
   return (
     <div className="bg-surface p-4 lg:p-5">
-      <h2 className="text-sm font-semibold text-text mb-3">
-        Nadcházející události
-      </h2>
+      <div className="flex items-center justify-between mb-3">
+        <h2 className="text-sm font-semibold text-text">
+          Nadcházející události
+        </h2>
+        <Link href="/calendar" className="text-xs text-gold hover:underline">
+          Zobrazit vše →
+        </Link>
+      </div>
       {events.length === 0 ? (
         <p className="text-sm text-text-dim py-4 text-center">
           Žádné události v příštích 7 dnech

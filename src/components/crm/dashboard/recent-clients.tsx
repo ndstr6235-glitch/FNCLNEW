@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { fmtCZK } from "@/lib/crm/utils";
 
 interface ClientItem {
@@ -14,9 +15,14 @@ interface RecentClientsProps {
 export default function RecentClients({ clients }: RecentClientsProps) {
   return (
     <div className="bg-surface p-4 lg:p-5">
-      <h2 className="text-sm font-semibold text-text mb-3">
-        Poslední klienti
-      </h2>
+      <div className="flex items-center justify-between mb-3">
+        <h2 className="text-sm font-semibold text-text">
+          Poslední klienti
+        </h2>
+        <Link href="/clients" className="text-xs text-gold hover:underline">
+          Zobrazit vše →
+        </Link>
+      </div>
       {clients.length === 0 ? (
         <p className="text-sm text-text-dim py-4 text-center">
           Zatím žádní klienti

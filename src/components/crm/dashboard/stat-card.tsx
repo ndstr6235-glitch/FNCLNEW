@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import Link from "next/link";
 import { cn } from "@/lib/crm/utils";
 
 const ACCENT = {
@@ -14,6 +15,7 @@ interface StatCardProps {
   subtitle?: string;
   accentColor: keyof typeof ACCENT;
   icon: ReactNode;
+  href?: string;
 }
 
 export default function StatCard({
@@ -22,14 +24,16 @@ export default function StatCard({
   subtitle,
   accentColor,
   icon,
+  href,
 }: StatCardProps) {
   const accent = ACCENT[accentColor];
 
-  return (
+  const content = (
     <div
       className={cn(
         "bg-surface border-l-2 p-3 sm:p-3.5 md:p-4 lg:p-5 border border-border",
-        accent.border
+        accent.border,
+        href && "hover:bg-surface-hover hover:border-gold/30 transition-colors cursor-pointer"
       )}
     >
       <div className="flex items-center justify-between mb-2">
@@ -55,4 +59,9 @@ export default function StatCard({
       )}
     </div>
   );
+
+  if (href) {
+    return <Link href={href}>{content}</Link>;
+  }
+  return content;
 }
