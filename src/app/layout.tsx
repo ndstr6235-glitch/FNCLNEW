@@ -24,6 +24,10 @@ export const metadata: Metadata = {
   description:
     "Puskin and Partners — 20+ let ve stavebnictví, od roku 2023 investiční společnost. Development, rekonstrukce a investice v Praze.",
   metadataBase: new URL("https://puskinandpartners.cz"),
+  icons: {
+    icon: "/icon.svg?v=2",
+    apple: "/static/apple-touch-icon.png?v=2",
+  },
   openGraph: {
     type: "website",
     locale: "cs_CZ",
