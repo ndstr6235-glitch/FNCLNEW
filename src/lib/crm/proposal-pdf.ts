@@ -4,6 +4,7 @@
 import { PDFDocument, PDFFont, PDFPage, rgb } from "pdf-lib";
 import fontkit from "@pdf-lib/fontkit";
 import { INTER_REGULAR_B64, INTER_BOLD_B64, INTER_SEMIBOLD_B64 } from "./fonts-data";
+import { COMPANY_BANK_ACCOUNT } from "./company";
 
 export interface ProposalPdfData {
   clientName?: string;
@@ -358,6 +359,7 @@ export async function generateProposalPdf(data: ProposalPdfData): Promise<Buffer
       ["Sídlo:", "Rybná 716/24, Staré Město, 110 00 Praha 1"],
       ["IČO:", "26740788"],
       ["Zastoupená:", "Miroslav Fencl, jednatel"],
+      ["Bankovní spojení:", COMPANY_BANK_ACCOUNT],
     ],
     true,
   );
@@ -367,7 +369,7 @@ export async function generateProposalPdf(data: ProposalPdfData): Promise<Buffer
   drawSectionHeader("II", "Předmět smlouvy");
   drawNumberedItem("2.1", `Předmětem této smlouvy je poskytnutí peněžní zápůjčky ve výši ${fmtAmount(data.amount)}.`);
   drawNumberedItem("2.2", "Účelem zápůjčky je financování podnikatelské činnosti Dlužníka.");
-  drawNumberedItem("2.3", "Peněžní zápůjčku vyplatí Věřitel Dlužníkovi bezhotovostně na číslo účtu: 7141812004/5500.");
+  drawNumberedItem("2.3", `Peněžní zápůjčku vyplatí Věřitel Dlužníkovi bezhotovostně na číslo účtu: ${COMPANY_BANK_ACCOUNT}.`);
 
   // ── ČLÁNEK III ──
   ensureSpace(100);

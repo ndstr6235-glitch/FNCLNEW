@@ -1,6 +1,8 @@
 // Generates the contract proposal HTML matching the Puskin and Partners PDF design.
 // Used server-side to generate a PDF attachment for "Návrh smlouvy" emails.
 
+import { COMPANY_BANK_ACCOUNT } from "./company";
+
 export interface ProposalData {
   amount?: number;
   amountWords?: string;
@@ -142,6 +144,10 @@ export function generateProposalHTML(data: ProposalData): string {
             <td style="padding:5px 0; color:#6E6A61;">Zastoupená:</td>
             <td style="padding:5px 0; font-weight:600;">Miroslav Fencl, jednatel</td>
           </tr>
+          <tr>
+            <td style="padding:5px 0; color:#6E6A61;">Bankovní spojení:</td>
+            <td style="padding:5px 0; font-weight:600;">${COMPANY_BANK_ACCOUNT}</td>
+          </tr>
         </table>
       </div>
     </div>
@@ -161,7 +167,7 @@ export function generateProposalHTML(data: ProposalData): string {
         </tr>
         <tr>
           <td style="width:40px; vertical-align:top; padding:4px 12px 4px 0; font-weight:600; color:#A9884E;">2.3</td>
-          <td style="padding:4px 0; line-height:1.7;">Peněžní zápůjčku vyplatí Věřitel Dlužníkovi bezhotovostně na číslo účtu: <strong></strong>.</td>
+          <td style="padding:4px 0; line-height:1.7;">Peněžní zápůjčku vyplatí Věřitel Dlužníkovi bezhotovostně na číslo účtu: <strong>${COMPANY_BANK_ACCOUNT}</strong>.</td>
         </tr>
       </table>
     </div>

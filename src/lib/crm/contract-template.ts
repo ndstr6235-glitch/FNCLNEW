@@ -1,6 +1,8 @@
 // Pure function — generates the contract HTML with all styles inlined.
 // Used both client-side (live preview) and server-side (email sending).
 
+import { COMPANY_BANK_ACCOUNT } from "./company";
+
 export interface ContractData {
   clientName: string;
   clientBirthdate: string;
@@ -131,7 +133,7 @@ export function generateContractHTML(data: ContractData): string {
           <tr><td style="padding:3px 0; color:#6E6A61;">IČO:</td><td style="padding:3px 0;">26740788</td></tr>
           <tr><td style="padding:3px 0; color:#6E6A61;">Sídlo:</td><td style="padding:3px 0;">Rybná 716/24, Staré Město, 110 00 Praha 1</td></tr>
           <tr><td style="padding:3px 0; color:#6E6A61;">Jednající:</td><td style="padding:3px 0;">Miroslav Fencl, jednatel</td></tr>
-          <tr><td style="padding:3px 0; color:#6E6A61;">Bankovní spojení:</td><td style="padding:3px 0;"></td></tr>
+          <tr><td style="padding:3px 0; color:#6E6A61;">Bankovní spojení:</td><td style="padding:3px 0; font-weight:600;">${COMPANY_BANK_ACCOUNT}</td></tr>
         </table>
       </div>
     </div>
