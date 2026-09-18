@@ -198,6 +198,68 @@ export async function getClientDetail(
 // ---------------------------------------------------------------------------
 // Create Client
 // ---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
+// Auto-send "Prezentace" to a client
+// ---------------------------------------------------------------------------
+// Runs on create, and again on update once the client finally has a usable
+// e-mail address (created without one, or the address was corrected).
+// Idempotent: never sends the Prezentace twice to the same address.
+async function autoSendPrezentace(params: {
+  clientId: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  sessionId: string;
+}): Promise<void> {
+  const email = params.email.trim();
+  if (!email) return;
+
+  try {
+    const already = await prisma.sentEmail.findFirst({
+      where: { clientId: params.clientId, templateLabel: "Prezentace", to: email },
+      select: { id: true },
+    });
+    if (already) return;
+
+    const template = await prisma.emailTemplate.findFirst({
+      where: { label: "Prezentace" },
+    });
+    if (!template) {
+      console.warn('[autoSendPrezentace] Šablona "Prezentace" neexistuje — nic se neodeslalo');
+      return;
+    }
+
+    const sender = await prisma.user.findUnique({
+      where: { id: params.sessionId },
+      select: { firstName: true, lastName: true, signature: true },
+    });
+    const senderName = sender
+      ? `${sender.firstName} ${sender.lastName}`
+      : "Puskin and Partners";
+    const signature = sender?.signature || "";
+    const salutation = params.lastName.trim();
+    const fullName = `${params.firstName.trim()} ${params.lastName.trim()}`;
+
+    const body = template.body
+      .replace(/\[OSLOVENI\]/gi, salutation)
+      .replace(/\[OSLOVENÍ\]/g, salutation)
+      .replace(/\[PODPIS\]/g, signature);
+
+    const emailResult = await sendEmail({
+      to: email,
+      subject: template.subject,
+      body,
+      senderName,
+      templateLabel: template.label,
+      clientId: params.clientId,
+      clientName: fullName,
+    });
+    console.log("[autoSendPrezentace] result:", emailResult);
+  } catch (err) {
+    console.error("[autoSendPrezentace] failed:", err);
+  }
+}
+
 export async function createClient(data: {
   firstName: string;
   lastName: string;
@@ -262,43 +324,13 @@ export async function createClient(data: {
   await logAudit(session.id, "CREATE", "client", client.id, `${data.firstName} ${data.lastName}`);
 
   // Auto-send Prezentace PDF to new client
-  if (data.email.trim()) {
-    try {
-      const template = await prisma.emailTemplate.findFirst({
-        where: { label: "Prezentace" },
-      });
-      if (template) {
-        const sender = await prisma.user.findUnique({
-          where: { id: session.id },
-          select: { firstName: true, lastName: true, signature: true },
-        });
-        const senderName = sender
-          ? `${sender.firstName} ${sender.lastName}`
-          : "Puskin and Partners";
-        const signature = sender?.signature || "";
-        const salutation = data.lastName.trim();
-        const fullName = `${data.firstName.trim()} ${data.lastName.trim()}`;
-
-        const body = template.body
-          .replace(/\[OSLOVENI\]/gi, salutation)
-          .replace(/\[OSLOVENÍ\]/g, salutation)
-          .replace(/\[PODPIS\]/g, signature);
-
-        const emailResult = await sendEmail({
-          to: data.email.trim(),
-          subject: template.subject,
-          body,
-          senderName,
-          templateLabel: template.label,
-          clientId: client.id,
-          clientName: fullName,
-        });
-        console.log("[createClient] Auto-send prezentace result:", emailResult);
-      }
-    } catch (err) {
-      console.error("Auto-send prezentace failed:", err);
-    }
-  }
+  await autoSendPrezentace({
+    clientId: client.id,
+    email: data.email,
+    firstName: data.firstName,
+    lastName: data.lastName,
+    sessionId: session.id,
+  });
 
   revalidatePath("/clients");
   revalidatePath("/dashboard");
@@ -403,6 +435,18 @@ export async function updateClient(
   }
   await logActivity(clientId, session.id, "CLIENT_UPDATED", "Klient upraven");
   await logAudit(session.id, "UPDATE", "client", clientId, `${data.firstName} ${data.lastName}`);
+
+  // The client was created without a usable e-mail (or with a wrong one) and it
+  // has just been filled in / corrected — send the Prezentace that create skipped.
+  if (data.email.trim() && data.email.trim() !== existing.email.trim()) {
+    await autoSendPrezentace({
+      clientId,
+      email: data.email,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      sessionId: session.id,
+    });
+  }
 
   // If paymentReceivedDate changed and client has investments, reschedule payouts
   if (
