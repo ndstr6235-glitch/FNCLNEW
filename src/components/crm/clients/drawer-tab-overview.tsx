@@ -18,6 +18,7 @@ import CallOutcomeModal from "./call-outcome-modal";
 import { getOutcomeMeta } from "@/lib/crm/call-outcomes";
 import CallOutcomeBadge from "./call-outcome-badge";
 import type { ClientDetail } from "@/app/actions/crm/clients";
+import { restoreClientContact } from "@/app/actions/crm/clients";
 
 interface DrawerTabOverviewProps {
   client: ClientDetail;
@@ -99,6 +100,24 @@ export default function DrawerTabOverview({
   onRefresh,
 }: DrawerTabOverviewProps) {
   const [callOpen, setCallOpen] = useState(false);
+  const [restoreOpen, setRestoreOpen] = useState(false);
+  const [restoreReason, setRestoreReason] = useState("");
+  const [restoring, setRestoring] = useState(false);
+  const [restoreError, setRestoreError] = useState("");
+
+  async function handleRestore() {
+    setRestoring(true);
+    setRestoreError("");
+    const res = await restoreClientContact(client.id, restoreReason);
+    setRestoring(false);
+    if (!res.success) {
+      setRestoreError(res.error || "Nepodařilo se obnovit kontakt");
+      return;
+    }
+    setRestoreOpen(false);
+    setRestoreReason("");
+    onRefresh?.();
+  }
   const hasAddress = client.street || client.city || client.zip;
   const publicEntries = Object.entries(client.metadataPublic);
   const sensitiveEntries = Object.entries(client.metadataSensitive);
@@ -201,16 +220,58 @@ export default function DrawerTabOverview({
 
       {/* Po hovoru — primary CTA for call-center workflow */}
       {client.dnc ? (
-        <div className=" border-2 border-ruby-border bg-ruby-pale p-4 flex items-center gap-2">
-          <span className="text-lg">🚫</span>
-          <div>
-            <p className="text-sm font-semibold text-ruby">
-              Klient v Do-Not-Call listu
-            </p>
-            <p className="text-[11px] text-ruby/70">
-              Tento klient si nepřeje další kontakt. Nevolat.
-            </p>
+        <div className=" border-2 border-ruby-border bg-ruby-pale p-4 space-y-3">
+          <div className="flex items-center gap-2">
+            <span className="text-lg">🚫</span>
+            <div>
+              <p className="text-sm font-semibold text-ruby">
+                Klient v Do-Not-Call listu
+              </p>
+              <p className="text-[11px] text-ruby/70">
+                Tento klient si nepřeje další kontakt. Nevolat, neposílat e-maily.
+              </p>
+            </div>
           </div>
+          {client.canRestoreContact &&
+            (restoreOpen ? (
+              <div className="space-y-2">
+                <textarea
+                  value={restoreReason}
+                  onChange={(e) => setRestoreReason(e.target.value)}
+                  rows={2}
+                  placeholder="Důvod (např. klient telefonicky potvrdil, že se odhlásil omylem)"
+                  className="w-full px-3 py-2 border border-border bg-white text-sm text-text"
+                />
+                {restoreError && (
+                  <p className="text-[11px] text-ruby">{restoreError}</p>
+                )}
+                <div className="flex gap-2">
+                  <button
+                    onClick={handleRestore}
+                    disabled={restoring || !restoreReason.trim()}
+                    className="flex-1 px-3 py-2 min-h-[44px] bg-brass text-white text-sm font-semibold disabled:opacity-50"
+                  >
+                    {restoring ? "Obnovuji…" : "Potvrdit obnovení"}
+                  </button>
+                  <button
+                    onClick={() => {
+                      setRestoreOpen(false);
+                      setRestoreError("");
+                    }}
+                    className="px-3 py-2 min-h-[44px] border border-border text-sm text-text-mid hover:bg-surface-hover"
+                  >
+                    Zrušit
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <button
+                onClick={() => setRestoreOpen(true)}
+                className="w-full px-3 py-2 min-h-[44px] border border-ruby-border bg-white text-sm font-medium text-ruby hover:bg-ruby-pale"
+              >
+                Zrušit odhlášení (klient se odhlásil omylem)
+              </button>
+            ))}
         </div>
       ) : (
         <button

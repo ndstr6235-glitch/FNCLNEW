@@ -174,6 +174,7 @@ export const ACTIVITY_ICONS: Record<string, string> = {
   NOTE_CHANGED: "📝",
   ASSIGNED_TO_CHANGED: "🔄",
   GDPR_UNSUBSCRIBE: "🚫",
+  GDPR_RESUBSCRIBE: "✅",
 };
 
 // ---------------------------------------------------------------------------

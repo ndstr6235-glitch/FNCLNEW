@@ -41,6 +41,7 @@ export interface ClientDetail {
   investmentAmount: number;
   paymentReceivedDate: string;
   dnc: boolean;
+  canRestoreContact: boolean;
   lastCallOutcome: string;
   lastCalledAt: string;
   isInvestor: boolean;
@@ -161,6 +162,7 @@ export async function getClientDetail(
     investmentAmount: client.investmentAmount,
     paymentReceivedDate: client.paymentReceivedDate,
     dnc: client.dnc,
+    canRestoreContact: session.role !== "broker",
     lastCallOutcome: client.lastCallOutcome,
     lastCalledAt: client.lastCalledAt,
     source: client.source,
@@ -584,6 +586,49 @@ export async function schedulePayoutsFromClient(
   revalidatePath("/dashboard");
 
   return { success: true, eventsCreated: result.eventsCreated };
+}
+
+// ---------------------------------------------------------------------------
+// Restore contact (undo DNC / GDPR opt-out) — admin & supervisor only.
+// Used when a client says they clicked the unsubscribe link by mistake.
+// ---------------------------------------------------------------------------
+export async function restoreClientContact(
+  clientId: string,
+  reason: string
+): Promise<{ success: boolean; error?: string }> {
+  const session = await getSession();
+  if (!session) return { success: false, error: "Nepřihlášen" };
+  if (session.role === "broker") return { success: false, error: "Nemáte oprávnění" };
+
+  const trimmedReason = reason.trim();
+  if (!trimmedReason) return { success: false, error: "Uveďte důvod obnovení kontaktu" };
+
+  const existing = await prisma.client.findUnique({
+    where: { id: clientId },
+    select: { dnc: true, email: true },
+  });
+  if (!existing) return { success: false, error: "Klient nenalezen" };
+  if (!existing.dnc) return { success: true };
+
+  await prisma.client.update({ where: { id: clientId }, data: { dnc: false } });
+
+  await logActivity(
+    clientId,
+    session.id,
+    "GDPR_RESUBSCRIBE",
+    `Kontakt obnoven (zrušeno odhlášení) — ${trimmedReason}`
+  );
+  await logAudit(
+    session.id,
+    "GDPR_RESUBSCRIBE",
+    "client",
+    clientId,
+    `Email: ${existing.email} | Důvod: ${trimmedReason}`
+  );
+
+  revalidatePath("/clients");
+  revalidatePath("/dashboard");
+  return { success: true };
 }
 
 // ---------------------------------------------------------------------------
