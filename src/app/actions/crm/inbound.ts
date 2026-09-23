@@ -139,7 +139,8 @@ export async function confirmInboundField(
     `${label} přepsáno z e-mailu klienta na „${value}“`
   );
 
-  revalidatePath("/clients");
+  // No revalidatePath here — the panel updates itself, a full refresh would
+  // make every click feel like a page reload.
   return { success: true };
 }
 
@@ -173,7 +174,6 @@ export async function rejectInboundField(
     },
   });
 
-  revalidatePath("/clients");
   return { success: true };
 }
 

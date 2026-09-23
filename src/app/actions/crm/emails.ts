@@ -318,11 +318,51 @@ export async function sendEmail(
 
     // Pre-generate VS for contract templates so it appears in PDF
     let contractVS: string | undefined;
+    // Card values behind the composer fields — the contract must come out
+    // filled even when the broker only picks the template and hits send.
+    let cardData: {
+      variableSymbol: string;
+      firstName: string;
+      lastName: string;
+      birthDate: string;
+      street: string;
+      city: string;
+      zip: string;
+      bankAccount: string;
+      investmentAmount: number;
+    } | null = null;
     const isContractTemplate = label.includes("smlouv");
     const isFinalContract = isContractTemplate && !label.includes("návrh") && !label.includes("navrh");
     if (isFinalContract) {
-      const { generateUniqueVS } = await import("@/lib/crm/variable-symbol");
-      contractVS = await generateUniqueVS();
+      // The VS is created the moment the client sends their data, so the
+      // contract, the e-mail and the deposit payment all carry the same one.
+      if (clientId) {
+        cardData = await prisma.client.findUnique({
+          where: { id: clientId },
+          select: {
+            variableSymbol: true,
+            firstName: true,
+            lastName: true,
+            birthDate: true,
+            street: true,
+            city: true,
+            zip: true,
+            bankAccount: true,
+            investmentAmount: true,
+          },
+        });
+        contractVS = cardData?.variableSymbol || undefined;
+      }
+      if (!contractVS) {
+        const { generateUniqueVS } = await import("@/lib/crm/variable-symbol");
+        contractVS = await generateUniqueVS();
+        if (clientId) {
+          await prisma.client.update({
+            where: { id: clientId },
+            data: { variableSymbol: contractVS },
+          });
+        }
+      }
     }
 
     if (label.includes("prezentace")) {
@@ -368,24 +408,32 @@ export async function sendEmail(
         // Smlouva finální → dynamically generated PDF (admin only, fontkit should work)
         try {
           const { generateProposalPdf } = await import("@/lib/crm/proposal-pdf");
-          const contractFullName = contractMeta
-            ? [contractMeta.firstName, contractMeta.lastName]
-                .filter((s) => s && s.trim())
-                .join(" ")
-                .trim()
-            : "";
+          const pick = (fromForm?: string, fromCard?: string) =>
+            fromForm && fromForm.trim() ? fromForm : fromCard || undefined;
+
+          const contractFullName =
+            [
+              pick(contractMeta?.firstName, cardData?.firstName),
+              pick(contractMeta?.lastName, cardData?.lastName),
+            ]
+              .filter((s) => s && s.trim())
+              .join(" ")
+              .trim();
           const pdfBuffer = await generateProposalPdf({
             clientName: contractFullName || undefined,
             clientEmail: to,
-            amount: contractMeta?.investmentAmount,
+            amount:
+              contractMeta?.investmentAmount || cardData?.investmentAmount || undefined,
             interestRate: contractMeta?.interestRate,
             duration: contractMeta?.duration,
             payoutFrequency: contractMeta?.payoutFrequency,
-            birthDate: contractMeta?.birthDate,
-            street: contractMeta?.street,
-            city: contractMeta?.city,
-            zip: contractMeta?.zip,
-            bankAccount: contractMeta?.bankAccount,
+            birthDate: pick(contractMeta?.birthDate, cardData?.birthDate),
+            street: pick(contractMeta?.street, cardData?.street),
+            city: pick(contractMeta?.city, cardData?.city),
+            zip: pick(contractMeta?.zip, cardData?.zip),
+            bankAccount: pick(contractMeta?.bankAccount, cardData?.bankAccount),
+            variableSymbol: contractVS,
+            startDate: contractMeta?.startDate,
           });
 
           const safeName =

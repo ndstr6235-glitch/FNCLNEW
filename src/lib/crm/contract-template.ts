@@ -14,6 +14,7 @@ export interface ContractData {
   duration: number;
   payoutFrequency: string;
   startDate: string;
+  variableSymbol?: string;
 }
 
 function formatDate(dateStr: string): string {
@@ -148,7 +149,11 @@ export function generateContractHTML(data: ContractData): string {
         <p style="font-size:14px; margin:0 0 10px 0;">
           <strong style="color:#A9884E;">2.1</strong> Věřitel se zavazuje poskytnout Dlužníkovi peněžní zápůjčku ve výši
           <strong>${amountFormatted} Kč</strong> (slovy: <em>${data.amountWords || "___________"}</em>),
-          a to převodem na bankovní účet Dlužníka uvedený v záhlaví této smlouvy.
+          a to převodem na bankovní účet Dlužníka uvedený v záhlaví této smlouvy${
+            data.variableSymbol
+              ? `, pod variabilním symbolem <strong>${data.variableSymbol}</strong>`
+              : ""
+          }.
         </p>
         <p style="font-size:14px; margin:0 0 10px 0;">
           <strong style="color:#A9884E;">2.2</strong> Dlužník se zavazuje zápůjčku přijmout a vrátit ji Věřiteli za podmínek stanovených touto smlouvou.

@@ -18,9 +18,19 @@ export interface ProposalPdfData {
   city?: string;
   zip?: string;
   bankAccount?: string;
+  variableSymbol?: string;
+  /** Effective date — the last thing filled in before the contract goes out */
+  startDate?: string;
 }
 
 const BLANK_LINE = "_______________________________";
+
+/** "2026-10-15" -> "15. 10. 2026" */
+function fmtCzDate(value: string): string {
+  const d = new Date(value);
+  if (isNaN(d.getTime())) return value;
+  return d.toLocaleDateString("cs-CZ", { day: "numeric", month: "numeric", year: "numeric" });
+}
 
 function fmtBirthDate(d?: string): string {
   if (!d) return BLANK_LINE;
@@ -369,12 +379,23 @@ export async function generateProposalPdf(data: ProposalPdfData): Promise<Buffer
   drawSectionHeader("II", "Předmět smlouvy");
   drawNumberedItem("2.1", `Předmětem této smlouvy je poskytnutí peněžní zápůjčky ve výši ${fmtAmount(data.amount)}.`);
   drawNumberedItem("2.2", "Účelem zápůjčky je financování podnikatelské činnosti Dlužníka.");
-  drawNumberedItem("2.3", `Peněžní zápůjčku vyplatí Věřitel Dlužníkovi bezhotovostně na číslo účtu: ${COMPANY_BANK_ACCOUNT}.`);
+  drawNumberedItem(
+    "2.3",
+    `Peněžní zápůjčku vyplatí Věřitel Dlužníkovi bezhotovostně na číslo účtu: ${COMPANY_BANK_ACCOUNT}` +
+      (data.variableSymbol
+        ? `, variabilní symbol: ${data.variableSymbol}.`
+        : "."),
+  );
 
   // ── ČLÁNEK III ──
   ensureSpace(100);
   drawSectionHeader("III", "Doba trvání smlouvy");
-  drawNumberedItem("3.1", `Tato smlouva se uzavírá na dobu určitou ${fmtDuration(data.duration)} ode dne poskytnutí zápůjčky.`);
+  drawNumberedItem(
+    "3.1",
+    data.startDate
+      ? `Tato smlouva se uzavírá na dobu určitou ${fmtDuration(data.duration)} ode dne ${fmtCzDate(data.startDate)}, kdy nabývá účinnosti.`
+      : `Tato smlouva se uzavírá na dobu určitou ${fmtDuration(data.duration)} ode dne poskytnutí zápůjčky.`,
+  );
   drawNumberedItem("3.2", "Smluvní strany se mohou písemně dohodnout na prodloužení (prolongaci) smlouvy, a to nejpozději 30 dnů před uplynutím sjednané doby.");
 
   // ── ČLÁNEK IV ──

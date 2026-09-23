@@ -48,6 +48,7 @@ export default function InboundDataPanel({
 }: Props) {
   const [rows, setRows] = useState<InboundEmailRow[]>([]);
   const [busy, setBusy] = useState<string | null>(null);
+  const [error, setError] = useState("");
   const [openBody, setOpenBody] = useState<string | null>(null);
 
   const load = useCallback(async () => {
@@ -62,19 +63,47 @@ export default function InboundDataPanel({
 
   if (rows.length === 0 && !awaitingContract) return null;
 
+  /** Moves a field out of `pending` right away; puts it back if the save fails. */
+  function resolveLocally(
+    inboundId: string,
+    field: string,
+    keepValue: boolean
+  ): InboundEmailRow[] {
+    const snapshot = rows;
+    setRows((prev) =>
+      prev.map((r) => {
+        if (r.id !== inboundId) return r;
+        const pending = { ...r.pending };
+        const value = pending[field];
+        delete pending[field];
+        return {
+          ...r,
+          pending,
+          applied: keepValue ? { ...r.applied, [field]: value } : r.applied,
+        };
+      })
+    );
+    return snapshot;
+  }
+
   async function handleConfirm(inboundId: string, field: string) {
-    setBusy(`${inboundId}:${field}`);
-    await confirmInboundField(inboundId, field);
-    setBusy(null);
-    await load();
+    const snapshot = resolveLocally(inboundId, field, true);
+    const res = await confirmInboundField(inboundId, field);
+    if (!res.success) {
+      setRows(snapshot);
+      setError(res.error || "Uložení se nezdařilo");
+      return;
+    }
     onRefresh?.();
   }
 
   async function handleReject(inboundId: string, field: string) {
-    setBusy(`${inboundId}:${field}`);
-    await rejectInboundField(inboundId, field);
-    setBusy(null);
-    await load();
+    const snapshot = resolveLocally(inboundId, field, false);
+    const res = await rejectInboundField(inboundId, field);
+    if (!res.success) {
+      setRows(snapshot);
+      setError(res.error || "Uložení se nezdařilo");
+    }
   }
 
   async function handleDone() {
@@ -99,6 +128,8 @@ export default function InboundDataPanel({
           </p>
         </div>
       </div>
+
+      {error && <p className="text-[11px] text-ruby">{error}</p>}
 
       {rows.map((row) => {
         const appliedKeys = Object.keys(row.applied);
@@ -156,17 +187,15 @@ export default function InboundDataPanel({
                       </span>
                       <button
                         onClick={() => handleConfirm(row.id, field)}
-                        disabled={busy === `${row.id}:${field}`}
                         title="Přepsat kartu touto hodnotou"
-                        className="p-1.5 min-h-[32px] min-w-[32px] flex items-center justify-center bg-emerald/10 text-emerald hover:bg-emerald/20 disabled:opacity-50"
+                        className="p-1.5 min-h-[32px] min-w-[32px] flex items-center justify-center bg-emerald/10 text-emerald hover:bg-emerald/20 active:scale-95 transition-transform"
                       >
                         <Check size={14} />
                       </button>
                       <button
                         onClick={() => handleReject(row.id, field)}
-                        disabled={busy === `${row.id}:${field}`}
                         title="Nechat původní hodnotu"
-                        className="p-1.5 min-h-[32px] min-w-[32px] flex items-center justify-center bg-ruby/10 text-ruby hover:bg-ruby/20 disabled:opacity-50"
+                        className="p-1.5 min-h-[32px] min-w-[32px] flex items-center justify-center bg-ruby/10 text-ruby hover:bg-ruby/20 active:scale-95 transition-transform"
                       >
                         <X size={14} />
                       </button>

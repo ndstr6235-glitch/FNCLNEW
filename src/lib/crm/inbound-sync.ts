@@ -1,6 +1,7 @@
 import "server-only";
 import { prisma } from "@/lib/crm/db";
 import { fetchRecentMessages, getImapConfig } from "@/lib/crm/inbound-imap";
+import { generateUniqueVS } from "@/lib/crm/variable-symbol";
 import {
   hasContractData,
   parseClientData,
@@ -165,9 +166,13 @@ export async function syncInbox(
       });
     }
 
+    // The payment reference is created here so the broker can hand it to the
+    // client right away; the final contract then reuses the very same number.
+    const variableSymbol = client.variableSymbol || (await generateUniqueVS());
+
     await prisma.client.update({
       where: { id: client.id },
-      data: { awaitingContract: true },
+      data: { awaitingContract: true, variableSymbol },
     });
 
     await prisma.inboundEmail.create({
@@ -197,7 +202,12 @@ export async function syncInbox(
         description:
           `Klient zaslal údaje ke smlouvě — doplněno ${appliedCount} polí` +
           (pendingCount > 0 ? `, ${pendingCount} čeká na potvrzení` : ""),
-        metadata: JSON.stringify({ applied, pending, from: msg.fromEmail }),
+        metadata: JSON.stringify({
+          applied,
+          pending,
+          from: msg.fromEmail,
+          variableSymbol,
+        }),
       },
     });
 
@@ -219,7 +229,7 @@ export async function syncInbox(
           type: "client_data_received",
           title: "Klient zaslal údaje — čeká na finální smlouvu",
           message:
-            `${clientName} odpověděl na e-mail a poslal údaje ke smlouvě.` +
+            `${clientName} odpověděl na e-mail a poslal údaje ke smlouvě. VS ${variableSymbol}.` +
             (pendingCount > 0
               ? ` ${pendingCount} údajů se liší od karty — potvrďte je.`
               : ""),

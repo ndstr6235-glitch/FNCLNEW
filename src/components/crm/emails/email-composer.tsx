@@ -358,6 +358,9 @@ export default function EmailComposer({
       if (!prefillCity?.trim()) missing.push("město");
       if (!prefillZip?.trim()) missing.push("PSČ");
       if (!prefillBankAccount?.trim()) missing.push("bankovní účet");
+      // Everything else comes from the card — the start date is the one thing
+      // the broker still fills in, right before sending.
+      if (!startDate?.trim()) missing.push("datum začátku smlouvy");
     }
 
     if (missing.length > 0) {
@@ -657,7 +660,9 @@ export default function EmailComposer({
                 {/* Start date */}
                 <div>
                   <label className="block text-xs font-medium text-text-mid mb-1">
-                    Datum začátku
+                    Datum začátku {isSmlouvaTemplate && !isNavrhSmlouva && (
+                      <span className="text-ruby">*</span>
+                    )}
                   </label>
                   <input
                     type="date"

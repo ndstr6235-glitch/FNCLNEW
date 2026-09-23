@@ -77,6 +77,9 @@ model Client {
   paymentReceivedDate String   @default("")
   dnc                 Boolean  @default(false)
   awaitingContract    Boolean  @default(false)
+  /// Payment reference created once the client sends the contract data — the
+  /// final contract, the e-mail and the deposit payment all carry this number.
+  variableSymbol      String   @default("")
   lastCallOutcome     String   @default("")
   lastCalledAt        String   @default("")
   callDate            String   @default("")
