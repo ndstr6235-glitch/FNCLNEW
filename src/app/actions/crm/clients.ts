@@ -41,6 +41,7 @@ export interface ClientDetail {
   investmentAmount: number;
   paymentReceivedDate: string;
   dnc: boolean;
+  awaitingContract: boolean;
   canRestoreContact: boolean;
   lastCallOutcome: string;
   lastCalledAt: string;
@@ -162,6 +163,7 @@ export async function getClientDetail(
     investmentAmount: client.investmentAmount,
     paymentReceivedDate: client.paymentReceivedDate,
     dnc: client.dnc,
+    awaitingContract: client.awaitingContract,
     canRestoreContact: session.role !== "broker",
     lastCallOutcome: client.lastCallOutcome,
     lastCalledAt: client.lastCalledAt,

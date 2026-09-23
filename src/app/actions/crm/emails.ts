@@ -7,6 +7,7 @@ import { put } from "@vercel/blob";
 import { logAudit } from "./audit";
 import { logActivity } from "./activity";
 import { buildUnsubscribeUrl } from "@/lib/crm/unsubscribe-token";
+import { plainBodyToHtml, plainBodyWithFooter } from "@/lib/crm/email-footer";
 import { generateUniqueVS } from "@/lib/crm/variable-symbol";
 
 export interface EmailClientRow {
@@ -445,15 +446,17 @@ export async function sendEmail(
     const vsLine = contractVS
       ? `\n\nPři platbě uvádějte variabilní symbol: ${contractVS}`
       : "";
-    const bodyWithFooter = unsubUrl
-      ? `${body}${vsLine}\n\n---\nNepřejete si dostávat další zprávy? Odhlaste se zde: ${unsubUrl}`
-      : `${body}${vsLine}`;
+    const fullBody = `${body}${vsLine}`;
+    const bodyWithFooter = plainBodyWithFooter(fullBody, unsubUrl);
+    // HTML twin of the same message — carries the unsubscribe button
+    const htmlBody = plainBodyToHtml(fullBody, unsubUrl);
 
     const { error } = await getResend().emails.send({
       from,
       to: [to],
       subject,
       text: bodyWithFooter,
+      html: htmlBody,
       replyTo: [effectiveReplyTo],
       ...(attachments.length > 0 ? { attachments } : {}),
       ...(unsubUrl
@@ -555,6 +558,15 @@ export async function sendEmail(
           `Odeslán email: ${subject}`
         ),
       ]);
+
+      // The final contract closes the "client sent data, waiting for contract"
+      // flag raised when their reply landed in the info@ mailbox.
+      if (isFinalContract) {
+        await prisma.client.update({
+          where: { id: clientId },
+          data: { awaitingContract: false },
+        });
+      }
 
       // When "Smlouva finální" is sent, schedule interest payout events
       // for the entire contract duration (creates Payment + CalEvent records)

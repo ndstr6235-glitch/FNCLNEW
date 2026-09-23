@@ -4,10 +4,7 @@ import { prisma } from "@/lib/crm/db";
 import { getSession } from "@/lib/crm/auth";
 import { logActivity } from "./activity";
 import { logAudit } from "./audit";
-import {
-  computePayoutSchedule,
-  formatLocalDate,
-} from "@/lib/crm/payout-schedule";
+import { formatLocalDate } from "@/lib/crm/payout-schedule";
 import { generateUniqueVS } from "@/lib/crm/variable-symbol";
 
 interface ScheduleInterestPaymentsInput {
@@ -83,46 +80,20 @@ export async function scheduleInterestPayments(
       },
     });
 
-    // 2. Schedule INTEREST events linked to this deposit
-    const schedule = computePayoutSchedule({
-      startDate: startStr,
-      amount,
-      interestRate,
-      durationMonths,
-      payoutFrequency,
+    // 2. No payout events yet — the deposit has not been paid, and an unsigned
+    // contract must never put interest payments in the calendar. They are
+    // created by reschedulePayouts() once the deposit is marked as paid, from
+    // the real payment date.
+    await prisma.client.update({
+      where: { id: clientId },
+      data: { paymentFreq: (payoutFrequency === "quarterly" ? 3 : 1) * 30 },
     });
-
-    const bankLine = bankAccount
-      ? `\nÚčet klienta: ${bankAccount}`
-      : "\nÚčet klienta: (nezadáno)";
-
-    const eventsData = schedule.map((e, i) => ({
-      clientId,
-      userId: client.assignedTo,
-      paymentId: deposit.id,
-      type: "INTEREST" as const,
-      title: `Výplata úroku — ${clientName} — ${e.amount.toLocaleString("cs-CZ")} Kč`,
-      date: e.date,
-      time: "09:00",
-      note: `${e.label} • vklad ${amount.toLocaleString("cs-CZ")} Kč • ${interestRate}% p.a.${bankLine} • Splátka ${i + 1}/${schedule.length}`,
-    }));
-
-    if (eventsData.length > 0) {
-      await prisma.calEvent.createMany({ data: eventsData });
-      await prisma.client.update({
-        where: { id: clientId },
-        data: {
-          nextPaymentDate: eventsData[0].date,
-          paymentFreq: (payoutFrequency === "quarterly" ? 3 : 1) * 30,
-        },
-      });
-    }
 
     await logActivity(
       clientId,
       session.id,
       "PAYMENT_ADDED",
-      `Naplánováno ${eventsData.length} výplat úroku (${payoutFrequency === "quarterly" ? "čtvrtletně" : "měsíčně"})`
+      `Vklad ${amount.toLocaleString("cs-CZ")} Kč čeká na zaplacení — výplaty úroku se naplánují až po připsání platby`
     );
 
     await logAudit(
@@ -130,10 +101,10 @@ export async function scheduleInterestPayments(
       "SCHEDULE_INTEREST_PAYMENTS",
       "payment",
       deposit.id,
-      `Klient: ${clientName}, Vklad: ${amount} Kč, Úrok: ${interestRate}% p.a., Doba: ${durationMonths} měs., VS: ${vs}, Počet výplat: ${eventsData.length}`
+      `Klient: ${clientName}, Vklad: ${amount} Kč, Úrok: ${interestRate}% p.a., Doba: ${durationMonths} měs., VS: ${vs} — výplaty zatím neplánovány (čeká na platbu)`
     );
 
-    return { success: true, eventsCreated: eventsData.length };
+    return { success: true, eventsCreated: 0 };
   } catch (err) {
     console.error("scheduleInterestPayments failed:", err);
     return {

@@ -19,6 +19,7 @@ import { getOutcomeMeta } from "@/lib/crm/call-outcomes";
 import CallOutcomeBadge from "./call-outcome-badge";
 import type { ClientDetail } from "@/app/actions/crm/clients";
 import { restoreClientContact } from "@/app/actions/crm/clients";
+import InboundDataPanel from "./inbound-data-panel";
 
 interface DrawerTabOverviewProps {
   client: ClientDetail;
@@ -217,6 +218,13 @@ export default function DrawerTabOverview({
           tone="warning"
         />
       )}
+
+      {/* Contract data the client e-mailed to info@ */}
+      <InboundDataPanel
+        clientId={client.id}
+        awaitingContract={client.awaitingContract}
+        onRefresh={onRefresh}
+      />
 
       {/* Po hovoru — primary CTA for call-center workflow */}
       {client.dnc ? (

@@ -5,6 +5,7 @@ import { fmtCZK, fmtDate, cn } from "@/lib/crm/utils";
 import { SCORE_META } from "@/lib/crm/constants";
 import ClientStatusBadge from "./client-status-badge";
 import CallOutcomeBadge from "./call-outcome-badge";
+import ContractPendingBadge from "./contract-pending-badge";
 import type { ClientRow } from "./clients-page-client";
 
 interface ClientsTableProps {
@@ -139,6 +140,7 @@ export default function ClientsTable({
                     <div className="flex items-center gap-1.5 flex-wrap">
                       <ClientStatusBadge isInvestor={client.isInvestor} />
                       <CallOutcomeBadge outcome={client.lastCallOutcome} />
+                      {client.awaitingContract && <ContractPendingBadge compact />}
                     </div>
                   </td>
 

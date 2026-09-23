@@ -6,6 +6,7 @@ import { fmtCZK, cn } from "@/lib/crm/utils";
 import { SCORE_META } from "@/lib/crm/constants";
 import ClientStatusBadge from "./client-status-badge";
 import CallOutcomeBadge from "./call-outcome-badge";
+import ContractPendingBadge from "./contract-pending-badge";
 import type { ClientRow } from "./clients-page-client";
 
 interface ClientsCardsProps {
@@ -117,6 +118,7 @@ export default function ClientsCards({
                   )}
                   <ClientStatusBadge isInvestor={client.isInvestor} />
                   <CallOutcomeBadge outcome={client.lastCallOutcome} />
+                  {client.awaitingContract && <ContractPendingBadge compact />}
                 </div>
                 {!isBroker && (
                   <p className="text-xs text-text-dim mt-0.5">

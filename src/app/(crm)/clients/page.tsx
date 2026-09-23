@@ -112,6 +112,7 @@ export default async function ClientsRoute({ searchParams }: PageProps) {
       email: c.email,
       callDate: c.callDate,
       lastCallOutcome: c.lastCallOutcome,
+      awaitingContract: c.awaitingContract,
       isInvestor: paidPayments.length > 0,
       totalDeposit,
       totalProfit: paidPayments.reduce((s, p) => s + p.profit, 0),

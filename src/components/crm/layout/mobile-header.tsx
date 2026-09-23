@@ -2,13 +2,15 @@
 
 import { Menu } from "lucide-react";
 import { useSidebar } from "./sidebar-context";
+import NotificationBell from "./notification-bell";
 
 interface MobileHeaderProps {
   firstName: string;
   lastName: string;
+  isAdmin: boolean;
 }
 
-export default function MobileHeader({ firstName, lastName }: MobileHeaderProps) {
+export default function MobileHeader({ firstName, lastName, isAdmin }: MobileHeaderProps) {
   const { toggleMobileOpen } = useSidebar();
   const initials = `${firstName[0]}${lastName[0]}`;
 
@@ -35,6 +37,7 @@ export default function MobileHeader({ firstName, lastName }: MobileHeaderProps)
       </div>
 
       <div className="flex items-center gap-1">
+        <NotificationBell isAdmin={isAdmin} />
         <div className="w-9 h-9 bg-[rgba(169,136,78,0.12)] flex items-center justify-center text-xs font-bold text-brass">
           {initials}
         </div>

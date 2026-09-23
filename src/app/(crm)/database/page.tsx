@@ -58,6 +58,7 @@ export default async function DatabaseRoute({ searchParams }: PageProps) {
         email: true,
         callDate: true,
         lastCallOutcome: true,
+        awaitingContract: true,
         stage: true,
         createdAt: true,
       },
@@ -87,6 +88,7 @@ export default async function DatabaseRoute({ searchParams }: PageProps) {
     email: c.email,
     callDate: c.callDate,
     lastCallOutcome: c.lastCallOutcome,
+    awaitingContract: c.awaitingContract,
     isInvestor: false, // pool klienti nikdy nejsou investoři
     totalDeposit: 0,
     totalProfit: 0,

@@ -18,6 +18,7 @@ export type ActivityType =
   | "ASSIGNED_TO_CHANGED"
   | "GDPR_UNSUBSCRIBE"
   | "GDPR_RESUBSCRIBE"
+  | "CLIENT_DATA_RECEIVED"
   | "PAYOUT_SCHEDULED";
 
 export interface ActivityRow {

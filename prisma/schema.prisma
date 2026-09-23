@@ -51,42 +51,43 @@ model User {
   clients         Client[]
   events          CalEvent[]
   activities      Activity[]
-  documents       Document[] @relation("DocumentUploader")
+  documents       Document[]       @relation("DocumentUploader")
   notifications   Notification[]
-  auditLogs       AuditLog[] @relation("AuditLogs")
-  sentEmails      SentEmail[] @relation("SentEmails")
+  auditLogs       AuditLog[]       @relation("AuditLogs")
+  sentEmails      SentEmail[]      @relation("SentEmails")
   leadAssignments LeadAssignment[]
   calls           Call[]
-  ticketsCreated  Ticket[]      @relation("TicketsCreated")
-  ticketsAssigned Ticket[]      @relation("TicketsAssigned")
+  ticketsCreated  Ticket[]         @relation("TicketsCreated")
+  ticketsAssigned Ticket[]         @relation("TicketsAssigned")
   ticketMessages  TicketMessage[]
 }
 
 model Client {
-  id              String   @id @default(cuid())
-  firstName       String
-  lastName        String
-  phone           String
-  email           String
-  birthDate       String   @default("")
-  street          String   @default("")
-  city            String   @default("")
-  zip             String   @default("")
-  bankAccount          String   @default("")
-  investmentAmount     Float    @default(0)
-  paymentReceivedDate  String   @default("")
-  dnc                  Boolean  @default(false)
-  lastCallOutcome String   @default("")
-  lastCalledAt    String   @default("")
-  callDate        String   @default("")
-  nextPaymentDate String   @default("")
-  paymentFreq     Int      @default(30)
-  note            String   @default("")
-  stage           String   @default("NEW")
-  source          String   @default("")
-  metadata        String   @default("{}")
-  assignedTo      String
-  createdAt       DateTime @default(now())
+  id                  String   @id @default(cuid())
+  firstName           String
+  lastName            String
+  phone               String
+  email               String
+  birthDate           String   @default("")
+  street              String   @default("")
+  city                String   @default("")
+  zip                 String   @default("")
+  bankAccount         String   @default("")
+  investmentAmount    Float    @default(0)
+  paymentReceivedDate String   @default("")
+  dnc                 Boolean  @default(false)
+  awaitingContract    Boolean  @default(false)
+  lastCallOutcome     String   @default("")
+  lastCalledAt        String   @default("")
+  callDate            String   @default("")
+  nextPaymentDate     String   @default("")
+  paymentFreq         Int      @default(30)
+  note                String   @default("")
+  stage               String   @default("NEW")
+  source              String   @default("")
+  metadata            String   @default("{}")
+  assignedTo          String
+  createdAt           DateTime @default(now())
 
   user            User             @relation(fields: [assignedTo], references: [id])
   payments        Payment[]
@@ -97,6 +98,7 @@ model Client {
   leadAssignments LeadAssignment[]
   calls           Call[]
   tickets         Ticket[]
+  inboundEmails   InboundEmail[]
 
   @@index([assignedTo])
   @@index([assignedTo, lastCallOutcome])
@@ -109,6 +111,32 @@ model Client {
   @@index([source])
   @@index([createdAt])
   @@index([dnc])
+  @@index([awaitingContract])
+}
+
+/// Reply received in the info@ mailbox — client sending the data needed for
+/// the final contract. Fetched over IMAP, parsed, and attached to the client.
+model InboundEmail {
+  id         String   @id @default(cuid())
+  messageId  String   @unique
+  fromEmail  String
+  fromName   String   @default("")
+  subject    String   @default("")
+  body       String   @default("")
+  receivedAt DateTime @default(now())
+  clientId   String?
+  /// Fields written straight into the client card (JSON)
+  applied    String   @default("{}")
+  /// Values that differ from what the card already holds — await confirmation (JSON)
+  pending    String   @default("{}")
+  /// NEW = unmatched e-mail, PENDING = waiting for confirmation, DONE = resolved
+  status     String   @default("NEW")
+  createdAt  DateTime @default(now())
+
+  client Client? @relation(fields: [clientId], references: [id], onDelete: SetNull)
+
+  @@index([clientId, createdAt])
+  @@index([status])
 }
 
 model LeadAssignment {
@@ -127,19 +155,19 @@ model LeadAssignment {
 }
 
 model Payment {
-  id              String   @id @default(cuid())
+  id              String  @id @default(cuid())
   amount          Float
   percent         Float
   profit          Float
   date            String
-  note            String   @default("")
-  duration        Int      @default(12)
-  monthlyPayout   Float    @default(0)
-  payoutFrequency String   @default("monthly")
-  paid            Boolean  @default(false)
-  paidAt          String   @default("")
+  note            String  @default("")
+  duration        Int     @default(12)
+  monthlyPayout   Float   @default(0)
+  payoutFrequency String  @default("monthly")
+  paid            Boolean @default(false)
+  paidAt          String  @default("")
   clientId        String
-  variableSymbol  String?  @unique
+  variableSymbol  String? @unique
 
   client Client @relation(fields: [clientId], references: [id], onDelete: Cascade)
 
@@ -294,9 +322,9 @@ model Ticket {
   createdAt   DateTime       @default(now())
   updatedAt   DateTime       @updatedAt
 
-  from     User             @relation("TicketsCreated", fields: [fromUserId], references: [id])
-  assignee User?            @relation("TicketsAssigned", fields: [assigneeId], references: [id])
-  client   Client?          @relation(fields: [clientId], references: [id], onDelete: SetNull)
+  from     User            @relation("TicketsCreated", fields: [fromUserId], references: [id])
+  assignee User?           @relation("TicketsAssigned", fields: [assigneeId], references: [id])
+  client   Client?         @relation(fields: [clientId], references: [id], onDelete: SetNull)
   messages TicketMessage[]
 
   @@index([status, priority])
@@ -334,12 +362,12 @@ model WebEmission {
 }
 
 model WebProject {
-  id          String  @id @default(cuid())
+  id          String @id @default(cuid())
   name        String
   description String
-  imageUrl    String  @default("")
-  status      String  @default("active")
-  sortOrder   Int     @default(0)
+  imageUrl    String @default("")
+  status      String @default("active")
+  sortOrder   Int    @default(0)
 }
 
 model WebStat {

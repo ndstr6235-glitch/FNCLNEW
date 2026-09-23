@@ -20,6 +20,7 @@ export interface ClientRow {
   email: string;
   callDate: string;
   lastCallOutcome: string;
+  awaitingContract: boolean;
   isInvestor: boolean;
   totalDeposit: number;
   totalProfit: number;

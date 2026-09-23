@@ -1,9 +1,11 @@
 "use server";
 
 import { getSession } from "@/lib/crm/auth";
+import { prisma } from "@/lib/crm/db";
 import { logAudit } from "./audit";
 import { Resend } from "resend";
 import { buildUnsubscribeUrl } from "@/lib/crm/unsubscribe-token";
+import { unsubscribeFooterHtml } from "@/lib/crm/email-footer";
 import { generateContractHTML } from "@/lib/crm/contract-template";
 import { htmlToPdf } from "@/lib/crm/html-to-pdf";
 import type { ContractData } from "@/lib/crm/contract-template";
@@ -78,10 +80,7 @@ export async function sendContractEmail(
 
     const unsubUrl = clientId ? buildUnsubscribeUrl(clientId) : undefined;
     const htmlWithFooter = unsubUrl
-      ? contractHtml.replace(
-          "</body>",
-          `<hr style="margin:32px 0;border:none;border-top:1px solid #ddd"><p style="font-size:11px;color:#888;text-align:center">Nepřejete si dostávat další zprávy? <a href="${unsubUrl}" style="color:#b8912a">Odhlaste se</a>.</p></body>`
-        )
+      ? contractHtml.replace("</body>", `${unsubscribeFooterHtml(unsubUrl)}</body>`)
       : contractHtml;
 
     const { error } = await resend.emails.send({
@@ -125,6 +124,13 @@ export async function sendContractEmail(
       undefined,
       `Smlouva odeslána na: ${to}, Klient: ${clientName}`
     );
+
+    if (clientId) {
+      await prisma.client.update({
+        where: { id: clientId },
+        data: { awaitingContract: false },
+      });
+    }
 
     return { success: true };
   } catch (err) {

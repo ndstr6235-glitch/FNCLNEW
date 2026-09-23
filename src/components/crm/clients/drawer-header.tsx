@@ -4,6 +4,7 @@ import { X, Landmark, TrendingUp, Percent } from "lucide-react";
 import { fmtCZK } from "@/lib/crm/utils";
 import { SCORE_META } from "@/lib/crm/constants";
 import ClientStatusBadge from "./client-status-badge";
+import ContractPendingBadge from "./contract-pending-badge";
 import type { ClientDetail } from "@/app/actions/crm/clients";
 
 interface DrawerHeaderProps {
@@ -38,6 +39,7 @@ export default function DrawerHeader({ client, onClose }: DrawerHeaderProps) {
               </span>
             )}
             <ClientStatusBadge isInvestor={client.isInvestor} />
+            {client.awaitingContract && <ContractPendingBadge />}
             <span className="text-xs text-white/50">{client.brokerName}</span>
           </div>
         </div>
