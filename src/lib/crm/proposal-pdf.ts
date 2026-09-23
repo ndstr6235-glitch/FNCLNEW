@@ -468,10 +468,13 @@ export async function generateProposalPdf(data: ProposalPdfData): Promise<Buffer
 
   page.drawText("Miroslav Fencl, jednatel", { x: rightCol, y: y - 12, size: 9.5, font: fontSemi, color: black });
 
+  // Both sides are dated by the contract's start date — the one value the
+  // broker fills in right before sending. Without it, fall back to today.
   const today = new Date().toLocaleDateString("cs-CZ", { day: "numeric", month: "numeric", year: "numeric" });
+  const signDate = data.startDate ? fmtCzDate(data.startDate) : today;
   y -= 24;
-  page.drawText("V Praze dne _______________", { x: leftCol, y, size: 9, font: fontRegular, color: grey });
-  page.drawText(`V Praze dne ${today}`, { x: rightCol, y, size: 9, font: fontRegular, color: grey });
+  page.drawText(`V Praze dne ${signDate}`, { x: leftCol, y, size: 9, font: fontRegular, color: grey });
+  page.drawText(`V Praze dne ${signDate}`, { x: rightCol, y, size: 9, font: fontRegular, color: grey });
 
   // ── FOOTER ──
   drawFooter(page);
