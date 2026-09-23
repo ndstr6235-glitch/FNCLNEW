@@ -126,24 +126,16 @@ export async function syncInbox(
     }
 
     const client = await findClientByEmail(msg.fromEmail);
-    const data = parseClientData(msg.body);
-    const body = stripQuotedText(msg.body).slice(0, 8000);
 
+    // Only mail from an address that has a client card matters — newsletters,
+    // banks and everything else in the mailbox is ignored, not stored.
     if (!client) {
-      await prisma.inboundEmail.create({
-        data: {
-          messageId: msg.messageId,
-          fromEmail: msg.fromEmail,
-          fromName: msg.fromName,
-          subject: msg.subject,
-          body,
-          receivedAt: msg.receivedAt,
-          status: "NEW",
-        },
-      });
       result.unmatched++;
       continue;
     }
+
+    const data = parseClientData(msg.body);
+    const body = stripQuotedText(msg.body).slice(0, 8000);
 
     if (!hasContractData(data)) {
       // A reply with no contract data (thanks, questions…) — keep it on the

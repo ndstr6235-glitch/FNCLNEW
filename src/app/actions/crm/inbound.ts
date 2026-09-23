@@ -213,27 +213,3 @@ export async function clearAwaitingContract(
   revalidatePath("/clients");
   return { success: true };
 }
-
-/** E-mails that arrived from an address no client card carries. */
-export async function getUnmatchedInbound(): Promise<InboundEmailRow[]> {
-  const session = await getSession();
-  if (!session || session.role === "broker") return [];
-
-  const rows = await prisma.inboundEmail.findMany({
-    where: { clientId: null, status: "NEW" },
-    orderBy: { receivedAt: "desc" },
-    take: 50,
-  });
-
-  return rows.map((r) => ({
-    id: r.id,
-    fromEmail: r.fromEmail,
-    fromName: r.fromName,
-    subject: r.subject,
-    body: r.body,
-    receivedAt: r.receivedAt.toISOString(),
-    status: r.status,
-    applied: {},
-    pending: {},
-  }));
-}

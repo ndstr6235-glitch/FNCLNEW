@@ -36,14 +36,23 @@ export function stripQuotedText(raw: string): string {
   const lines = raw.replace(/\r\n/g, "\n").split("\n");
   const out: string[] = [];
 
-  for (const line of lines) {
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
     const n = norm(line);
+
+    // Gmail wraps its attribution over two lines, so "wrote:" / "napsal:"
+    // often sits on the line after "On <date> …" / "Dne <datum> …"
+    const isAttribution =
+      /^(on|dne)\b/.test(n) &&
+      /(wrote:|napsal|napsala)/.test(
+        norm(lines.slice(i, i + 3).join(" "))
+      );
+
     const isSeparator =
+      isAttribution ||
       /^>/.test(line.trim()) ||
       /^-{2,}\s*(puvodni|original)/.test(n) ||
       /^(od|from|odesilatel)\s*:/.test(n) ||
-      /^dne .* napsal/.test(n) ||
-      /^on .* wrote:/.test(n) ||
       n === "--" ||
       /^_{5,}$/.test(n);
     if (isSeparator) break;
@@ -52,6 +61,9 @@ export function stripQuotedText(raw: string): string {
 
   return out.join("\n").trim();
 }
+
+/** Our own addresses must never be read as the client's contact details. */
+const OWN_DOMAIN = "@puskinpartners.cz";
 
 // label (normalized, no diacritics) -> field
 const LABELS: { keys: string[]; field: keyof ParsedClientData }[] = [
@@ -241,7 +253,9 @@ export function parseClientData(rawBody: string): ParsedClientData {
       }
       case "email": {
         const m = value.match(/[^\s<>@]+@[^\s<>@]+\.[^\s<>@]+/);
-        if (m) data.email = m[0].toLowerCase();
+        if (m && !m[0].toLowerCase().endsWith(OWN_DOMAIN)) {
+          data.email = m[0].toLowerCase();
+        }
         break;
       }
     }
@@ -385,7 +399,9 @@ function parseUnlabelledLines(body: string, data: ParsedClientData): void {
 
     const mail = line.match(/[^\s<>@]+@[^\s<>@]+\.[^\s<>@]+/);
     if (mail && !data.email) {
-      data.email = mail[0].toLowerCase();
+      if (!mail[0].toLowerCase().endsWith(OWN_DOMAIN)) {
+        data.email = mail[0].toLowerCase();
+      }
       continue;
     }
 
