@@ -180,7 +180,7 @@ export async function syncInbox(
             type: "client_replied",
             title: `Odpověď od klienta — ${name}`,
             message: preview || msg.subject || "Klient odpověděl na e-mail",
-            link: `/clients?open=${client.id}`,
+            link: `/clients?open=${client.id}&tab=email`,
           },
         }),
         prisma.activity.create({

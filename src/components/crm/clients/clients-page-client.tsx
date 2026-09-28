@@ -70,11 +70,18 @@ export default function ClientsPageClient({
   const [selectedClientId, setSelectedClientId] = useState<string | null>(
     initialOpen
   );
+  // ?tab=email — notifications about a client's reply land on the thread
+  const [openTab, setOpenTab] = useState<string | null>(
+    typeof window !== "undefined"
+      ? new URLSearchParams(window.location.search).get("tab")
+      : null
+  );
   useEffect(() => {
     if (typeof window === "undefined") return;
     function syncFromUrl() {
-      const id = new URLSearchParams(window.location.search).get("open");
-      setSelectedClientId(id);
+      const params = new URLSearchParams(window.location.search);
+      setSelectedClientId(params.get("open"));
+      setOpenTab(params.get("tab"));
     }
     window.addEventListener("popstate", syncFromUrl);
     // Next.js does soft navigation via history.pushState — watch that too
@@ -288,6 +295,7 @@ export default function ClientsPageClient({
       {/* Client Drawer */}
       <ClientDrawer
         clientId={selectedClientId}
+        initialTab={openTab === "email" ? "email" : undefined}
         onClose={() => setSelectedClientId(null)}
         brokers={brokers}
         isBroker={isBroker}

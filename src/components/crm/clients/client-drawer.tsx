@@ -26,6 +26,8 @@ interface ClientDrawerProps {
   userRole: "administrator" | "supervisor" | "broker";
   userName?: string;
   userEmail?: string;
+  /** Tab to land on — notifications link straight to the client's replies */
+  initialTab?: Tab;
 }
 
 type Tab = "overview" | "payments" | "events" | "email" | "history" | "documents" | "tickets";
@@ -38,12 +40,18 @@ export default function ClientDrawer({
   userRole,
   userName,
   userEmail,
+  initialTab,
 }: ClientDrawerProps) {
   const { toast } = useToast();
   const [client, setClient] = useState<ClientDetail | null>(null);
   const [loading, setLoading] = useState(false);
-  const [activeTab, setActiveTab] = useState<Tab>("overview");
+  const [activeTab, setActiveTab] = useState<Tab>(initialTab || "overview");
   const [isClosing, setIsClosing] = useState(false);
+  useEffect(() => {
+    // A notification link can change the target tab while the drawer is open.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    if (initialTab) setActiveTab(initialTab);
+  }, [initialTab, clientId]);
   const [showClientForm, setShowClientForm] = useState(false);
   const [showPaymentForm, setShowPaymentForm] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);

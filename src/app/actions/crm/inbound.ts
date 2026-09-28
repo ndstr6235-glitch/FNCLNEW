@@ -293,3 +293,56 @@ export async function getClientConversation(
 
   return items.sort((a, b) => (a.date < b.date ? 1 : -1));
 }
+
+// ---------------------------------------------------------------------------
+// Dashboard — replies received in the last two weeks
+// ---------------------------------------------------------------------------
+export interface DashboardReply {
+  id: string;
+  clientId: string;
+  clientName: string;
+  fromEmail: string;
+  subject: string;
+  preview: string;
+  receivedAt: string;
+  hasContractData: boolean;
+}
+
+export async function getRecentReplies(
+  limit = 8
+): Promise<DashboardReply[]> {
+  const session = await getSession();
+  if (!session) return [];
+
+  const twoWeeksAgo = new Date(Date.now() - 14 * 24 * 60 * 60 * 1000);
+
+  const rows = await prisma.inboundEmail.findMany({
+    where: {
+      clientId: { not: null },
+      receivedAt: { gte: twoWeeksAgo },
+      ...(session.role === "broker"
+        ? { client: { assignedTo: session.id } }
+        : {}),
+    },
+    orderBy: { receivedAt: "desc" },
+    take: limit,
+    include: {
+      client: { select: { id: true, firstName: true, lastName: true } },
+    },
+  });
+
+  return rows
+    .filter((r) => r.client)
+    .map((r) => ({
+      id: r.id,
+      clientId: r.client!.id,
+      clientName: `${r.client!.firstName} ${r.client!.lastName}`.trim(),
+      fromEmail: r.fromEmail,
+      subject: r.subject,
+      preview: r.body.replace(/\s+/g, " ").slice(0, 160),
+      receivedAt: r.receivedAt.toISOString(),
+      hasContractData:
+        Object.keys(parseJson(r.applied)).length > 0 ||
+        Object.keys(parseJson(r.pending)).length > 0,
+    }));
+}

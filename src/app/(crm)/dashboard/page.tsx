@@ -17,6 +17,8 @@ import { getCompanyDashboardStats } from "@/app/actions/crm/dashboard-stats";
 import { getPoolStats } from "@/lib/crm/pool-stats";
 import LeadPoolWidget from "@/components/crm/dashboard/lead-pool-widget";
 import ConversionFunnel from "@/components/crm/dashboard/conversion-funnel";
+import ClientReplies from "@/components/crm/dashboard/client-replies";
+import { getRecentReplies } from "@/app/actions/crm/inbound";
 import type { EventType } from "@/lib/crm/types";
 
 const EVENT_TYPE_MAP: Record<string, EventType> = {
@@ -132,6 +134,9 @@ export default async function DashboardPage() {
   const poolStats = !isBroker ? await getPoolStats() : null;
   const funnelData = !isBroker ? await getConversionFunnel() : null;
 
+  // Replies land at the very top — first thing seen after logging in
+  const recentReplies = await getRecentReplies();
+
   return (
     <div className="space-y-6 lg:space-y-8">
       {/* Header */}
@@ -143,6 +148,9 @@ export default async function DashboardPage() {
           Vítejte zpět, {session.firstName}
         </p>
       </div>
+
+      {/* What clients wrote back */}
+      <ClientReplies replies={recentReplies} />
 
       {/* My Day */}
       <MyDay
