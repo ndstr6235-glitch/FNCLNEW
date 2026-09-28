@@ -1,11 +1,22 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { Mail, ChevronDown, ChevronUp, Loader2, Clock } from "lucide-react";
+import {
+  Mail,
+  ChevronDown,
+  ChevronUp,
+  Loader2,
+  Clock,
+  CornerDownLeft,
+} from "lucide-react";
 import EmailComposer from "@/components/crm/emails/email-composer";
 import type { ClientDetail } from "@/app/actions/crm/clients";
-import type { EmailTemplateRow, SentEmailRow } from "@/app/actions/crm/emails";
-import { getEmailTemplates, getClientSentEmails } from "@/app/actions/crm/emails";
+import type { EmailTemplateRow } from "@/app/actions/crm/emails";
+import { getEmailTemplates } from "@/app/actions/crm/emails";
+import {
+  getClientConversation,
+  type ConversationItem,
+} from "@/app/actions/crm/inbound";
 import type { Role } from "@/lib/crm/types";
 
 interface DrawerTabEmailProps {
@@ -50,15 +61,14 @@ export default function DrawerTabEmail({
   >(undefined);
   const [loaded, setLoaded] = useState(false);
 
-  // Sent emails history
-  const [sentEmails, setSentEmails] = useState<SentEmailRow[]>([]);
+  // Full thread — what we sent and what the client replied
+  const [conversation, setConversation] = useState<ConversationItem[]>([]);
   const [loadingHistory, setLoadingHistory] = useState(true);
   const [expandedEmailId, setExpandedEmailId] = useState<string | null>(null);
 
   const fetchHistory = useCallback(async () => {
     setLoadingHistory(true);
-    const emails = await getClientSentEmails(client.id);
-    setSentEmails(emails);
+    setConversation(await getClientConversation(client.id));
     setLoadingHistory(false);
   }, [client.id]);
 
@@ -72,6 +82,8 @@ export default function DrawerTabEmail({
   }, [loaded]);
 
   useEffect(() => {
+    // Loads the thread when the tab opens and after each send.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchHistory();
   }, [fetchHistory]);
 
@@ -139,11 +151,11 @@ export default function DrawerTabEmail({
         <div className="flex items-center gap-2 mb-3">
           <Clock size={16} className="text-gold" />
           <span className="text-sm font-semibold text-text">
-            Odeslané emaily
+            Konverzace s klientem
           </span>
-          {sentEmails.length > 0 && (
+          {conversation.length > 0 && (
             <span className="ml-auto text-xs text-text-dim bg-surface-hover rounded-full px-2 py-0.5">
-              {sentEmails.length}
+              {conversation.length}
             </span>
           )}
         </div>
@@ -152,46 +164,68 @@ export default function DrawerTabEmail({
           <div className="flex items-center justify-center py-6">
             <Loader2 size={18} className="animate-spin text-gold" />
           </div>
-        ) : sentEmails.length === 0 ? (
+        ) : conversation.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-6 text-center">
             <p className="text-xs text-text-dim">
-              Zatím nebyly odeslány žádné emaily
+              Zatím žádné e-maily ani odpovědi
             </p>
           </div>
         ) : (
           <div className="space-y-2">
-            {sentEmails.map((email) => {
-              const isExpanded = expandedEmailId === email.id;
+            {conversation.map((item) => {
+              const isExpanded = expandedEmailId === item.id;
+              const incoming = item.direction === "in";
               return (
                 <div
-                  key={email.id}
-                  className=" border border-border bg-surface overflow-hidden"
+                  key={item.id}
+                  className={`border overflow-hidden ${
+                    incoming
+                      ? "border-emerald/40 bg-emerald/5"
+                      : "border-border bg-surface"
+                  }`}
                 >
                   <button
                     onClick={() =>
-                      setExpandedEmailId(isExpanded ? null : email.id)
+                      setExpandedEmailId(isExpanded ? null : item.id)
                     }
                     className="w-full flex items-center gap-3 px-4 py-3 min-h-[44px] text-left hover:bg-surface-hover transition-colors"
                   >
-                    <div className="w-8 h-8 rounded-full bg-gold/10 flex items-center justify-center shrink-0">
-                      <Mail size={14} className="text-gold" />
+                    <div
+                      className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${
+                        incoming ? "bg-emerald/15" : "bg-gold/10"
+                      }`}
+                    >
+                      {incoming ? (
+                        <CornerDownLeft size={14} className="text-emerald" />
+                      ) : (
+                        <Mail size={14} className="text-gold" />
+                      )}
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium text-text truncate">
-                        {email.subject}
+                        {item.subject || "(bez předmětu)"}
                       </p>
-                      <div className="flex items-center gap-2 mt-0.5">
-                        {email.templateLabel && (
-                          <span className="text-[11px] text-gold/80 bg-gold/10 rounded px-1.5 py-0.5">
-                            {email.templateLabel}
-                          </span>
-                        )}
+                      <div className="flex items-center gap-2 mt-0.5 flex-wrap">
+                        <span
+                          className={`text-[11px] rounded px-1.5 py-0.5 ${
+                            incoming
+                              ? "text-emerald bg-emerald/10"
+                              : "text-gold/80 bg-gold/10"
+                          }`}
+                        >
+                          {incoming ? "Odpověď klienta" : item.templateLabel || "Odesláno"}
+                        </span>
                         <span className="text-[11px] text-text-dim">
-                          {email.senderName}
+                          {incoming ? item.fromEmail : item.senderName}
                         </span>
                         <span className="text-[11px] text-text-faint">
-                          {relativeTime(email.createdAt)}
+                          {relativeTime(item.date)}
                         </span>
+                        {incoming && (item.appliedCount || item.pendingCount) ? (
+                          <span className="text-[11px] text-brass">
+                            údaje ke smlouvě
+                          </span>
+                        ) : null}
                       </div>
                     </div>
                     {isExpanded ? (
@@ -205,13 +239,15 @@ export default function DrawerTabEmail({
                     <div className="px-4 pb-4 border-t border-border">
                       <div className="mt-3 space-y-2">
                         <div className="flex items-center gap-2 text-xs text-text-dim">
-                          <span className="font-medium">Komu:</span>
-                          <span>{email.to}</span>
+                          <span className="font-medium">
+                            {incoming ? "Od:" : "Komu:"}
+                          </span>
+                          <span>{incoming ? item.fromEmail : item.to}</span>
                         </div>
                         <div className="flex items-center gap-2 text-xs text-text-dim">
                           <span className="font-medium">Datum:</span>
                           <span>
-                            {new Date(email.createdAt).toLocaleString("cs-CZ", {
+                            {new Date(item.date).toLocaleString("cs-CZ", {
                               day: "numeric",
                               month: "long",
                               year: "numeric",
@@ -221,7 +257,7 @@ export default function DrawerTabEmail({
                           </span>
                         </div>
                         <div className="mt-3 p-3 bg-bg text-sm text-text-mid whitespace-pre-wrap leading-relaxed max-h-[300px] overflow-y-auto">
-                          {email.body}
+                          {item.body || "(prázdná zpráva)"}
                         </div>
                       </div>
                     </div>

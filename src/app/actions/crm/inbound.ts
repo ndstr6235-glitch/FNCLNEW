@@ -213,3 +213,75 @@ export async function clearAwaitingContract(
   revalidatePath("/clients");
   return { success: true };
 }
+
+// ---------------------------------------------------------------------------
+// Conversation — what we sent and what the client wrote back, in one thread
+// ---------------------------------------------------------------------------
+export interface ConversationItem {
+  id: string;
+  direction: "out" | "in";
+  subject: string;
+  body: string;
+  date: string;
+  /** Outgoing only — template used and who sent it */
+  templateLabel?: string | null;
+  senderName?: string;
+  to?: string;
+  /** Incoming only */
+  fromEmail?: string;
+  appliedCount?: number;
+  pendingCount?: number;
+}
+
+export async function getClientConversation(
+  clientId: string
+): Promise<ConversationItem[]> {
+  const session = await getSession();
+  if (!session) return [];
+
+  const client = await prisma.client.findUnique({
+    where: { id: clientId },
+    select: { assignedTo: true },
+  });
+  if (!client) return [];
+  if (session.role === "broker" && client.assignedTo !== session.id) return [];
+
+  const [sent, received] = await Promise.all([
+    prisma.sentEmail.findMany({
+      where: { clientId },
+      orderBy: { createdAt: "desc" },
+      take: 50,
+      include: { user: { select: { firstName: true, lastName: true } } },
+    }),
+    prisma.inboundEmail.findMany({
+      where: { clientId },
+      orderBy: { receivedAt: "desc" },
+      take: 50,
+    }),
+  ]);
+
+  const items: ConversationItem[] = [
+    ...sent.map((e) => ({
+      id: `out-${e.id}`,
+      direction: "out" as const,
+      subject: e.subject,
+      body: e.body,
+      date: e.createdAt.toISOString(),
+      templateLabel: e.templateLabel,
+      senderName: `${e.user.firstName} ${e.user.lastName}`.trim(),
+      to: e.to,
+    })),
+    ...received.map((r) => ({
+      id: `in-${r.id}`,
+      direction: "in" as const,
+      subject: r.subject,
+      body: r.body,
+      date: r.receivedAt.toISOString(),
+      fromEmail: r.fromEmail,
+      appliedCount: Object.keys(parseJson(r.applied)).length,
+      pendingCount: Object.keys(parseJson(r.pending)).length,
+    })),
+  ];
+
+  return items.sort((a, b) => (a.date < b.date ? 1 : -1));
+}
