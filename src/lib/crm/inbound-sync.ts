@@ -29,7 +29,10 @@ export interface SyncResult {
   ok: boolean;
   error?: string;
   scanned: number;
+  /** Replies that carried contract data */
   matched: number;
+  /** Replies from a known client without contract data */
+  replies: number;
   skipped: number;
   unmatched: number;
 }
@@ -65,10 +68,23 @@ async function setLastSync(when: Date): Promise<void> {
   });
 }
 
-/** Case-insensitive client lookup by e-mail address. */
+/**
+ * Case-insensitive client lookup by e-mail address.
+ *
+ * The same address can sit on several cards (duplicate leads), so the reply
+ * goes to the card we last wrote to; with no e-mail history, to the newest one.
+ */
 async function findClientByEmail(email: string) {
   const rows = await prisma.$queryRaw<{ id: string }[]>`
-    SELECT id FROM Client WHERE lower(email) = ${email.toLowerCase()} LIMIT 1
+    SELECT c.id
+    FROM Client c
+    LEFT JOIN (
+      SELECT clientId, MAX(createdAt) AS lastSent
+      FROM SentEmail GROUP BY clientId
+    ) s ON s.clientId = c.id
+    WHERE lower(c.email) = ${email.toLowerCase()}
+    ORDER BY s.lastSent DESC, c.createdAt DESC
+    LIMIT 1
   `;
   if (rows.length === 0) return null;
   return prisma.client.findUnique({ where: { id: rows[0].id } });
@@ -81,6 +97,7 @@ export async function syncInbox(
     ok: false,
     scanned: 0,
     matched: 0,
+    replies: 0,
     skipped: 0,
     unmatched: 0,
   };
@@ -139,8 +156,8 @@ export async function syncInbox(
     const body = stripQuotedText(msg.body).slice(0, 8000);
 
     if (!hasContractData(data)) {
-      // A reply with no contract data (thanks, questions…) — keep it on the
-      // card for context, but do not raise the contract flag.
+      // A reply with no contract data (thanks, questions, a refusal…) — no
+      // contract flag, but the broker still needs to know it arrived.
       await prisma.inboundEmail.create({
         data: {
           messageId: msg.messageId,
@@ -153,7 +170,31 @@ export async function syncInbox(
           status: "DONE",
         },
       });
-      result.skipped++;
+
+      const name = `${client.firstName} ${client.lastName}`.trim();
+      const preview = body.replace(/\s+/g, " ").slice(0, 120);
+      await Promise.all([
+        prisma.notification.create({
+          data: {
+            userId: client.assignedTo,
+            type: "client_replied",
+            title: `Odpověď od klienta — ${name}`,
+            message: preview || msg.subject || "Klient odpověděl na e-mail",
+            link: `/clients?open=${client.id}`,
+          },
+        }),
+        prisma.activity.create({
+          data: {
+            clientId: client.id,
+            userId: client.assignedTo,
+            type: "CLIENT_REPLIED",
+            description: `Klient odpověděl e-mailem: ${msg.subject || "(bez předmětu)"}`,
+            metadata: JSON.stringify({ from: msg.fromEmail }),
+          },
+        }),
+      ]);
+
+      result.replies++;
       continue;
     }
 

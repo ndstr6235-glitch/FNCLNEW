@@ -44,12 +44,20 @@ export async function inboundFieldLabel(field: string): Promise<string> {
 export async function syncInboxAction(force = false): Promise<SyncResult> {
   const session = await getSession();
   if (!session) {
-    return { ok: false, error: "Nepřihlášen", scanned: 0, matched: 0, skipped: 0, unmatched: 0 };
+    return {
+      ok: false,
+      error: "Nepřihlášen",
+      scanned: 0,
+      matched: 0,
+      replies: 0,
+      skipped: 0,
+      unmatched: 0,
+    };
   }
 
   const result = await syncInbox({ force: force && session.role !== "broker" });
 
-  if (result.matched > 0) {
+  if (result.matched > 0 || result.replies > 0) {
     revalidatePath("/clients");
     revalidatePath("/dashboard");
   }

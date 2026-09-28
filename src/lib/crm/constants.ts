@@ -176,6 +176,7 @@ export const ACTIVITY_ICONS: Record<string, string> = {
   GDPR_UNSUBSCRIBE: "🚫",
   GDPR_RESUBSCRIBE: "✅",
   CLIENT_DATA_RECEIVED: "📄",
+  CLIENT_REPLIED: "💬",
 };
 
 // ---------------------------------------------------------------------------

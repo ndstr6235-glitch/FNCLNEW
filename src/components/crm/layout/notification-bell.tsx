@@ -21,6 +21,7 @@ const TYPE_ICONS: Record<string, string> = {
   client_assigned: "👤",
   payout_scheduled: "💰",
   client_data_received: "📄",
+  client_replied: "💬",
 };
 
 export default function NotificationBell({ isAdmin }: { isAdmin: boolean }) {
@@ -54,7 +55,7 @@ export default function NotificationBell({ isAdmin }: { isAdmin: boolean }) {
   useEffect(() => {
     const run = () => {
       syncInboxAction().then((res) => {
-        if (res.matched > 0) load();
+        if (res.matched > 0 || res.replies > 0) load();
       }).catch(() => {});
     };
     run();
@@ -95,10 +96,9 @@ export default function NotificationBell({ isAdmin }: { isAdmin: boolean }) {
       setSyncNote(res.error || "Načtení pošty selhalo");
       return;
     }
+    const found = res.matched + res.replies;
     setSyncNote(
-      res.matched > 0
-        ? `Načteno ${res.matched} odpovědí klientů`
-        : "Žádné nové odpovědi"
+      found > 0 ? `Načteno ${found} odpovědí klientů` : "Žádné nové odpovědi"
     );
     await load();
   }
