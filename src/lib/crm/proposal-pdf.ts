@@ -5,6 +5,7 @@ import { PDFDocument, PDFFont, PDFPage, rgb } from "pdf-lib";
 import fontkit from "@pdf-lib/fontkit";
 import { INTER_REGULAR_B64, INTER_BOLD_B64, INTER_SEMIBOLD_B64 } from "./fonts-data";
 import { COMPANY_BANK_ACCOUNT } from "./company";
+import { SIGNATURE_PNG_B64 } from "./signature-data";
 
 export interface ProposalPdfData {
   clientName?: string;
@@ -462,6 +463,23 @@ export async function generateProposalPdf(data: ProposalPdfData): Promise<Buffer
   page.drawText("DLUŽNÍK", { x: rightCol, y, size: 9, font: fontSemi, color: gold });
 
   y -= 50;
+
+  // Our side goes out already signed — the client only adds their own name
+  if (SIGNATURE_PNG_B64) {
+    try {
+      const sigImage = await doc.embedPng(Buffer.from(SIGNATURE_PNG_B64, "base64"));
+      const sigWidth = 120;
+      const sigHeight = (sigImage.height / sigImage.width) * sigWidth;
+      page.drawImage(sigImage, {
+        x: rightCol + 4,
+        y: y + 4,
+        width: sigWidth,
+        height: Math.min(sigHeight, 46),
+      });
+    } catch (err) {
+      console.error("Signature image could not be embedded:", err);
+    }
+  }
 
   page.drawLine({ start: { x: leftCol, y }, end: { x: leftLineEnd, y }, thickness: 0.5, color: gold });
   page.drawLine({ start: { x: rightCol, y }, end: { x: rightLineEnd, y }, thickness: 0.5, color: gold });
