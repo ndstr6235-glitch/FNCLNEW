@@ -73,6 +73,11 @@ function requireKeysInProduction(): { enc: Buffer; index: Buffer } | null {
   return keys;
 }
 
+/** False until the key is configured — the app then behaves as it did before encryption. */
+export function encryptionEnabled(): boolean {
+  return requireKeysInProduction() !== null;
+}
+
 export function isEncrypted(value: unknown): value is string {
   return typeof value === "string" && value.startsWith(PREFIX);
 }
@@ -115,10 +120,9 @@ export function normalizeEmail(raw: unknown): string {
 }
 
 function blindIndex(kind: string, normalized: string): string {
-  if (!normalized) return "";
   const keys = requireKeysInProduction();
-  const key = keys ? keys.index : Buffer.from("dev-only-blind-index-key");
-  return crypto.createHmac("sha256", key).update(`${kind}:${normalized}`).digest("hex");
+  if (!normalized || !keys) return "";
+  return crypto.createHmac("sha256", keys.index).update(`${kind}:${normalized}`).digest("hex");
 }
 
 export function phoneHash(raw: unknown): string {
@@ -138,6 +142,10 @@ export function clientSearchConditions(q: string): Record<string, unknown>[] {
     { firstName: { contains: q } },
     { lastName: { contains: q } },
   ];
+  if (!encryptionEnabled()) {
+    conditions.push({ email: { contains: q } }, { phone: { contains: q } });
+    return conditions;
+  }
   if (q.includes("@")) conditions.push({ emailHash: emailHash(q) });
   if (normalizePhone(q).length >= 9) conditions.push({ phoneHash: phoneHash(q) });
   return conditions;

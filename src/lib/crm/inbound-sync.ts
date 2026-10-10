@@ -2,7 +2,8 @@ import "server-only";
 import { prisma } from "@/lib/crm/db";
 import { fetchRecentMessages, getImapConfig } from "@/lib/crm/inbound-imap";
 import { generateUniqueVS } from "@/lib/crm/variable-symbol";
-import { emailHash } from "@/lib/crm/field-crypto";
+import { emailHash, encryptionEnabled } from "@/lib/crm/field-crypto";
+import { Prisma } from "@prisma/client";
 import {
   hasContractData,
   parseClientData,
@@ -84,7 +85,11 @@ async function findClientByEmail(email: string) {
       SELECT clientId, MAX(createdAt) AS lastSent
       FROM SentEmail GROUP BY clientId
     ) s ON s.clientId = c.id
-    WHERE c.emailHash = ${emailHash(email)}
+    WHERE ${
+      encryptionEnabled()
+        ? Prisma.sql`c.emailHash = ${emailHash(email)}`
+        : Prisma.sql`lower(c.email) = ${email.toLowerCase()}`
+    }
     ORDER BY s.lastSent DESC, c.createdAt DESC
     LIMIT 1
   `;
