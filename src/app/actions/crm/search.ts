@@ -2,6 +2,7 @@
 
 import { getSession } from "@/lib/crm/auth";
 import { prisma } from "@/lib/crm/db";
+import { clientSearchConditions } from "@/lib/crm/field-crypto";
 
 export interface SearchResult {
   id: string;
@@ -43,12 +44,7 @@ export async function globalSearch(query: string): Promise<{
     AND: [
       isBroker ? { assignedTo: session.id } : {},
       {
-        OR: [
-          { firstName: { contains: q } },
-          { lastName: { contains: q } },
-          { email: { contains: q } },
-          { phone: { contains: q } },
-        ],
+        OR: clientSearchConditions(q),
       },
     ],
   };

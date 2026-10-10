@@ -76,7 +76,6 @@ export async function getAllDocuments(filters?: {
   };
   if (filters?.search) {
     seWhere.OR = [
-      { to: { contains: filters.search } },
       { subject: { contains: filters.search } },
       { client: { firstName: { contains: filters.search } } },
       { client: { lastName: { contains: filters.search } } },

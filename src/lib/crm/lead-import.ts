@@ -1,5 +1,6 @@
 import { prisma } from "./db";
 import { getPoolUserId } from "./pool-user";
+import { emailHash, normalizeEmail, normalizePhone, phoneHash } from "./field-crypto";
 
 export const SENSITIVE_METADATA_KEYS = new Set([
   "rodne_cislo",
@@ -52,17 +53,7 @@ export interface ImportResult {
   invalidRows: number;
 }
 
-export function normalizePhone(raw: unknown): string {
-  if (raw == null) return "";
-  const digits = String(raw).replace(/\D+/g, "");
-  if (digits.length === 12 && digits.startsWith("420")) return digits.slice(3);
-  return digits;
-}
-
-export function normalizeEmail(raw: unknown): string {
-  if (raw == null) return "";
-  return String(raw).trim().toLowerCase();
-}
+export { normalizePhone, normalizeEmail };
 
 export function pickPrimaryPhone(raw: unknown): {
   primary: string;
@@ -98,25 +89,26 @@ export async function insertLeadBatch(
 
   const poolUserId = await getPoolUserId();
 
-  const phones = leads.map((l) => l.phone).filter(Boolean);
-  const emails = leads.map((l) => l.email).filter(Boolean);
+  // Phone and e-mail are stored encrypted — duplicates are found by their hashes
+  const phones = leads.map((l) => phoneHash(l.phone)).filter(Boolean);
+  const emails = leads.map((l) => emailHash(l.email)).filter(Boolean);
 
   const existing = await prisma.client.findMany({
     where: {
       OR: [
-        ...(phones.length ? [{ phone: { in: phones } }] : []),
-        ...(emails.length ? [{ email: { in: emails } }] : []),
+        ...(phones.length ? [{ phoneHash: { in: phones } }] : []),
+        ...(emails.length ? [{ emailHash: { in: emails } }] : []),
       ],
     },
-    select: { phone: true, email: true },
+    select: { phoneHash: true, emailHash: true },
   });
 
-  const existingPhones = new Set(existing.map((c) => c.phone).filter(Boolean));
-  const existingEmails = new Set(existing.map((c) => c.email).filter(Boolean));
+  const existingPhones = new Set(existing.map((c) => c.phoneHash).filter(Boolean));
+  const existingEmails = new Set(existing.map((c) => c.emailHash).filter(Boolean));
 
   const toInsert = leads.filter((l) => {
-    if (l.phone && existingPhones.has(l.phone)) return false;
-    if (l.email && existingEmails.has(l.email)) return false;
+    if (l.phone && existingPhones.has(phoneHash(l.phone))) return false;
+    if (l.email && existingEmails.has(emailHash(l.email))) return false;
     return true;
   });
 

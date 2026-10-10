@@ -108,7 +108,7 @@ export async function distributeLeads(
         type: "LEADS_LOW",
         title: "Pool leadu dochazi",
         message: `Zbyva ${poolRemainingAfter} leadu, denni spotreba ${totalDailyDemand}. Dopln import.`,
-        link: "/clients?source=pool",
+        link: "/database",
       })),
     });
   }

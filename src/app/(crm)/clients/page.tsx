@@ -1,6 +1,7 @@
 import { getSession } from "@/lib/crm/auth";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/crm/db";
+import { clientSearchConditions } from "@/lib/crm/field-crypto";
 import { calculateScore } from "@/lib/crm/scoring";
 import { getPoolUserId } from "@/lib/crm/pool-user";
 import ClientsPageClient from "@/components/crm/clients/clients-page-client";
@@ -64,12 +65,7 @@ export default async function ClientsRoute({ searchParams }: PageProps) {
 
   // Search filter (OR across name, email, phone)
   if (search) {
-    where.OR = [
-      { firstName: { contains: search } },
-      { lastName: { contains: search } },
-      { email: { contains: search } },
-      { phone: { contains: search } },
-    ];
+    where.OR = clientSearchConditions(search);
   }
 
   // Status filter — "investor" now means "actually paid" (not just contract sent)

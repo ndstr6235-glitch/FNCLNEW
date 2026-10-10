@@ -48,4 +48,5 @@ async function computePoolStats(): Promise<PoolStats> {
 
 export const getPoolStats = unstable_cache(computePoolStats, ["dashboard-pool-stats"], {
   revalidate: 300,
+  tags: ["pool-stats"],
 });

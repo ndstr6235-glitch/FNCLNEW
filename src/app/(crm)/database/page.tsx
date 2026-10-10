@@ -1,5 +1,6 @@
 import { getSession } from "@/lib/crm/auth";
 import { prisma } from "@/lib/crm/db";
+import { clientSearchConditions } from "@/lib/crm/field-crypto";
 import { calculateScore } from "@/lib/crm/scoring";
 import { getPoolUserId } from "@/lib/crm/pool-user";
 import ClientsPageClient from "@/components/crm/clients/clients-page-client";
@@ -35,12 +36,7 @@ export default async function DatabaseRoute({ searchParams }: PageProps) {
   const where: Prisma.ClientWhereInput = { assignedTo: poolUserId };
 
   if (search) {
-    where.OR = [
-      { firstName: { contains: search } },
-      { lastName: { contains: search } },
-      { email: { contains: search } },
-      { phone: { contains: search } },
-    ];
+    where.OR = clientSearchConditions(search);
   }
   if (status === "investor") where.payments = { some: { paid: true } };
   else if (status === "prospect") where.payments = { none: { paid: true } };

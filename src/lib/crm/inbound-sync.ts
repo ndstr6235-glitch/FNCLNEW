@@ -2,6 +2,7 @@ import "server-only";
 import { prisma } from "@/lib/crm/db";
 import { fetchRecentMessages, getImapConfig } from "@/lib/crm/inbound-imap";
 import { generateUniqueVS } from "@/lib/crm/variable-symbol";
+import { emailHash } from "@/lib/crm/field-crypto";
 import {
   hasContractData,
   parseClientData,
@@ -69,7 +70,8 @@ async function setLastSync(when: Date): Promise<void> {
 }
 
 /**
- * Case-insensitive client lookup by e-mail address.
+ * Case-insensitive client lookup by e-mail address (through its hash — the
+ * address itself is stored encrypted).
  *
  * The same address can sit on several cards (duplicate leads), so the reply
  * goes to the card we last wrote to; with no e-mail history, to the newest one.
@@ -82,7 +84,7 @@ async function findClientByEmail(email: string) {
       SELECT clientId, MAX(createdAt) AS lastSent
       FROM SentEmail GROUP BY clientId
     ) s ON s.clientId = c.id
-    WHERE lower(c.email) = ${email.toLowerCase()}
+    WHERE c.emailHash = ${emailHash(email)}
     ORDER BY s.lastSent DESC, c.createdAt DESC
     LIMIT 1
   `;

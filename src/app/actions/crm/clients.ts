@@ -219,11 +219,12 @@ async function autoSendPrezentace(params: {
   if (!email) return;
 
   try {
-    const already = await prisma.sentEmail.findFirst({
-      where: { clientId: params.clientId, templateLabel: "Prezentace", to: email },
-      select: { id: true },
+    // `to` is stored encrypted, so it is compared after reading
+    const sent = await prisma.sentEmail.findMany({
+      where: { clientId: params.clientId, templateLabel: "Prezentace" },
+      select: { to: true },
     });
-    if (already) return;
+    if (sent.some((s) => s.to === email)) return;
 
     const template = await prisma.emailTemplate.findFirst({
       where: { label: "Prezentace" },

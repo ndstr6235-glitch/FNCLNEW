@@ -73,6 +73,10 @@ model Client {
   city                String   @default("")
   zip                 String   @default("")
   bankAccount         String   @default("")
+  /// Keyed hashes of the normalized phone / e-mail. Both columns are stored
+  /// encrypted, these allow exact-match lookups (search, duplicate check).
+  phoneHash           String   @default("")
+  emailHash           String   @default("")
   investmentAmount    Float    @default(0)
   paymentReceivedDate String   @default("")
   dnc                 Boolean  @default(false)
@@ -109,8 +113,8 @@ model Client {
   @@index([assignedTo, source])
   @@index([stage])
   @@index([nextPaymentDate])
-  @@index([phone])
-  @@index([email])
+  @@index([phoneHash])
+  @@index([emailHash])
   @@index([source])
   @@index([createdAt])
   @@index([dnc])

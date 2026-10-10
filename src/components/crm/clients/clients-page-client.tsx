@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback, useEffect } from "react";
-import { UserPlus, List, Columns3 } from "lucide-react";
+import { UserPlus, List, Columns3, Upload } from "lucide-react";
 import { cn } from "@/lib/crm/utils";
 import ClientsFilters from "./clients-filters";
 import ClientsTable from "./clients-table";
@@ -11,6 +11,7 @@ import ClientDrawer from "./client-drawer";
 import ClientForm from "./client-form";
 import PipelineBoard from "./pipeline-board";
 import BulkActionBar from "./bulk-action-bar";
+import ImportLeadsModal from "./import-leads-modal";
 
 export interface ClientRow {
   id: string;
@@ -97,6 +98,7 @@ export default function ClientsPageClient({
     };
   }, []);
   const [showCreateForm, setShowCreateForm] = useState(false);
+  const [showImport, setShowImport] = useState(false);
   const [view, setView] = useState<"list" | "pipeline">("list");
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [selectMode, setSelectMode] = useState(false);
@@ -212,6 +214,15 @@ export default function ClientsPageClient({
               <Columns3 size={16} />
             </button>
           </div>
+          {isPoolView && (
+            <button
+              onClick={() => setShowImport(true)}
+              className="flex items-center gap-2 px-4 py-2.5 border border-border bg-surface text-text text-sm font-semibold hover:bg-surface-hover"
+            >
+              <Upload size={16} />
+              <span className="hidden sm:inline">Nahrát leady</span>
+            </button>
+          )}
           <button
             onClick={() => setShowCreateForm(true)}
             className="flex items-center gap-2 px-4 py-2.5 bg-brass text-white text-sm font-semibold"
@@ -312,6 +323,10 @@ export default function ClientsPageClient({
         brokers={brokers}
         isBroker={isBroker}
       />
+
+      {isPoolView && (
+        <ImportLeadsModal open={showImport} onClose={() => setShowImport(false)} />
+      )}
     </div>
   );
 }
