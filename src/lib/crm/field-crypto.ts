@@ -58,11 +58,17 @@ function loadKeys(): { enc: Buffer; index: Buffer } | null {
   return cachedKeys;
 }
 
-/** Production never writes personal data in plain text because a key is missing. */
+let warnedMissingKey = false;
+
+/**
+ * Without a key the data is stored as before (plain text), so a deployment
+ * that has not received the key yet keeps working. It is logged loudly.
+ */
 function requireKeysInProduction(): { enc: Buffer; index: Buffer } | null {
   const keys = loadKeys();
-  if (!keys && process.env.NODE_ENV === "production") {
-    throw new Error("DATA_ENCRYPTION_KEY is not set — refusing to store personal data unencrypted.");
+  if (!keys && process.env.NODE_ENV === "production" && !warnedMissingKey) {
+    warnedMissingKey = true;
+    console.error("DATA_ENCRYPTION_KEY is not set — personal data is stored UNENCRYPTED.");
   }
   return keys;
 }
