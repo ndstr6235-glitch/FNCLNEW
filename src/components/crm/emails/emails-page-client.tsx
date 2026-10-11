@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
+import { MailCheck } from "lucide-react";
 import ClientEmailCard from "./client-email-card";
 import EmailComposer from "./email-composer";
 import EmailsEmpty from "./emails-empty";
@@ -63,18 +65,29 @@ export default function EmailsPageClient({
   return (
     <div className="space-y-4 lg:space-y-6">
       {/* Header */}
-      <div>
-        <h1 className="font-display text-xl md:text-2xl font-bold text-text">
-          Emaily
-        </h1>
-        <p className="mt-0.5 text-sm text-text-mid">
-          {clients.length}{" "}
-          {clients.length === 1
-            ? "klient"
-            : clients.length < 5
-              ? "klienti"
-              : "klientů"}
-        </p>
+      <div className="flex items-center justify-between gap-3">
+        <div>
+          <h1 className="font-display text-xl md:text-2xl font-bold text-text">
+            Emaily
+          </h1>
+          <p className="mt-0.5 text-sm text-text-mid">
+            {clients.length}{" "}
+            {clients.length === 1
+              ? "klient"
+              : clients.length < 5
+                ? "klienti"
+                : "klientů"}
+          </p>
+        </div>
+        {userRole !== "broker" && (
+          <Link
+            href="/emails/sent"
+            className="flex items-center gap-2 px-4 py-2.5 border border-border bg-surface text-text text-sm font-semibold hover:bg-surface-hover"
+          >
+            <MailCheck size={16} />
+            <span className="hidden sm:inline">Oslovení e-mailem</span>
+          </Link>
+        )}
       </div>
 
       {/* Content */}

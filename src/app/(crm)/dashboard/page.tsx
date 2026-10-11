@@ -16,6 +16,8 @@ import { getMyDayData } from "@/app/actions/crm/my-day";
 import { getCompanyDashboardStats } from "@/app/actions/crm/dashboard-stats";
 import { getPoolStats } from "@/lib/crm/pool-stats";
 import LeadPoolWidget from "@/components/crm/dashboard/lead-pool-widget";
+import ContactedWidget from "@/components/crm/dashboard/contacted-widget";
+import { getContactedStats } from "@/lib/crm/contacted";
 import ConversionFunnel from "@/components/crm/dashboard/conversion-funnel";
 import ClientReplies from "@/components/crm/dashboard/client-replies";
 import { getRecentReplies } from "@/app/actions/crm/inbound";
@@ -132,6 +134,7 @@ export default async function DashboardPage() {
 
   // Pool stats + conversion funnel (admin/supervisor only, both cached 5 min)
   const poolStats = !isBroker ? await getPoolStats() : null;
+  const contactedStats = !isBroker ? await getContactedStats() : null;
   const funnelData = !isBroker ? await getConversionFunnel() : null;
 
   // Replies land at the very top — first thing seen after logging in
@@ -214,6 +217,9 @@ export default async function DashboardPage() {
           isAdmin={session.role === "administrator"}
         />
       )}
+
+      {/* Who has been contacted by e-mail (admin/supervisor only) */}
+      {contactedStats && <ContactedWidget stats={contactedStats} />}
 
       {/* Conversion funnel (admin/supervisor only) */}
       {funnelData && <ConversionFunnel initialData={funnelData} />}
