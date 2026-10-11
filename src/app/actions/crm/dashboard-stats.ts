@@ -2,6 +2,7 @@
 
 import { prisma } from "@/lib/crm/db";
 import { unstable_cache } from "next/cache";
+import { WORKED_CLIENT_WHERE } from "@/lib/crm/contacted";
 
 export interface CompanyDashboardStats {
   clientCount: number;
@@ -17,14 +18,17 @@ export interface CompanyDashboardStats {
  * admin, and the underlying tables are large (240k+ clients), so this is cached
  * for 5 minutes. It keeps full-table work to two GROUP BY scans; every other
  * number is derived from the tiny Payment table instead of re-scanning clients.
+ *
+ * Untouched imported leads are left out — they are stock, not clients, and
+ * have their own "Pool leadů" card.
  */
 async function computeCompanyDashboardStats(): Promise<CompanyDashboardStats> {
   const [pipelineGroups, clientCountByBroker, brokers, paidPayments] =
     await Promise.all([
       // Scan #1 — per-stage counts (total client count is their sum)
-      prisma.client.groupBy({ by: ["stage"], _count: true }),
+      prisma.client.groupBy({ by: ["stage"], where: WORKED_CLIENT_WHERE, _count: true }),
       // Scan #2 — clients per broker
-      prisma.client.groupBy({ by: ["assignedTo"], _count: true }),
+      prisma.client.groupBy({ by: ["assignedTo"], where: WORKED_CLIENT_WHERE, _count: true }),
       prisma.user.findMany({
         where: { role: "BROKER", active: true },
         select: { id: true, firstName: true, lastName: true, email: true },

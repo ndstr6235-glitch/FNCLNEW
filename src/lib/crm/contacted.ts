@@ -7,6 +7,19 @@ import { prisma } from "./db";
  * person who has been sent at least one e-mail from the CRM.
  */
 
+/**
+ * A lead becomes a "client" for company-wide numbers once somebody worked on
+ * it: it was created by hand, called, or sent an e-mail. Imported leads that
+ * nobody touched yet (in the pool or waiting in a broker's queue) are not.
+ */
+export const WORKED_CLIENT_WHERE: Prisma.ClientWhereInput = {
+  OR: [
+    { source: "" },
+    { lastCallOutcome: { not: "" } },
+    { sentEmails: { some: {} } },
+  ],
+};
+
 export interface ContactedFilters {
   senderId?: string;
   template?: string;

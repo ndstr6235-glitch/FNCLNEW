@@ -17,7 +17,7 @@ import { getCompanyDashboardStats } from "@/app/actions/crm/dashboard-stats";
 import { getPoolStats } from "@/lib/crm/pool-stats";
 import LeadPoolWidget from "@/components/crm/dashboard/lead-pool-widget";
 import ContactedWidget from "@/components/crm/dashboard/contacted-widget";
-import { getContactedStats } from "@/lib/crm/contacted";
+import { getContactedStats, WORKED_CLIENT_WHERE } from "@/lib/crm/contacted";
 import ConversionFunnel from "@/components/crm/dashboard/conversion-funnel";
 import ClientReplies from "@/components/crm/dashboard/client-replies";
 import { getRecentReplies } from "@/app/actions/crm/inbound";
@@ -110,8 +110,10 @@ export default async function DashboardPage() {
   }));
 
   // Recent clients
+  // Company view skips untouched imported leads — a fresh import would
+  // otherwise fill this list with people nobody has spoken to
   const rawClients = await prisma.client.findMany({
-    where: brokerWhere,
+    where: isBroker ? brokerWhere : WORKED_CLIENT_WHERE,
     orderBy: { createdAt: "desc" },
     take: 5,
     include: { payments: { select: { amount: true, paid: true } } },
