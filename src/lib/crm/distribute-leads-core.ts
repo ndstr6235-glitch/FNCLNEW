@@ -44,12 +44,23 @@ export async function distributeLeads(
   const perBroker: BrokerAssignmentSummary[] = [];
 
   for (const broker of brokers) {
-    const leads = await prisma.client.findMany({
-      where: { assignedTo: poolId, dnc: false },
-      orderBy: { createdAt: "asc" },
-      take: broker.dailyLeadQuota,
-      select: { id: true },
+    // Top up to the quota instead of adding a full quota every day: leads the
+    // broker has not called yet count against it, so an idle broker does not
+    // drain the pool. Same definition of "waiting" as the calling screen.
+    const waiting = await prisma.client.count({
+      where: { assignedTo: broker.id, lastCallOutcome: "", dnc: false },
     });
+    const needed = Math.max(0, broker.dailyLeadQuota - waiting);
+
+    const leads =
+      needed > 0
+        ? await prisma.client.findMany({
+            where: { assignedTo: poolId, dnc: false },
+            orderBy: { createdAt: "asc" },
+            take: needed,
+            select: { id: true },
+          })
+        : [];
 
     if (leads.length === 0) {
       perBroker.push({
