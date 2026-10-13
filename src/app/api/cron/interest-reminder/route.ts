@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/crm/db";
 import { Resend } from "resend";
+import { removeOrphanedPayoutEvents } from "@/lib/crm/payout-events";
 
 /**
  * Cron job — runs on the 14th of every month at 08:00 (configured in vercel.json).
@@ -30,6 +31,8 @@ export async function GET(req: NextRequest) {
   const end = new Date(now);
   end.setDate(end.getDate() + 30);
   const endStr = end.toISOString().split("T")[0];
+
+  await removeOrphanedPayoutEvents();
 
   // Get all upcoming INTEREST events in next 30 days
   const events = await prisma.calEvent.findMany({

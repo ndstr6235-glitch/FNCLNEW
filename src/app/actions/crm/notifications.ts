@@ -2,6 +2,7 @@
 
 import { prisma } from "@/lib/crm/db";
 import { getSession } from "@/lib/crm/auth";
+import { removeOrphanedPayoutEvents } from "@/lib/crm/payout-events";
 
 export interface NotificationRow {
   id: string;
@@ -83,6 +84,8 @@ async function generateAutoNotifications(userId: string) {
   });
 
   if (existingToday > 0) return;
+
+  await removeOrphanedPayoutEvents();
 
   // Find clients with payments due today or tomorrow
   const dueSoonClients = await prisma.client.findMany({

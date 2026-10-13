@@ -4,6 +4,7 @@ import { prisma } from "@/lib/crm/db";
 import { getSession } from "@/lib/crm/auth";
 import { revalidatePath } from "next/cache";
 import { logActivity } from "./activity";
+import { deletePayoutEventsOfClients } from "@/lib/crm/payout-events";
 import { calculateScore } from "@/lib/crm/scoring";
 import { createAssignmentNotification } from "./notifications";
 import { logAudit } from "./audit";
@@ -652,6 +653,7 @@ export async function deleteClient(
     return { success: false, error: "Nemáte oprávnění" };
   }
 
+  await deletePayoutEventsOfClients([clientId]);
   await prisma.client.delete({ where: { id: clientId } });
   await logAudit(session.id, "DELETE", "client", clientId, `${existing.firstName} ${existing.lastName}`);
 

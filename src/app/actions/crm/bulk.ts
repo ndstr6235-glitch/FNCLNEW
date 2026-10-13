@@ -3,6 +3,7 @@
 import { prisma } from "@/lib/crm/db";
 import { getSession } from "@/lib/crm/auth";
 import { revalidatePath } from "next/cache";
+import { deletePayoutEventsOfClients } from "@/lib/crm/payout-events";
 
 async function requireAdminOrSupervisor() {
   const session = await getSession();
@@ -51,6 +52,7 @@ export async function bulkDelete(clientIds: string[]) {
   if (!session) return { error: "Pouze administrátor může mazat." };
   if (!clientIds.length) return { error: "Vyberte klienty." };
 
+  await deletePayoutEventsOfClients(clientIds);
   await prisma.client.deleteMany({
     where: { id: { in: clientIds } },
   });
