@@ -1,5 +1,6 @@
 "use client";
 
+import OriginTabs, { type OriginTab } from "./origin-tabs";
 import { useState, useCallback, useEffect } from "react";
 import { UserPlus, List, Columns3, Upload } from "lucide-react";
 import { cn } from "@/lib/crm/utils";
@@ -42,6 +43,7 @@ interface ClientsPageClientProps {
   hasFilters: boolean;
   outcomeCounts?: Record<string, number>;
   currentOutcome?: string;
+  originTabs?: OriginTab[];
   isPoolView?: boolean;
   currentPage?: number;
   pageSize?: number;
@@ -58,6 +60,7 @@ export default function ClientsPageClient({
   hasFilters,
   outcomeCounts,
   currentOutcome,
+  originTabs,
   isPoolView,
   currentPage = 1,
   pageSize = 200,
@@ -234,6 +237,9 @@ export default function ClientsPageClient({
           </button>
         </div>
       </div>
+
+      {/* Who added the contacts (list view only) */}
+      {view === "list" && originTabs && <OriginTabs tabs={originTabs} />}
 
       {/* Filters (list view only) */}
       {view === "list" && (

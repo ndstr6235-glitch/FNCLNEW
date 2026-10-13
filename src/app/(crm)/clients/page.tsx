@@ -6,6 +6,7 @@ import { clientSearchConditions } from "@/lib/crm/field-crypto";
 import { calculateScore } from "@/lib/crm/scoring";
 import { getPoolUserId } from "@/lib/crm/pool-user";
 import ClientsPageClient from "@/components/crm/clients/clients-page-client";
+import type { OriginTab } from "@/components/crm/clients/origin-tabs";
 import type { Prisma } from "@prisma/client";
 
 interface PageProps {
@@ -22,6 +23,7 @@ export default async function ClientsRoute({ searchParams }: PageProps) {
   const brokerParam = typeof params.broker === "string" ? params.broker : "all";
   const outcomeParam = typeof params.outcome === "string" ? params.outcome : "all";
   const showPool = params.pool === "1";
+  const originParam = typeof params.origin === "string" ? params.origin : "all";
 
   const isBroker = session.role === "broker";
   const poolUserId = await getPoolUserId();
@@ -83,6 +85,13 @@ export default async function ClientsRoute({ searchParams }: PageProps) {
     where.lastCallOutcome = outcomeParam;
   }
 
+  // Origin filter — added by hand by one person, or imported by the system
+  if (originParam === "system") {
+    where.activities = { none: { type: "CLIENT_CREATED" } };
+  } else if (originParam !== "all") {
+    where.activities = { some: { type: "CLIENT_CREATED", userId: originParam } };
+  }
+
   // Fetch clients — cap at 500 newest to keep the page snappy even with
   // 240k+ records in the pool. Admin uses filters / search / broker dropdown
   // to narrow down; pool itself is browsed via the source filter.
@@ -135,6 +144,27 @@ export default async function ClientsRoute({ searchParams }: PageProps) {
     : { assignedTo: { in: realBrokerIds } };
   const totalCount = await prisma.client.count({ where: totalCountWhere });
 
+  // Origin tabs: contacts per person who added them, the rest is the system
+  const handMade = await prisma.activity.findMany({
+    where: { type: "CLIENT_CREATED", client: totalCountWhere },
+    select: { userId: true, user: { select: { firstName: true, lastName: true } } },
+  });
+  const people = new Map<string, OriginTab>();
+  for (const a of handMade) {
+    const tab = people.get(a.userId) ?? {
+      key: a.userId,
+      label: `${a.user.firstName} ${a.user.lastName}`,
+      count: 0,
+    };
+    tab.count++;
+    people.set(a.userId, tab);
+  }
+  const originTabs: OriginTab[] = [
+    { key: "all", label: "Všechny", count: totalCount },
+    ...[...people.values()].sort((a, b) => b.count - a.count),
+    { key: "system", label: SYSTEM_ORIGIN, count: Math.max(0, totalCount - handMade.length) },
+  ];
+
   const outcomeGroups = await prisma.client.groupBy({
     by: ["lastCallOutcome"],
     where: totalCountWhere,
@@ -163,7 +193,7 @@ export default async function ClientsRoute({ searchParams }: PageProps) {
     }));
   }
 
-  const hasFilters = !!(search || status !== "all" || brokerParam !== "all" || outcomeParam !== "all");
+  const hasFilters = !!(search || status !== "all" || brokerParam !== "all" || outcomeParam !== "all" || originParam !== "all");
 
   return (
     <ClientsPageClient
@@ -175,6 +205,7 @@ export default async function ClientsRoute({ searchParams }: PageProps) {
       hasFilters={hasFilters}
       outcomeCounts={outcomeCounts}
       currentOutcome={outcomeParam}
+      originTabs={originTabs}
       isPoolView={showPool}
       userName={`${session.firstName} ${session.lastName}`}
       userEmail={session.email}
