@@ -18,6 +18,8 @@ import { getPoolStats } from "@/lib/crm/pool-stats";
 import LeadPoolWidget from "@/components/crm/dashboard/lead-pool-widget";
 import ContactedWidget from "@/components/crm/dashboard/contacted-widget";
 import { getContactedStats, WORKED_CLIENT_WHERE } from "@/lib/crm/contacted";
+import DatabaseOverview from "@/components/crm/dashboard/database-overview";
+import { getDatabaseStats } from "@/lib/crm/database-stats";
 import ConversionFunnel from "@/components/crm/dashboard/conversion-funnel";
 import ClientReplies from "@/components/crm/dashboard/client-replies";
 import { getRecentReplies } from "@/app/actions/crm/inbound";
@@ -136,6 +138,7 @@ export default async function DashboardPage() {
 
   // Pool stats + conversion funnel (admin/supervisor only, both cached 5 min)
   const poolStats = !isBroker ? await getPoolStats() : null;
+  const databaseStats = !isBroker ? await getDatabaseStats() : null;
   const contactedStats = !isBroker ? await getContactedStats() : null;
   const funnelData = !isBroker ? await getConversionFunnel() : null;
 
@@ -163,6 +166,9 @@ export default async function DashboardPage() {
         followUps={myDayData.followUps}
         isCompanyView={!isBroker}
       />
+
+      {/* Contact database: added / handed out / opened (admin/supervisor only) */}
+      {databaseStats && <DatabaseOverview stats={databaseStats} />}
 
       {/* Stat Cards */}
       <div className="grid grid-cols-2 gap-2.5 sm:gap-3 md:gap-4 lg:grid-cols-4 lg:gap-6">
