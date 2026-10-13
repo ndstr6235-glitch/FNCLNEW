@@ -128,6 +128,12 @@ export default function DrawerTabOverview({
 
   return (
     <div className="p-4 md:p-6 space-y-5">
+      {/* Where the contact came from */}
+      <div className="border border-border bg-surface-hover px-3 py-2">
+        <div className="text-[10px] uppercase tracking-wider text-text-dim">Původ kontaktu</div>
+        <div className="mt-0.5 text-sm text-text">{client.origin}</div>
+      </div>
+
       {/* Contact grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <InfoCard

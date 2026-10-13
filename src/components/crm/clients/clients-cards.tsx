@@ -125,6 +125,7 @@ export default function ClientsCards({
                     {client.brokerName}
                   </p>
                 )}
+                <p className="text-xs text-text-dim mt-0.5">Původ: {client.origin}</p>
               </div>
               {!selectMode && (
                 <ChevronRight size={16} className="text-text-faint shrink-0" />

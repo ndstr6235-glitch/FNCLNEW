@@ -5,14 +5,14 @@ import { Database } from "lucide-react";
 import { cn } from "@/lib/crm/utils";
 import type { DatabasePeriod, DatabaseStats } from "@/lib/crm/database-stats";
 
-const PERIODS: { key: DatabasePeriod; label: string }[] = [
+export const PERIODS: { key: DatabasePeriod; label: string }[] = [
   { key: "today", label: "Dnes" },
   { key: "week", label: "7 dní" },
   { key: "month", label: "30 dní" },
   { key: "all", label: "Celkem" },
 ];
 
-const num = (n: number) => n.toLocaleString("cs-CZ");
+export const num = (n: number) => n.toLocaleString("cs-CZ");
 const pct = (part: number, whole: number) =>
   whole > 0 ? `${((part / whole) * 100).toLocaleString("cs-CZ", { maximumFractionDigits: 1 })} %` : "—";
 
@@ -59,17 +59,8 @@ export default function DatabaseOverview({ stats }: { stats: DatabaseStats }) {
         <Big label="Vlastní kontakty makléřů" value={num(p.own)} />
       </div>
 
-      {p.ownBy.length > 0 && (
-        <p className="mt-2 text-[11px] text-text-dim">
-          Vlastní kontakty přidali:{" "}
-          {p.ownBy.map((b, i) => (
-            <span key={b.name}>
-              {i > 0 && ", "}
-              {b.name} <span className="font-medium text-text-mid">{num(b.count)}</span>
-            </span>
-          ))}
-        </p>
-      )}
+      <Names label="Rozdáno komu" rows={p.assignedBy} />
+      <Names label="Vlastní kontakty přidali" rows={p.ownBy} />
 
       <div className="mt-3 grid grid-cols-2 lg:grid-cols-4 gap-3">
         <Small label="V databázi celkem" value={num(stats.total)} />
@@ -80,6 +71,8 @@ export default function DatabaseOverview({ stats }: { stats: DatabaseStats }) {
         <Small label="U makléřů, neotevřeno" value={num(stats.waitingAtBrokers)} />
         <Small label="V poolu, nerozdáno" value={num(stats.inPool)} />
       </div>
+
+      <Names label="Neotevřené má u sebe" rows={stats.waitingBy} />
 
       {stats.bySource.length > 0 && (
         <div className="mt-5 overflow-x-auto">
@@ -111,7 +104,22 @@ export default function DatabaseOverview({ stats }: { stats: DatabaseStats }) {
   );
 }
 
-function Big({ label, value }: { label: string; value: string }) {
+function Names({ label, rows }: { label: string; rows: { name: string; count: number }[] }) {
+  if (rows.length === 0) return null;
+  return (
+    <p className="mt-2 text-[11px] text-text-dim">
+      {label}:{" "}
+      {rows.map((b, i) => (
+        <span key={b.name}>
+          {i > 0 && ", "}
+          {b.name} <span className="font-medium text-text-mid">{num(b.count)}</span>
+        </span>
+      ))}
+    </p>
+  );
+}
+
+export function Big({ label, value }: { label: string; value: string }) {
   return (
     <div className=" bg-surface-hover p-3">
       <div className="text-[10px] uppercase tracking-wider text-text-dim">{label}</div>
@@ -120,7 +128,7 @@ function Big({ label, value }: { label: string; value: string }) {
   );
 }
 
-function Small({ label, value }: { label: string; value: string }) {
+export function Small({ label, value }: { label: string; value: string }) {
   return (
     <div className=" border border-border p-2.5">
       <div className="text-[10px] uppercase tracking-wider text-text-dim">{label}</div>

@@ -1,4 +1,5 @@
 import { getSession } from "@/lib/crm/auth";
+import { getContactOrigins, SYSTEM_ORIGIN } from "@/lib/crm/contact-origin";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/crm/db";
 import { clientSearchConditions } from "@/lib/crm/field-crypto";
@@ -96,6 +97,8 @@ export default async function ClientsRoute({ searchParams }: PageProps) {
     take: CLIENT_PAGE_LIMIT,
   });
 
+  const origins = await getContactOrigins(rawClients.map((c) => c.id));
+
   const clients = rawClients.map((c) => {
     // Only paid payments count toward "investor" status and totals
     const paidPayments = c.payments.filter((p) => p.paid);
@@ -114,6 +117,7 @@ export default async function ClientsRoute({ searchParams }: PageProps) {
       totalProfit: paidPayments.reduce((s, p) => s + p.profit, 0),
       brokerName: `${c.user.firstName} ${c.user.lastName}`,
       brokerId: c.user.id,
+      origin: origins.get(c.id) ?? SYSTEM_ORIGIN,
       stage: c.stage,
       score: calculateScore({
         totalDeposit,

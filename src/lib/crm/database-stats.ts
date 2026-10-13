@@ -23,6 +23,8 @@ export interface DatabasePeriodStats {
   /** Added by hand, per person who added them */
   own: number;
   ownBy: { name: string; count: number }[];
+  /** Who the distributor handed the contacts to */
+  assignedBy: { name: string; count: number }[];
 }
 
 export interface DatabaseStats {
@@ -31,6 +33,8 @@ export interface DatabaseStats {
   opened: number;
   /** Handed to a broker, nobody has called or written yet */
   waitingAtBrokers: number;
+  /** The same contacts, per broker who has them */
+  waitingBy: { name: string; count: number }[];
   inPool: number;
   periods: Record<DatabasePeriod, DatabasePeriodStats>;
   bySource: { source: string; total: number; opened: number }[];
@@ -55,15 +59,27 @@ async function computeDatabaseStats(): Promise<DatabaseStats> {
   const since: Record<Exclude<DatabasePeriod, "all">, Date> = { today, week, month };
   const keys = ["today", "week", "month"] as const;
 
-  const [all, inPool, added, assigned, assignedAll, firstCalls, firstEmails, sources, openedSources, handMade] =
-    await Promise.all([
+  const [
+    all,
+    inPool,
+    added,
+    assignments,
+    firstCalls,
+    firstEmails,
+    sources,
+    openedSources,
+    handMade,
+    untouched,
+    users,
+  ] = await Promise.all([
       prisma.client.count(),
       prisma.client.count({ where: { assignedTo: poolId } }),
       Promise.all(keys.map((k) => prisma.client.count({ where: { createdAt: { gte: since[k] } } }))),
       Promise.all(
-        keys.map((k) => prisma.leadAssignment.count({ where: { createdAt: { gte: since[k] } } }))
+        [...keys.map((k) => ({ createdAt: { gte: since[k] } })), {}].map((where) =>
+          prisma.leadAssignment.groupBy({ by: ["userId"], where, _count: true })
+        )
       ),
-      prisma.leadAssignment.count(),
       // First call / first e-mail per contact — both tables only hold contacts
       // somebody worked on, so they stay small next to the client table
       prisma.call.groupBy({ by: ["clientId"], _min: { createdAt: true } }),
@@ -83,7 +99,30 @@ async function computeDatabaseStats(): Promise<DatabaseStats> {
           user: { select: { firstName: true, lastName: true } },
         },
       }),
+      // Imported contacts sitting with a broker, never called or e-mailed
+      prisma.client.groupBy({
+        by: ["assignedTo"],
+        where: {
+          assignedTo: { not: poolId },
+          lastCallOutcome: "",
+          sentEmails: { none: {} },
+          activities: { none: { type: "CLIENT_CREATED" } },
+        },
+        _count: true,
+      }),
+      prisma.user.findMany({ select: { id: true, firstName: true, lastName: true } }),
     ]);
+
+  const userName = new Map(users.map((u) => [u.id, `${u.firstName} ${u.lastName}`]));
+  const perUser = (rows: { id: string; count: number }[]) =>
+    rows
+      .map((r) => ({ name: userName.get(r.id) ?? "Neznámý", count: r.count }))
+      .sort((a, b) => b.count - a.count);
+  const assignedIn = (i: number) => {
+    const assignedBy = perUser(assignments[i].map((g) => ({ id: g.userId, count: g._count })));
+    return { assigned: assignedBy.reduce((n, b) => n + b.count, 0), assignedBy };
+  };
+  const waitingBy = perUser(untouched.map((g) => ({ id: g.assignedTo, count: g._count })));
 
   const ownIds = new Set(handMade.map((a) => a.clientId));
   const ownSince = (d?: Date) => {
@@ -117,20 +156,21 @@ async function computeDatabaseStats(): Promise<DatabaseStats> {
   const total = all - ownIds.size;
   const period = (i: number, d: Date): DatabasePeriodStats => {
     const own = ownSince(d);
-    return { added: Math.max(0, added[i] - own.own), assigned: assigned[i], opened: openedSince(d), ...own };
+    return { added: Math.max(0, added[i] - own.own), opened: openedSince(d), ...assignedIn(i), ...own };
   };
   const openedBySource = new Map(openedSources.map((s) => [s.source, s._count]));
 
   return {
     total,
     opened,
-    waitingAtBrokers: Math.max(0, total - inPool - opened),
+    waitingAtBrokers: waitingBy.reduce((n, b) => n + b.count, 0),
+    waitingBy,
     inPool,
     periods: {
       today: period(0, today),
       week: period(1, week),
       month: period(2, month),
-      all: { added: total, assigned: assignedAll, opened, ...ownSince() },
+      all: { added: total, opened, ...assignedIn(3), ...ownSince() },
     },
     bySource: sources
       .map((s) => ({
@@ -148,3 +188,65 @@ export const getDatabaseStats = unstable_cache(computeDatabaseStats, ["dashboard
   revalidate: 300,
   tags: ["pool-stats"],
 });
+
+export interface BrokerContactStats {
+  /** Contacts currently assigned to the broker */
+  total: number;
+  /** Assigned and not called yet — same queue as the calling screen */
+  waiting: number;
+  periods: Record<DatabasePeriod, { assigned: number; opened: number; own: number }>;
+}
+
+/**
+ * The broker's own slice of the numbers above, so contacts handed to them do
+ * not get lost. Scoped to one person's contacts — small enough to run live.
+ */
+export async function getBrokerContactStats(userId: string): Promise<BrokerContactStats> {
+  const today = pragueDayStart();
+  const since = {
+    today,
+    week: new Date(today.getTime() - 6 * 86400000),
+    month: new Date(today.getTime() - 29 * 86400000),
+    all: new Date(0),
+  };
+
+  const [total, waiting, assignments, firstCalls, firstEmails, handMade] = await Promise.all([
+    prisma.client.count({ where: { assignedTo: userId } }),
+    prisma.client.count({ where: { assignedTo: userId, lastCallOutcome: "", dnc: false } }),
+    prisma.leadAssignment.findMany({ where: { userId }, select: { createdAt: true } }),
+    prisma.call.groupBy({ by: ["clientId"], where: { userId }, _min: { createdAt: true } }),
+    prisma.sentEmail.groupBy({ by: ["clientId"], where: { userId }, _min: { createdAt: true } }),
+    prisma.activity.findMany({
+      where: { type: "CLIENT_CREATED", userId },
+      select: { clientId: true, createdAt: true },
+    }),
+  ]);
+
+  const ownIds = new Set(handMade.map((a) => a.clientId));
+  const firstTouch = new Map<string, number>();
+  for (const row of [...firstCalls, ...firstEmails]) {
+    if (ownIds.has(row.clientId)) continue;
+    const at = row._min.createdAt?.getTime();
+    if (at === undefined) continue;
+    const prev = firstTouch.get(row.clientId);
+    if (prev === undefined || at < prev) firstTouch.set(row.clientId, at);
+  }
+  const touches = [...firstTouch.values()];
+
+  const period = (d: Date) => ({
+    assigned: assignments.filter((a) => a.createdAt >= d).length,
+    opened: touches.filter((at) => at >= d.getTime()).length,
+    own: handMade.filter((a) => a.createdAt >= d).length,
+  });
+
+  return {
+    total,
+    waiting,
+    periods: {
+      today: period(since.today),
+      week: period(since.week),
+      month: period(since.month),
+      all: period(since.all),
+    },
+  };
+}

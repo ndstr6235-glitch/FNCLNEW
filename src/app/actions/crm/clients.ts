@@ -35,6 +35,8 @@ export interface ClientDetail {
   brokerName: string;
   brokerId: string;
   source: string;
+  /** Where the contact came from — "own contact, added by …" or "from the database: …" */
+  origin: string;
   metadataPublic: Record<string, string>;
   /** Sensitive data — populated only for admin/supervisor; brokers receive empty object */
   metadataSensitive: Record<string, string>;
@@ -97,6 +99,14 @@ export async function getClientDetail(
       payments: { orderBy: { date: "desc" } },
       events: { orderBy: { date: "desc" } },
       user: { select: { id: true, firstName: true, lastName: true } },
+      // Who created it by hand / when the distributor handed it out
+      activities: {
+        where: { type: "CLIENT_CREATED" },
+        orderBy: { createdAt: "asc" },
+        take: 1,
+        select: { createdAt: true, user: { select: { firstName: true, lastName: true } } },
+      },
+      leadAssignments: { orderBy: { createdAt: "desc" }, take: 1, select: { createdAt: true } },
     },
   });
 
@@ -142,6 +152,18 @@ export async function getClientDetail(
     metadataSensitive = {};
   }
 
+  const day = (d: Date) =>
+    d.toLocaleDateString("cs-CZ", { timeZone: "Europe/Prague" });
+  const createdBy = client.activities[0];
+  const assigned = client.leadAssignments[0];
+  let origin: string;
+  if (createdBy) {
+    origin = `${createdBy.user.firstName} ${createdBy.user.lastName} — vlastní kontakt, přidáno ${day(createdBy.createdAt)}`;
+  } else {
+    const imported = `Systém — import${client.source ? ` ${client.source}` : " bez zdroje"}, nahráno ${day(client.createdAt)}`;
+    origin = assigned ? `${imported}, přiděleno ${day(assigned.createdAt)}` : imported;
+  }
+
   return {
     id: client.id,
     firstName: client.firstName,
@@ -169,6 +191,7 @@ export async function getClientDetail(
     lastCallOutcome: client.lastCallOutcome,
     lastCalledAt: client.lastCalledAt,
     source: client.source,
+    origin,
     metadataPublic,
     metadataSensitive,
     isInvestor: paidPayments.length > 0,

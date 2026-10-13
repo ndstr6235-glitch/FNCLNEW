@@ -1,4 +1,5 @@
 import { getSession } from "@/lib/crm/auth";
+import { getContactOrigins, SYSTEM_ORIGIN } from "@/lib/crm/contact-origin";
 import { prisma } from "@/lib/crm/db";
 import { clientSearchConditions } from "@/lib/crm/field-crypto";
 import { calculateScore } from "@/lib/crm/scoring";
@@ -76,6 +77,8 @@ export default async function DatabaseRoute({ searchParams }: PageProps) {
   // outcomeCounts přeskočíme pro pool view (groupBy přes 240k je pomalý)
   const outcomeGroups: { lastCallOutcome: string; _count: number }[] = [];
 
+  const origins = await getContactOrigins(rawClients.map((c) => c.id));
+
   const clients = rawClients.map((c) => ({
     id: c.id,
     firstName: c.firstName,
@@ -90,6 +93,7 @@ export default async function DatabaseRoute({ searchParams }: PageProps) {
     totalProfit: 0,
     brokerName: "Volný pool",
     brokerId: poolUserId,
+    origin: origins.get(c.id) ?? SYSTEM_ORIGIN,
     stage: c.stage,
     score: calculateScore({
       totalDeposit: 0,

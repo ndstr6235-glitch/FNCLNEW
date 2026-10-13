@@ -27,6 +27,8 @@ export interface ClientRow {
   totalProfit: number;
   brokerName: string;
   brokerId: string;
+  /** Who added the contact by hand, or "Systém" for imports */
+  origin: string;
   stage: string;
   score: string;
 }

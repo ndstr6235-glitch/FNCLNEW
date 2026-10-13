@@ -71,6 +71,9 @@ export default function ClientsTable({
                   Broker
                 </th>
               )}
+              <th className="text-left font-medium text-text-mid px-4 py-3 hidden xl:table-cell">
+                Původ
+              </th>
               <th className="w-10 px-2" />
             </tr>
           </thead>
@@ -160,6 +163,11 @@ export default function ClientsTable({
                       {client.brokerName}
                     </td>
                   )}
+
+                  {/* Origin */}
+                  <td className="px-4 py-3 text-text-mid hidden xl:table-cell">
+                    {client.origin}
+                  </td>
 
                   {/* Arrow */}
                   <td className="px-2 py-3">
