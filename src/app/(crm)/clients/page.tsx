@@ -92,24 +92,52 @@ export default async function ClientsRoute({ searchParams }: PageProps) {
     where.activities = { some: { type: "CLIENT_CREATED", userId: originParam } };
   }
 
-  // Fetch clients — cap at 500 newest to keep the page snappy even with
-  // 240k+ records in the pool. Admin uses filters / search / broker dropdown
-  // to narrow down; pool itself is browsed via the source filter.
+  // Total count WHERE (without search/status filter but respecting RBAC + pool toggle)
+  const totalCountWhere: Prisma.ClientWhereInput = isBroker
+    ? { assignedTo: session.id }
+    : showPool
+    ? { assignedTo: poolUserId }
+    : { assignedTo: { in: realBrokerIds } };
+
+  // Run all independent queries in parallel to minimize Turso round-trips
   const CLIENT_PAGE_LIMIT = 500;
-  const rawClients = await prisma.client.findMany({
-    where,
-    include: {
-      payments: { select: { amount: true, profit: true, paid: true } },
-      user: { select: { id: true, firstName: true, lastName: true } },
-    },
-    orderBy: { createdAt: "desc" },
-    take: CLIENT_PAGE_LIMIT,
-  });
+  const [rawClients, totalCount, handMade, outcomeGroups, rawBrokers] = await Promise.all([
+    // 1. Clients list
+    prisma.client.findMany({
+      where,
+      include: {
+        payments: { select: { amount: true, profit: true, paid: true } },
+        user: { select: { id: true, firstName: true, lastName: true } },
+      },
+      orderBy: { createdAt: "desc" },
+      take: CLIENT_PAGE_LIMIT,
+    }),
+    // 2. Total count
+    prisma.client.count({ where: totalCountWhere }),
+    // 3. Origin tabs
+    prisma.activity.findMany({
+      where: { type: "CLIENT_CREATED", client: totalCountWhere },
+      select: { userId: true, user: { select: { firstName: true, lastName: true } } },
+    }),
+    // 4. Outcome counts
+    prisma.client.groupBy({
+      by: ["lastCallOutcome"],
+      where: totalCountWhere,
+      _count: true,
+    }),
+    // 5. Brokers for filter (admin/supervisor only)
+    !isBroker
+      ? prisma.user.findMany({
+          where: { role: "BROKER", active: true, email: { not: "pool@system.local" } },
+          select: { id: true, firstName: true, lastName: true },
+          orderBy: { firstName: "asc" },
+        })
+      : Promise.resolve([]),
+  ]);
 
   const origins = await getContactOrigins(rawClients.map((c) => c.id));
 
   const clients = rawClients.map((c) => {
-    // Only paid payments count toward "investor" status and totals
     const paidPayments = c.payments.filter((p) => p.paid);
     const totalDeposit = paidPayments.reduce((s, p) => s + p.amount, 0);
     return {
@@ -136,19 +164,7 @@ export default async function ClientsRoute({ searchParams }: PageProps) {
     };
   });
 
-  // Total count (without search/status filter but respecting RBAC + pool toggle)
-  const totalCountWhere: Prisma.ClientWhereInput = isBroker
-    ? { assignedTo: session.id }
-    : showPool
-    ? { assignedTo: poolUserId }
-    : { assignedTo: { in: realBrokerIds } };
-  const totalCount = await prisma.client.count({ where: totalCountWhere });
-
-  // Origin tabs: contacts per person who added them, the rest is the system
-  const handMade = await prisma.activity.findMany({
-    where: { type: "CLIENT_CREATED", client: totalCountWhere },
-    select: { userId: true, user: { select: { firstName: true, lastName: true } } },
-  });
+  // Origin tabs
   const people = new Map<string, OriginTab>();
   for (const a of handMade) {
     const tab = people.get(a.userId) ?? {
@@ -165,33 +181,15 @@ export default async function ClientsRoute({ searchParams }: PageProps) {
     { key: "system", label: SYSTEM_ORIGIN, count: Math.max(0, totalCount - handMade.length) },
   ];
 
-  const outcomeGroups = await prisma.client.groupBy({
-    by: ["lastCallOutcome"],
-    where: totalCountWhere,
-    _count: true,
-  });
   const outcomeCounts: Record<string, number> = {};
   for (const g of outcomeGroups) {
     outcomeCounts[g.lastCallOutcome] = g._count;
   }
 
-  // Fetch brokers for filter dropdown (admin/supervisor only) — skip pool sentinel
-  let brokers: { id: string; name: string }[] = [];
-  if (!isBroker) {
-    const rawBrokers = await prisma.user.findMany({
-      where: {
-        role: "BROKER",
-        active: true,
-        email: { not: "pool@system.local" },
-      },
-      select: { id: true, firstName: true, lastName: true },
-      orderBy: { firstName: "asc" },
-    });
-    brokers = rawBrokers.map((b) => ({
-      id: b.id,
-      name: `${b.firstName} ${b.lastName}`,
-    }));
-  }
+  const brokers = rawBrokers.map((b) => ({
+    id: b.id,
+    name: `${b.firstName} ${b.lastName}`,
+  }));
 
   const hasFilters = !!(search || status !== "all" || brokerParam !== "all" || outcomeParam !== "all" || originParam !== "all");
 
