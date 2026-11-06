@@ -3,6 +3,7 @@
 import { prisma } from "@/lib/crm/db";
 import { getSession } from "@/lib/crm/auth";
 import { revalidatePath } from "next/cache";
+import { after } from "next/server";
 import { logActivity } from "./activity";
 import { deletePayoutEventsOfClients } from "@/lib/crm/payout-events";
 import { calculateScore } from "@/lib/crm/scoring";
@@ -352,13 +353,15 @@ export async function createClient(data: {
 
   await logAudit(session.id, "CREATE", "client", client.id, `${data.firstName} ${data.lastName}`);
 
-  // Auto-send Prezentace PDF to new client
-  await autoSendPrezentace({
-    clientId: client.id,
-    email: data.email,
-    firstName: data.firstName,
-    lastName: data.lastName,
-    sessionId: session.id,
+  // Auto-send Prezentace PDF to new client — runs AFTER response via next/server after()
+  after(async () => {
+    await autoSendPrezentace({
+      clientId: client.id,
+      email: data.email,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      sessionId: session.id,
+    });
   });
 
   revalidatePath("/clients");
@@ -468,12 +471,14 @@ export async function updateClient(
   // The client was created without a usable e-mail (or with a wrong one) and it
   // has just been filled in / corrected — send the Prezentace that create skipped.
   if (data.email.trim() && data.email.trim() !== existing.email.trim()) {
-    await autoSendPrezentace({
-      clientId,
-      email: data.email,
-      firstName: data.firstName,
-      lastName: data.lastName,
-      sessionId: session.id,
+    after(async () => {
+      await autoSendPrezentace({
+        clientId,
+        email: data.email,
+        firstName: data.firstName,
+        lastName: data.lastName,
+        sessionId: session.id,
+      });
     });
   }
 
