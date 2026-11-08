@@ -92,12 +92,20 @@ export async function bulkSendPrezentace(
   const senderName = sender
     ? `${sender.firstName} ${sender.lastName}`
     : "Puskin and Partners";
-  const signature = sender?.signature || "";
 
-  const body = template.body
-    .replace(/\[OSLOVENI\]/gi, "")
-    .replace(/\[OSLOVENÍ\]/g, "")
-    .replace(/\[PODPIS\]/g, signature);
+  // Build signature: use DB signature if set, otherwise auto-generate
+  const signature = sender?.signature ||
+    [
+      "S pozdravem,",
+      "",
+      senderName,
+      "Alexandr Puškin, s.r.o.",
+      "info@puskinpartners.cz",
+      "www.puskinpartners.cz",
+    ].join("\n");
+
+  // Fixed body for bulk — oslovení is generic since we don't know names
+  const body = `Dobrý den,\n\nna základě našeho hovoru posílám prezentaci a představení společnosti.\n\n${signature}`;
 
   // Load Prezentace PDF attachment
   let attachments: { filename: string; content: string; contentType?: string }[] = [];
