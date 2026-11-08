@@ -4,6 +4,8 @@ import { prisma } from "@/lib/crm/db";
 import { getSession } from "@/lib/crm/auth";
 import { revalidatePath } from "next/cache";
 import { deletePayoutEventsOfClients } from "@/lib/crm/payout-events";
+import { Resend } from "resend";
+import { logAudit } from "./audit";
 
 async function requireAdminOrSupervisor() {
   const session = await getSession();
@@ -60,6 +62,97 @@ export async function bulkDelete(clientIds: string[]) {
   revalidatePath("/clients");
   revalidatePath("/dashboard");
   return { success: true, count: clientIds.length };
+}
+
+// ---------------------------------------------------------------------------
+// Bulk send Prezentace via BCC
+// ---------------------------------------------------------------------------
+export async function bulkSendPrezentace(
+  emails: string[]
+): Promise<{ success: boolean; sent: number; error?: string }> {
+  const session = await getSession();
+  if (!session) return { success: false, sent: 0, error: "Nepřihlášen." };
+  if (!emails.length) return { success: false, sent: 0, error: "Žádné emaily." };
+
+  const key = process.env.RESEND_API_KEY;
+  if (!key) return { success: false, sent: 0, error: "RESEND_API_KEY chybí." };
+  const resend = new Resend(key);
+
+  // Load Prezentace template
+  const template = await prisma.emailTemplate.findFirst({
+    where: { label: "Prezentace" },
+  });
+  if (!template) return { success: false, sent: 0, error: 'Šablona "Prezentace" neexistuje.' };
+
+  // Load sender info
+  const sender = await prisma.user.findUnique({
+    where: { id: session.id },
+    select: { firstName: true, lastName: true, signature: true },
+  });
+  const senderName = sender
+    ? `${sender.firstName} ${sender.lastName}`
+    : "Puskin and Partners";
+  const signature = sender?.signature || "";
+
+  const body = template.body
+    .replace(/\[OSLOVENI\]/gi, "")
+    .replace(/\[OSLOVENÍ\]/g, "")
+    .replace(/\[PODPIS\]/g, signature);
+
+  // Load Prezentace PDF attachment
+  let attachments: { filename: string; content: string; contentType?: string }[] = [];
+  try {
+    const { PREZENTACE_PDF_B64 } = await import("@/lib/crm/prezentace-pdf-data");
+    attachments = [{
+      filename: "Prezentace-Puskin-Partners.pdf",
+      content: PREZENTACE_PDF_B64,
+      contentType: "application/pdf",
+    }];
+  } catch (err) {
+    console.error("Prezentace PDF load failed:", err);
+  }
+
+  // Send in batches of 49 (Resend BCC limit)
+  const BATCH_SIZE = 49;
+  let totalSent = 0;
+
+  for (let i = 0; i < emails.length; i += BATCH_SIZE) {
+    const batch = emails.slice(i, i + BATCH_SIZE);
+
+    try {
+      const { error } = await resend.emails.send({
+        from: `${senderName} | Puskin and Partners <info@puskinpartners.cz>`,
+        to: ["info@puskinpartners.cz"],
+        bcc: batch,
+        subject: template.subject,
+        text: body,
+        replyTo: ["info@puskinpartners.cz"],
+        ...(attachments.length > 0 ? { attachments } : {}),
+      });
+
+      if (error) {
+        console.error("Bulk BCC send error:", error);
+      } else {
+        totalSent += batch.length;
+      }
+    } catch (err) {
+      console.error("Bulk BCC batch failed:", err);
+    }
+  }
+
+  await logAudit(
+    session.id,
+    "BULK_EMAIL",
+    "email",
+    undefined,
+    `Hromadná Prezentace BCC: ${totalSent}/${emails.length} odesláno`
+  );
+
+  if (totalSent === 0) {
+    return { success: false, sent: 0, error: "Odeslání selhalo." };
+  }
+
+  return { success: true, sent: totalSent };
 }
 
 export async function bulkExportCSV(clientIds: string[]) {

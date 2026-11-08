@@ -2,7 +2,7 @@
 
 import OriginTabs, { type OriginTab } from "./origin-tabs";
 import { useState, useCallback, useEffect } from "react";
-import { UserPlus, List, Columns3, Upload } from "lucide-react";
+import { UserPlus, List, Columns3, Upload, Send } from "lucide-react";
 import { cn } from "@/lib/crm/utils";
 import ClientsFilters from "./clients-filters";
 import ClientsTable from "./clients-table";
@@ -13,6 +13,7 @@ import ClientForm from "./client-form";
 import PipelineBoard from "./pipeline-board";
 import BulkActionBar from "./bulk-action-bar";
 import ImportLeadsModal from "./import-leads-modal";
+import BulkEmailModal from "./bulk-email-modal";
 
 export interface ClientRow {
   id: string;
@@ -104,6 +105,7 @@ export default function ClientsPageClient({
   }, []);
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [showImport, setShowImport] = useState(false);
+  const [showBulkEmail, setShowBulkEmail] = useState(false);
   const [view, setView] = useState<"list" | "pipeline">("list");
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [selectMode, setSelectMode] = useState(false);
@@ -229,6 +231,13 @@ export default function ClientsPageClient({
             </button>
           )}
           <button
+            onClick={() => setShowBulkEmail(true)}
+            className="flex items-center gap-2 px-4 py-2.5 border border-border bg-surface text-text text-sm font-semibold hover:bg-surface-hover"
+          >
+            <Send size={16} />
+            <span className="hidden sm:inline">Odeslat hromadně</span>
+          </button>
+          <button
             onClick={() => setShowCreateForm(true)}
             className="flex items-center gap-2 px-4 py-2.5 bg-brass text-white text-sm font-semibold"
           >
@@ -335,6 +344,12 @@ export default function ClientsPageClient({
       {isPoolView && (
         <ImportLeadsModal open={showImport} onClose={() => setShowImport(false)} />
       )}
+
+      {/* Bulk Email Modal */}
+      <BulkEmailModal
+        open={showBulkEmail}
+        onClose={() => setShowBulkEmail(false)}
+      />
     </div>
   );
 }
