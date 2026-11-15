@@ -18,7 +18,7 @@ export async function uploadPdfToSentEmail(
 ): Promise<{ success: true } | { success: false; error: string }> {
   const session = await getSession();
   if (!session) return { success: false, error: "Nepřihlášen" };
-  if (session.role === "broker")
+  if ((session.role === "broker" || session.role === "operator"))
     return { success: false, error: "Nemáte oprávnění" };
 
   const file = formData.get("file") as File | null;

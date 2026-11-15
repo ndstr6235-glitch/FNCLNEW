@@ -22,7 +22,7 @@ async function computePoolStats(): Promise<PoolStats> {
     }),
     prisma.user.findMany({
       where: {
-        role: "BROKER",
+        role: { in: ["BROKER", "OPERATOR"] },
         active: true,
         id: { not: poolId },
         dailyLeadQuota: { gt: 0 },

@@ -55,7 +55,7 @@ export async function syncInboxAction(force = false): Promise<SyncResult> {
     };
   }
 
-  const result = await syncInbox({ force: force && session.role !== "broker" });
+  const result = await syncInbox({ force: force && (session.role !== "broker" && session.role !== "operator") });
 
   if (result.matched > 0 || result.replies > 0) {
     revalidatePath("/clients");
@@ -75,7 +75,7 @@ export async function getClientInboundEmails(
     select: { assignedTo: true },
   });
   if (!client) return [];
-  if (session.role === "broker" && client.assignedTo !== session.id) return [];
+  if ((session.role === "broker" || session.role === "operator") && client.assignedTo !== session.id) return [];
 
   const rows = await prisma.inboundEmail.findMany({
     where: { clientId },
@@ -114,7 +114,7 @@ export async function confirmInboundField(
   if (!inbound || !inbound.client) {
     return { success: false, error: "Záznam nenalezen" };
   }
-  if (session.role === "broker" && inbound.client.assignedTo !== session.id) {
+  if ((session.role === "broker" || session.role === "operator") && inbound.client.assignedTo !== session.id) {
     return { success: false, error: "Nemáte oprávnění" };
   }
 
@@ -167,7 +167,7 @@ export async function rejectInboundField(
   if (!inbound || !inbound.client) {
     return { success: false, error: "Záznam nenalezen" };
   }
-  if (session.role === "broker" && inbound.client.assignedTo !== session.id) {
+  if ((session.role === "broker" || session.role === "operator") && inbound.client.assignedTo !== session.id) {
     return { success: false, error: "Nemáte oprávnění" };
   }
 
@@ -200,7 +200,7 @@ export async function clearAwaitingContract(
     select: { assignedTo: true, awaitingContract: true },
   });
   if (!client) return { success: false, error: "Klient nenalezen" };
-  if (session.role === "broker" && client.assignedTo !== session.id) {
+  if ((session.role === "broker" || session.role === "operator") && client.assignedTo !== session.id) {
     return { success: false, error: "Nemáte oprávnění" };
   }
   if (!client.awaitingContract) return { success: true };
@@ -252,7 +252,7 @@ export async function getClientConversation(
     select: { assignedTo: true },
   });
   if (!client) return [];
-  if (session.role === "broker" && client.assignedTo !== session.id) return [];
+  if ((session.role === "broker" || session.role === "operator") && client.assignedTo !== session.id) return [];
 
   const [sent, received] = await Promise.all([
     prisma.sentEmail.findMany({
@@ -320,7 +320,7 @@ export async function getRecentReplies(
     where: {
       clientId: { not: null },
       receivedAt: { gte: twoWeeksAgo },
-      ...(session.role === "broker"
+      ...((session.role === "broker" || session.role === "operator")
         ? { client: { assignedTo: session.id } }
         : {}),
     },

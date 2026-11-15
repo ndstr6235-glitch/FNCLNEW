@@ -28,7 +28,7 @@ export async function distributeLeads(
 
   const brokers = await prisma.user.findMany({
     where: {
-      role: "BROKER",
+      role: { in: ["BROKER", "OPERATOR"] },
       active: true,
       id: { not: poolId },
       dailyLeadQuota: { gt: 0 },

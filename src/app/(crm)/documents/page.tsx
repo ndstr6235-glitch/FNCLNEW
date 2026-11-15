@@ -10,7 +10,7 @@ interface PageProps {
 export default async function DocumentsRoute({ searchParams }: PageProps) {
   const session = await getSession();
   if (!session) redirect("/login");
-  if (session.role === "broker") redirect("/dashboard");
+  if ((session.role === "broker" || session.role === "operator")) redirect("/dashboard");
 
   const params = await searchParams;
   const search = typeof params.q === "string" ? params.q.trim() : "";

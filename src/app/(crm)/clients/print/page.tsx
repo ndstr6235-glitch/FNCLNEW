@@ -6,7 +6,7 @@ export default async function PrintContactsPage() {
   const session = await getSession();
   if (!session) redirect("/login");
 
-  const isBroker = session.role === "broker";
+  const isBroker = (session.role === "broker" || session.role === "operator");
 
   const clients = await prisma.client.findMany({
     where: isBroker ? { assignedTo: session.id, dnc: false } : undefined,

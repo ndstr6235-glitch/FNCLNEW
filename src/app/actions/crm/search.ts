@@ -37,7 +37,7 @@ export async function globalSearch(query: string): Promise<{
   }
 
   const q = query.trim();
-  const isBroker = session.role === "broker";
+  const isBroker = (session.role === "broker" || session.role === "operator");
 
   // Search clients
   const clientWhere = {

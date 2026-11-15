@@ -16,6 +16,7 @@ const ROLES = [
   { value: "administrator", label: "Administrátor" },
   { value: "supervisor", label: "Supervizor" },
   { value: "broker", label: "Broker" },
+  { value: "operator", label: "Operátor (navolává studené kontakty a předává je makléřům)" },
 ];
 
 export default function UserForm({ open, onClose, editData }: UserFormProps) {
@@ -180,7 +181,7 @@ export default function UserForm({ open, onClose, editData }: UserFormProps) {
         </div>
 
         {/* Daily lead quota — only meaningful for brokers */}
-        {role === "broker" && (
+        {(role === "broker" || role === "operator") && (
           <div>
             <label className="block text-xs font-medium text-text-mid mb-1">
               Denní kvóta leadů

@@ -7,7 +7,7 @@ export default async function ContractsRoute() {
   if (!session) redirect("/login");
 
   // Brokers cannot access contracts
-  if (session.role === "broker") redirect("/dashboard");
+  if ((session.role === "broker" || session.role === "operator")) redirect("/dashboard");
 
   return <FinalContractForm />;
 }

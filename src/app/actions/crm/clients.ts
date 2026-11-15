@@ -1,5 +1,6 @@
 "use server";
 
+import { getHandovers, type HandoverInfo } from "@/lib/crm/handover";
 import { prisma } from "@/lib/crm/db";
 import { getSession } from "@/lib/crm/auth";
 import { revalidatePath } from "next/cache";
@@ -38,6 +39,8 @@ export interface ClientDetail {
   source: string;
   /** Where the contact came from — "own contact, added by …" or "from the database: …" */
   origin: string;
+  /** Operator handover — who called it cold, when, and their note */
+  handover: HandoverInfo | null;
   metadataPublic: Record<string, string>;
   /** Sensitive data — populated only for admin/supervisor; brokers receive empty object */
   metadataSensitive: Record<string, string>;
@@ -113,7 +116,7 @@ export async function getClientDetail(
 
   if (!client) return null;
 
-  if (session.role === "broker" && client.assignedTo !== session.id) {
+  if ((session.role === "broker" || session.role === "operator") && client.assignedTo !== session.id) {
     return null;
   }
 
@@ -149,7 +152,7 @@ export async function getClientDetail(
     // malformed metadata — treat as empty
   }
   // Brokers never receive sensitive fields, even if they intercept the response
-  if (session.role === "broker") {
+  if ((session.role === "broker" || session.role === "operator")) {
     metadataSensitive = {};
   }
 
@@ -164,6 +167,8 @@ export async function getClientDetail(
     const imported = `Systém — import${client.source ? ` ${client.source}` : " bez zdroje"}, nahráno ${day(client.createdAt)}`;
     origin = assigned ? `${imported}, přiděleno ${day(assigned.createdAt)}` : imported;
   }
+
+  const handover = (await getHandovers([client.id])).get(client.id) ?? null;
 
   return {
     id: client.id,
@@ -188,11 +193,12 @@ export async function getClientDetail(
     paymentReceivedDate: client.paymentReceivedDate,
     dnc: client.dnc,
     awaitingContract: client.awaitingContract,
-    canRestoreContact: session.role !== "broker",
+    canRestoreContact: (session.role !== "broker" && session.role !== "operator"),
     lastCallOutcome: client.lastCallOutcome,
     lastCalledAt: client.lastCalledAt,
     source: client.source,
     origin,
+    handover,
     metadataPublic,
     metadataSensitive,
     isInvestor: paidPayments.length > 0,
@@ -320,7 +326,7 @@ export async function createClient(data: {
   }
 
   const assignedTo =
-    session.role === "broker" ? session.id : data.assignedTo || session.id;
+    (session.role === "broker" || session.role === "operator") ? session.id : data.assignedTo || session.id;
 
   const client = await prisma.client.create({
     data: {
@@ -402,7 +408,7 @@ export async function updateClient(
   });
   if (!existing) return { success: false, error: "Klient nenalezen" };
 
-  if (session.role === "broker" && existing.assignedTo !== session.id) {
+  if ((session.role === "broker" || session.role === "operator") && existing.assignedTo !== session.id) {
     return { success: false, error: "Nemáte oprávnění" };
   }
 
@@ -415,7 +421,7 @@ export async function updateClient(
   }
 
   const newAssignedTo =
-    session.role === "broker" ? existing.assignedTo : data.assignedTo;
+    (session.role === "broker" || session.role === "operator") ? existing.assignedTo : data.assignedTo;
 
   await prisma.client.update({
     where: { id: clientId },
@@ -630,7 +636,7 @@ export async function restoreClientContact(
 ): Promise<{ success: boolean; error?: string }> {
   const session = await getSession();
   if (!session) return { success: false, error: "Nepřihlášen" };
-  if (session.role === "broker") return { success: false, error: "Nemáte oprávnění" };
+  if ((session.role === "broker" || session.role === "operator")) return { success: false, error: "Nemáte oprávnění" };
 
   const trimmedReason = reason.trim();
   if (!trimmedReason) return { success: false, error: "Uveďte důvod obnovení kontaktu" };
@@ -677,7 +683,7 @@ export async function deleteClient(
   });
   if (!existing) return { success: false, error: "Klient nenalezen" };
 
-  if (session.role === "broker" && existing.assignedTo !== session.id) {
+  if ((session.role === "broker" || session.role === "operator") && existing.assignedTo !== session.id) {
     return { success: false, error: "Nemáte oprávnění" };
   }
 
@@ -711,7 +717,7 @@ export async function createPayment(data: {
   });
   if (!client) return { success: false, error: "Klient nenalezen" };
 
-  if (session.role === "broker" && client.assignedTo !== session.id) {
+  if ((session.role === "broker" || session.role === "operator") && client.assignedTo !== session.id) {
     return { success: false, error: "Nemáte oprávnění" };
   }
 
@@ -786,7 +792,7 @@ export async function updatePaymentBankAccount(
   });
   if (!payment) return { success: false, error: "Platba nenalezena" };
 
-  if (session.role === "broker" && payment.client.assignedTo !== session.id) {
+  if ((session.role === "broker" || session.role === "operator") && payment.client.assignedTo !== session.id) {
     return { success: false, error: "Nemáte oprávnění" };
   }
 
@@ -875,7 +881,7 @@ export async function setPaymentPaid(
 ): Promise<{ success: boolean; error?: string }> {
   const session = await getSession();
   if (!session) return { success: false, error: "Nepřihlášen" };
-  if (session.role === "broker") {
+  if ((session.role === "broker" || session.role === "operator")) {
     return { success: false, error: "Nemáte oprávnění" };
   }
 
@@ -936,7 +942,7 @@ export async function updateClientStage(
   const existing = await prisma.client.findUnique({ where: { id: clientId } });
   if (!existing) return { success: false, error: "Klient nenalezen" };
 
-  if (session.role === "broker" && existing.assignedTo !== session.id) {
+  if ((session.role === "broker" || session.role === "operator") && existing.assignedTo !== session.id) {
     return { success: false, error: "Nemáte oprávnění" };
   }
 
@@ -969,7 +975,7 @@ export async function getPipelineData(): Promise<PipelineClient[]> {
   const session = await getSession();
   if (!session) return [];
 
-  const isBroker = session.role === "broker";
+  const isBroker = (session.role === "broker" || session.role === "operator");
 
   const clients = await prisma.client.findMany({
     where: isBroker ? { assignedTo: session.id } : {},

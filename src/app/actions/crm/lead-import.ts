@@ -23,7 +23,7 @@ export async function importLeadChunk(
   | { success: false; error: string }
 > {
   const session = await getSession();
-  if (!session || session.role === "broker") {
+  if (!session || (session.role === "broker" || session.role === "operator")) {
     return { success: false, error: "Nemáte oprávnění" };
   }
   if (!Array.isArray(leads) || leads.length === 0 || leads.length > MAX_CHUNK) {
@@ -53,7 +53,7 @@ export async function importLeadChunk(
 /** Called once after the last chunk — one audit record per import. */
 export async function finishLeadImport(source: string, inserted: number) {
   const session = await getSession();
-  if (!session || session.role === "broker") return;
+  if (!session || (session.role === "broker" || session.role === "operator")) return;
   await logAudit(
     session.id,
     "IMPORT_LEADS",

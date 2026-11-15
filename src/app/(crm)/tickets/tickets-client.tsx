@@ -53,11 +53,11 @@ export default function TicketsClient({ initialTickets, userRole, brokers, clien
   const [, startTransition] = useTransition();
 
   const [statusFilter, setStatusFilter] = useState<TicketStatus | "ALL">(
-    userRole === "broker" ? "ALL" : "OPEN"
+    (userRole === "broker" || userRole === "operator") ? "ALL" : "OPEN"
   );
   const [priorityFilter, setPriorityFilter] = useState<TicketPriority | "ALL">("ALL");
   const [assigneeFilter, setAssigneeFilter] = useState<"all" | "mine" | "fromMine">(
-    userRole === "broker" ? "fromMine" : "all"
+    (userRole === "broker" || userRole === "operator") ? "fromMine" : "all"
   );
   const [search, setSearch] = useState("");
 
@@ -169,7 +169,7 @@ export default function TicketsClient({ initialTickets, userRole, brokers, clien
             ))}
           </div>
 
-          {userRole !== "broker" && (
+          {(userRole !== "broker" && userRole !== "operator") && (
             <div className="flex gap-1 bg-surface-hover p-1">
               {ASSIGNEE_FILTERS.map((f) => (
                 <button
@@ -227,7 +227,7 @@ export default function TicketsClient({ initialTickets, userRole, brokers, clien
         }}
         brokers={brokers}
         clients={clients}
-        isBroker={userRole === "broker"}
+        isBroker={(userRole === "broker" || userRole === "operator")}
       />
     </div>
   );

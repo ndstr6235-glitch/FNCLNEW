@@ -37,7 +37,7 @@ export default function DrawerTabTickets({ clientId, clientName, userRole }: Pro
 
   useEffect(() => {
     startTransition(async () => {
-      const data = await listTickets({ fromMine: userRole === "broker" });
+      const data = await listTickets({ fromMine: (userRole === "broker" || userRole === "operator") });
       setTickets(data.filter((t) => t.clientId === clientId));
       setLoading(false);
     });
@@ -45,7 +45,7 @@ export default function DrawerTabTickets({ clientId, clientName, userRole }: Pro
 
   function refresh() {
     startTransition(async () => {
-      const data = await listTickets({ fromMine: userRole === "broker" });
+      const data = await listTickets({ fromMine: (userRole === "broker" || userRole === "operator") });
       setTickets(data.filter((t) => t.clientId === clientId));
     });
   }
@@ -108,7 +108,7 @@ export default function DrawerTabTickets({ clientId, clientName, userRole }: Pro
         }}
         prefilledClientId={clientId}
         prefilledClientName={clientName}
-        isBroker={userRole === "broker"}
+        isBroker={(userRole === "broker" || userRole === "operator")}
       />
     </div>
   );

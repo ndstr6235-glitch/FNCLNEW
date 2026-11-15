@@ -12,7 +12,7 @@ export default async function CalendarRoute() {
   const year = now.getFullYear();
   const month = now.getMonth() + 1;
 
-  const isBroker = session.role === "broker";
+  const isBroker = (session.role === "broker" || session.role === "operator");
 
   // Fetch events for current month
   const events = await getMonthEvents(year, month);

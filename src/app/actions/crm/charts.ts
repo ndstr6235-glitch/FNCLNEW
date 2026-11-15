@@ -75,7 +75,7 @@ const getCompanyChartData = unstable_cache(
 export async function getChartData(): Promise<MonthlyChartData[]> {
   const session = await getSession();
   if (!session) return [];
-  return session.role === "broker"
+  return (session.role === "broker" || session.role === "operator")
     ? computeChartData(session.id)
     : getCompanyChartData();
 }
@@ -160,7 +160,7 @@ async function computeConversionFunnel(filters?: {
       where: { source: { not: "" } },
     }),
     prisma.user.findMany({
-      where: { role: "BROKER", active: true, email: { not: "pool@system.local" } },
+      where: { role: { in: ["BROKER", "OPERATOR"] }, active: true, email: { not: "pool@system.local" } },
       select: { id: true, firstName: true, lastName: true },
     }),
   ]);
@@ -237,7 +237,7 @@ export async function getConversionFunnel(filters?: {
 }): Promise<ConversionFunnelData | null> {
   const session = await getSession();
   if (!session) return null;
-  if (session.role === "broker") return null;
+  if ((session.role === "broker" || session.role === "operator")) return null;
 
   const hasFilters = !!(filters?.source || filters?.brokerId);
   return hasFilters ? computeConversionFunnel(filters) : getCompanyFunnel();

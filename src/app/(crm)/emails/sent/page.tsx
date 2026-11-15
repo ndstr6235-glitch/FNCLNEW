@@ -31,7 +31,7 @@ const fmtDateTime = (iso: string) =>
 export default async function ContactedRoute({ searchParams }: PageProps) {
   const session = await getSession();
   if (!session) redirect("/login");
-  if (session.role === "broker") redirect("/emails");
+  if ((session.role === "broker" || session.role === "operator")) redirect("/emails");
 
   const params = await searchParams;
   const str = (k: string) => (typeof params[k] === "string" ? (params[k] as string).trim() : "");

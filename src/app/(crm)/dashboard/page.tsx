@@ -38,7 +38,7 @@ export default async function DashboardPage() {
   const session = await getSession();
   if (!session) redirect("/login");
 
-  const isBroker = session.role === "broker";
+  const isBroker = (session.role === "broker" || session.role === "operator");
   const now = new Date();
   const today = now.toISOString().split("T")[0];
   const future = new Date(now);

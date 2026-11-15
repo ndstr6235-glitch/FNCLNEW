@@ -9,7 +9,7 @@ import { logAudit } from "./audit";
 
 async function requireAdminOrSupervisor() {
   const session = await getSession();
-  if (!session || session.role === "broker") return null;
+  if (!session || (session.role === "broker" || session.role === "operator")) return null;
   return session;
 }
 

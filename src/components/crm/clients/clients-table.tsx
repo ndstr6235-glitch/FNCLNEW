@@ -168,6 +168,11 @@ export default function ClientsTable({
                   {/* Origin */}
                   <td className="px-4 py-3 hidden xl:table-cell">
                     <OriginBadge origin={client.origin} />
+                    {client.handedOverBy && (
+                      <div className="mt-1 text-[11px] font-medium text-emerald whitespace-nowrap">
+                        ↳ předal operátor {client.handedOverBy}
+                      </div>
+                    )}
                   </td>
 
                   {/* Arrow */}

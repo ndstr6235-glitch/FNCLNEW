@@ -20,7 +20,8 @@ export type ActivityType =
   | "GDPR_RESUBSCRIBE"
   | "CLIENT_DATA_RECEIVED"
   | "CLIENT_REPLIED"
-  | "PAYOUT_SCHEDULED";
+  | "PAYOUT_SCHEDULED"
+  | "LEAD_HANDED_OVER";
 
 export interface ActivityRow {
   id: string;
@@ -65,7 +66,7 @@ export async function getClientActivities(
   if (!session) return { activities: [], hasMore: false };
 
   // RBAC check
-  if (session.role === "broker") {
+  if ((session.role === "broker" || session.role === "operator")) {
     const client = await prisma.client.findUnique({
       where: { id: clientId },
       select: { assignedTo: true },

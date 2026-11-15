@@ -221,7 +221,7 @@ export default function EmailComposer({
         const fencl = TEAM_SIGNATURES.find((m) => m.id === "fencl") || TEAM_SIGNATURES[0];
         setSelectedSignatureId(fencl.id);
         setSignature(buildTeamSignature(fencl));
-      } else if (userRole === "broker" && userName) {
+      } else if ((userRole === "broker" || userRole === "operator") && userName) {
         const matched = TEAM_SIGNATURES.find(
           (m) => m.name.toLowerCase() === userName.toLowerCase()
         );
@@ -908,7 +908,7 @@ export default function EmailComposer({
               Podpis
             </label>
             {/* Signature pills — hidden for broker (auto) and Smlouva finální (always Fencl) */}
-            {userRole !== "broker" && !(isSmlouvaTemplate && !isNavrhSmlouva) && (
+            {(userRole !== "broker" && userRole !== "operator") && !(isSmlouvaTemplate && !isNavrhSmlouva) && (
             <div className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1">
               {TEAM_SIGNATURES.map((member) => (
                 <button

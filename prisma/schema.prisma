@@ -12,6 +12,7 @@ enum Role {
   ADMINISTRATOR
   SUPERVISOR
   BROKER
+  OPERATOR
 }
 
 enum TicketStatus {

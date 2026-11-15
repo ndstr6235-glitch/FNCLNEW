@@ -33,7 +33,7 @@ export default async function CrmLayout({
           <DashboardMain
             firstName={user.firstName}
             lastName={user.lastName}
-            isAdmin={session.role !== "broker"}
+            isAdmin={(session.role !== "broker" && session.role !== "operator")}
           >
             {children}
           </DashboardMain>

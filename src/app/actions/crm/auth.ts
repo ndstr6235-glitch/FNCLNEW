@@ -60,6 +60,7 @@ const ROLE_MAP: Record<string, Role> = {
   ADMINISTRATOR: "administrator",
   SUPERVISOR: "supervisor",
   BROKER: "broker",
+  OPERATOR: "operator",
 };
 
 const DUMMY_BCRYPT_HASH =

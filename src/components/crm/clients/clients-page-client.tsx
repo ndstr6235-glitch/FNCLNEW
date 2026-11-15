@@ -31,6 +31,8 @@ export interface ClientRow {
   brokerId: string;
   /** Who added the contact by hand, or "Systém" for imports */
   origin: string;
+  /** Operator who called the lead cold and handed it over ("" if none) */
+  handedOverBy?: string;
   stage: string;
   score: string;
 }
@@ -39,7 +41,7 @@ interface ClientsPageClientProps {
   clients: ClientRow[];
   brokers: { id: string; name: string }[];
   isBroker: boolean;
-  userRole: "administrator" | "supervisor" | "broker";
+  userRole: "administrator" | "supervisor" | "broker" | "operator";
   totalCount: number;
   hasFilters: boolean;
   outcomeCounts?: Record<string, number>;
@@ -110,7 +112,7 @@ export default function ClientsPageClient({
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [selectMode, setSelectMode] = useState(false);
 
-  const canBulk = userRole !== "broker";
+  const canBulk = (userRole !== "broker" && userRole !== "operator");
 
   function handleClientClick(id: string) {
     if (selectMode) {

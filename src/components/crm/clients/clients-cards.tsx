@@ -126,6 +126,9 @@ export default function ClientsCards({
                   </p>
                 )}
                 <p className="text-xs text-text-dim mt-0.5">Původ: {client.origin}</p>
+                {client.handedOverBy && (
+                  <p className="text-xs text-emerald mt-0.5">Předal operátor {client.handedOverBy}</p>
+                )}
               </div>
               {!selectMode && (
                 <ChevronRight size={16} className="text-text-faint shrink-0" />

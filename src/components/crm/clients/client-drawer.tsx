@@ -23,7 +23,7 @@ interface ClientDrawerProps {
   onClose: () => void;
   brokers: { id: string; name: string }[];
   isBroker: boolean;
-  userRole: "administrator" | "supervisor" | "broker";
+  userRole: "administrator" | "supervisor" | "broker" | "operator";
   userName?: string;
   userEmail?: string;
   /** Tab to land on — notifications link straight to the client's replies */
@@ -166,7 +166,7 @@ export default function ClientDrawer({
               onTabChange={setActiveTab}
               paymentCount={client.payments.length}
               eventCount={client.events.length}
-              showDocuments={userRole !== "broker"}
+              showDocuments={(userRole !== "broker" && userRole !== "operator")}
               showTickets={true}
             />
 
@@ -192,7 +192,7 @@ export default function ClientDrawer({
               {activeTab === "email" && (
                 <DrawerTabEmail client={client} userRole={userRole} userName={userName} userEmail={userEmail} />
               )}
-              {activeTab === "documents" && userRole !== "broker" && (
+              {activeTab === "documents" && (userRole !== "broker" && userRole !== "operator") && (
                 <DrawerTabDocuments clientId={client.id} />
               )}
               {activeTab === "tickets" && (

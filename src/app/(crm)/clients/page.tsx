@@ -1,5 +1,6 @@
 import { getSession } from "@/lib/crm/auth";
 import { getContactOrigins, SYSTEM_ORIGIN } from "@/lib/crm/contact-origin";
+import { getHandovers } from "@/lib/crm/handover";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/crm/db";
 import { clientSearchConditions } from "@/lib/crm/field-crypto";
@@ -25,7 +26,7 @@ export default async function ClientsRoute({ searchParams }: PageProps) {
   const showPool = params.pool === "1";
   const originParam = typeof params.origin === "string" ? params.origin : "all";
 
-  const isBroker = session.role === "broker";
+  const isBroker = (session.role === "broker" || session.role === "operator");
   const poolUserId = await getPoolUserId();
 
   // For admin default view we need IDs of real brokers — SQLite "!= pool"
@@ -128,14 +129,17 @@ export default async function ClientsRoute({ searchParams }: PageProps) {
     // 5. Brokers for filter (admin/supervisor only)
     !isBroker
       ? prisma.user.findMany({
-          where: { role: "BROKER", active: true, email: { not: "pool@system.local" } },
+          where: { role: { in: ["BROKER", "OPERATOR"] }, active: true, email: { not: "pool@system.local" } },
           select: { id: true, firstName: true, lastName: true },
           orderBy: { firstName: "asc" },
         })
       : Promise.resolve([]),
   ]);
 
-  const origins = await getContactOrigins(rawClients.map((c) => c.id));
+  const [origins, handovers] = await Promise.all([
+    getContactOrigins(rawClients.map((c) => c.id)),
+    getHandovers(rawClients.map((c) => c.id)),
+  ]);
 
   const clients = rawClients.map((c) => {
     const paidPayments = c.payments.filter((p) => p.paid);
@@ -155,6 +159,7 @@ export default async function ClientsRoute({ searchParams }: PageProps) {
       brokerName: `${c.user.firstName} ${c.user.lastName}`,
       brokerId: c.user.id,
       origin: origins.get(c.id) ?? SYSTEM_ORIGIN,
+      handedOverBy: handovers.get(c.id)?.operatorName ?? "",
       stage: c.stage,
       score: calculateScore({
         totalDeposit,
@@ -198,7 +203,7 @@ export default async function ClientsRoute({ searchParams }: PageProps) {
       clients={clients}
       brokers={brokers}
       isBroker={isBroker}
-      userRole={session.role as "administrator" | "supervisor" | "broker"}
+      userRole={session.role as "administrator" | "supervisor" | "broker" | "operator"}
       totalCount={totalCount}
       hasFilters={hasFilters}
       outcomeCounts={outcomeCounts}

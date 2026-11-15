@@ -8,7 +8,7 @@ export default async function UsersRoute() {
   if (!session) redirect("/login");
 
   // Only admin + supervisor can access
-  if (session.role === "broker") {
+  if ((session.role === "broker" || session.role === "operator")) {
     redirect("/dashboard");
   }
 

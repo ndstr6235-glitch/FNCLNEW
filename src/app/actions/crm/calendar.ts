@@ -39,7 +39,7 @@ export async function getMonthEvents(
   const session = await getSession();
   if (!session) return [];
 
-  const isBroker = session.role === "broker";
+  const isBroker = (session.role === "broker" || session.role === "operator");
   const startDate = `${year}-${String(month).padStart(2, "0")}-01`;
   const endMonth = month === 12 ? 1 : month + 1;
   const endYear = month === 12 ? year + 1 : year;
@@ -131,7 +131,7 @@ export async function deleteEvent(
   });
   if (!event) return { success: false, error: "Událost nenalezena" };
 
-  if (session.role === "broker" && event.userId !== session.id) {
+  if ((session.role === "broker" || session.role === "operator") && event.userId !== session.id) {
     return { success: false, error: "Nemáte oprávnění" };
   }
 

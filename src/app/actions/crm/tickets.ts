@@ -78,7 +78,7 @@ export async function listTickets(filters: ListFilters = {}): Promise<TicketRow[
     ];
   }
 
-  if (session.role === "broker" && !filters.fromMine && !filters.assigneeMine) {
+  if ((session.role === "broker" || session.role === "operator") && !filters.fromMine && !filters.assigneeMine) {
     where.fromUserId = session.id;
   }
 
@@ -132,7 +132,7 @@ export async function getTicketDetail(ticketId: string): Promise<TicketDetail | 
   if (!ticket) return null;
 
   if (
-    session.role === "broker" &&
+    (session.role === "broker" || session.role === "operator") &&
     ticket.fromUserId !== session.id &&
     ticket.assigneeId !== session.id
   ) {
@@ -178,7 +178,7 @@ export async function createTicket(data: {
     return { success: false, error: "Název je povinný" };
   }
 
-  const assigneeId = session.role === "broker" ? undefined : data.assigneeId;
+  const assigneeId = (session.role === "broker" || session.role === "operator") ? undefined : data.assigneeId;
 
   const ticket = await prisma.ticket.create({
     data: {
@@ -221,7 +221,7 @@ export async function addTicketMessage(
   if (!ticket) return { success: false, error: "Ticket nenalezen" };
 
   const isParticipant =
-    session.role !== "broker" ||
+    (session.role !== "broker" && session.role !== "operator") ||
     ticket.fromUserId === session.id ||
     ticket.assigneeId === session.id;
 
@@ -269,7 +269,7 @@ export async function updateTicketStatus(
   if (!ticket) return { success: false, error: "Ticket nenalezen" };
 
   if (
-    session.role === "broker" &&
+    (session.role === "broker" || session.role === "operator") &&
     ticket.assigneeId !== session.id &&
     ticket.fromUserId !== session.id
   ) {
@@ -304,7 +304,7 @@ export async function assignTicket(
   const session = await getSession();
   if (!session) return { success: false, error: "Nepřihlášen" };
 
-  if (session.role === "broker") {
+  if ((session.role === "broker" || session.role === "operator")) {
     return { success: false, error: "Nemáte oprávnění" };
   }
 
@@ -329,7 +329,7 @@ export async function getTicketStats(): Promise<TicketStats> {
   if (!session) return { open: 0, inProgress: 0, done: 0, cancelled: 0 };
 
   const where =
-    session.role === "broker"
+    (session.role === "broker" || session.role === "operator")
       ? { fromUserId: session.id }
       : undefined;
 
@@ -347,7 +347,7 @@ export async function getOpenTicketCount(): Promise<number> {
   const session = await getSession();
   if (!session) return 0;
 
-  if (session.role === "broker") {
+  if ((session.role === "broker" || session.role === "operator")) {
     return prisma.ticket.count({
       where: { fromUserId: session.id, status: "OPEN" },
     });

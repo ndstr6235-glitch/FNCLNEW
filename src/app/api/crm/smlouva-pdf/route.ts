@@ -16,7 +16,7 @@ const num = (v: unknown) => {
 // Empty fields stay as lines to fill in by hand.
 export async function POST(req: Request) {
   const session = await getSession();
-  if (!session || session.role === "broker") {
+  if (!session || (session.role === "broker" || session.role === "operator")) {
     return NextResponse.json({ error: "Nemáte oprávnění" }, { status: 403 });
   }
 

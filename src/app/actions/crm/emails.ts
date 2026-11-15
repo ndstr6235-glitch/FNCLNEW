@@ -40,7 +40,7 @@ export async function getEmailPageData(): Promise<EmailPageData | null> {
   const session = await getSession();
   if (!session) return null;
 
-  const isBroker = session.role === "broker";
+  const isBroker = (session.role === "broker" || session.role === "operator");
   const roleUpper = session.role.toUpperCase();
 
   const [rawClients, rawTemplates, user] = await Promise.all([
@@ -141,7 +141,7 @@ export async function getEmailClients(): Promise<EmailClientRow[]> {
   const session = await getSession();
   if (!session) return [];
 
-  const isBroker = session.role === "broker";
+  const isBroker = (session.role === "broker" || session.role === "operator");
 
   const rawClients = await prisma.client.findMany({
     where: isBroker ? { assignedTo: session.id } : {},
@@ -675,7 +675,7 @@ export async function getClientSentEmails(
   if (!session) return [];
 
   // RBAC: brokers can only see emails for their own clients
-  if (session.role === "broker") {
+  if ((session.role === "broker" || session.role === "operator")) {
     const client = await prisma.client.findUnique({
       where: { id: clientId },
       select: { assignedTo: true },

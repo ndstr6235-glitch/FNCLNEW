@@ -19,7 +19,7 @@ interface PageProps {
 export default async function DatabaseRoute({ searchParams }: PageProps) {
   const session = await getSession();
   if (!session) redirect("/login");
-  if (session.role === "broker") redirect("/dashboard");
+  if ((session.role === "broker" || session.role === "operator")) redirect("/dashboard");
 
   const params = await searchParams;
   const search = typeof params.q === "string" ? params.q.trim() : "";
@@ -66,7 +66,7 @@ export default async function DatabaseRoute({ searchParams }: PageProps) {
     prisma.client.count({ where: { assignedTo: poolUserId } }),
     prisma.user.findMany({
       where: {
-        role: "BROKER",
+        role: { in: ["BROKER", "OPERATOR"] },
         active: true,
         email: { not: "pool@system.local" },
       },

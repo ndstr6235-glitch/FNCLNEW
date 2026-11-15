@@ -134,6 +134,25 @@ export default function DrawerTabOverview({
         <div className="mt-0.5 text-sm text-text">{client.origin}</div>
       </div>
 
+      {client.handover && (
+        <div className="border-l-4 border-emerald bg-emerald-pale px-3 py-2">
+          <div className="text-[10px] uppercase tracking-wider text-emerald font-semibold">
+            Předal operátor {client.handover.operatorName} ·{" "}
+            {new Date(client.handover.at).toLocaleString("cs-CZ", {
+              day: "numeric",
+              month: "numeric",
+              year: "numeric",
+              hour: "2-digit",
+              minute: "2-digit",
+              timeZone: "Europe/Prague",
+            })}
+          </div>
+          {client.handover.note && (
+            <div className="mt-1 text-sm text-text whitespace-pre-wrap">{client.handover.note}</div>
+          )}
+        </div>
+      )}
+
       {/* Contact grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <InfoCard

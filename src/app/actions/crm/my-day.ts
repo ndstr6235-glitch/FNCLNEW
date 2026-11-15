@@ -41,7 +41,7 @@ export async function getMyDayData(): Promise<MyDayData> {
   const session = await getSession();
   if (!session) return { tasks: [], followUps: [] };
 
-  const isBroker = session.role === "broker";
+  const isBroker = (session.role === "broker" || session.role === "operator");
   const today = new Date().toISOString().split("T")[0];
 
   // Today's events

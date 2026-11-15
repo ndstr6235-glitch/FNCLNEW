@@ -22,7 +22,7 @@ export async function getUsers(): Promise<UserRow[]> {
   if (!session) return [];
 
   // Only admin + supervisor can access
-  if (session.role === "broker") return [];
+  if ((session.role === "broker" || session.role === "operator")) return [];
 
   const users = await prisma.user.findMany({
     orderBy: { firstName: "asc" },
@@ -92,7 +92,7 @@ export async function createUser(data: {
       lastName: data.lastName,
       email: data.email,
       password: hashedPassword,
-      role: data.role.toUpperCase() as "ADMINISTRATOR" | "SUPERVISOR" | "BROKER",
+      role: data.role.toUpperCase() as "ADMINISTRATOR" | "SUPERVISOR" | "BROKER" | "OPERATOR",
       active: true,
       dailyLeadQuota: quota,
     },
@@ -130,7 +130,7 @@ export async function updateUser(
     firstName: data.firstName,
     lastName: data.lastName,
     email: data.email,
-    role: data.role.toUpperCase() as "ADMINISTRATOR" | "SUPERVISOR" | "BROKER",
+    role: data.role.toUpperCase() as "ADMINISTRATOR" | "SUPERVISOR" | "BROKER" | "OPERATOR",
   };
 
   if (data.password) {

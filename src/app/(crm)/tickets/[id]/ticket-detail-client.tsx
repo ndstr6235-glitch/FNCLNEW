@@ -61,7 +61,7 @@ export default function TicketDetailClient({ ticket: initial, currentUserId, use
   const [assigneeId, setAssigneeId] = useState(ticket.assigneeId ?? "");
 
   const canEditStatus =
-    userRole !== "broker" ||
+    (userRole !== "broker" && userRole !== "operator") ||
     ticket.assigneeId === currentUserId ||
     ticket.fromUserId === currentUserId;
 
@@ -185,7 +185,7 @@ export default function TicketDetailClient({ ticket: initial, currentUserId, use
           >
             Zrušit
           </button>
-          {userRole !== "broker" && (
+          {(userRole !== "broker" && userRole !== "operator") && (
             <button
               onClick={() => setShowAssign(!showAssign)}
               className="ml-auto flex items-center gap-1.5 px-4 py-2 border border-border text-text-mid text-sm font-medium hover:bg-surface-hover transition-colors"
@@ -197,7 +197,7 @@ export default function TicketDetailClient({ ticket: initial, currentUserId, use
         </div>
       )}
 
-      {showAssign && userRole !== "broker" && (
+      {showAssign && (userRole !== "broker" && userRole !== "operator") && (
         <div className="bg-surface border border-border p-3 flex gap-2">
           <select
             className="flex-1 px-3 py-2 border border-border bg-surface text-text text-sm focus:outline-none focus:border-gold"

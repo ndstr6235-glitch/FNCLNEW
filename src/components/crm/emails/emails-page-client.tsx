@@ -79,7 +79,7 @@ export default function EmailsPageClient({
                 : "klientů"}
           </p>
         </div>
-        {userRole !== "broker" && (
+        {(userRole !== "broker" && userRole !== "operator") && (
           <Link
             href="/emails/sent"
             className="flex items-center gap-2 px-4 py-2.5 border border-border bg-surface text-text text-sm font-semibold hover:bg-surface-hover"

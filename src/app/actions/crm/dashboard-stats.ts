@@ -30,7 +30,7 @@ async function computeCompanyDashboardStats(): Promise<CompanyDashboardStats> {
       // Scan #2 — clients per broker
       prisma.client.groupBy({ by: ["assignedTo"], where: WORKED_CLIENT_WHERE, _count: true }),
       prisma.user.findMany({
-        where: { role: "BROKER", active: true },
+        where: { role: { in: ["BROKER", "OPERATOR"] }, active: true },
         select: { id: true, firstName: true, lastName: true, email: true },
       }),
       // Tiny table — every paid payment

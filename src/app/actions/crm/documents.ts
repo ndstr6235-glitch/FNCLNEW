@@ -33,7 +33,7 @@ export interface DocumentRow {
 async function checkAdminOrSupervisor() {
   const session = await getSession();
   if (!session) return null;
-  if (session.role === "broker") return null;
+  if ((session.role === "broker" || session.role === "operator")) return null;
   return session;
 }
 

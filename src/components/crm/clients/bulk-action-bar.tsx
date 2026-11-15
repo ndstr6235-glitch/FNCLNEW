@@ -25,7 +25,7 @@ interface BulkActionBarProps {
   onClear: () => void;
   onDone: () => void;
   brokers: { id: string; name: string }[];
-  userRole: "administrator" | "supervisor" | "broker";
+  userRole: "administrator" | "supervisor" | "broker" | "operator";
 }
 
 export default function BulkActionBar({

@@ -1,6 +1,6 @@
 import type { CallingLead } from "@/app/actions/crm/calling";
 import { COLORS } from "@/lib/crm/constants";
-import { Phone } from "lucide-react";
+import { Phone, UserCheck } from "lucide-react";
 
 interface LeadCardProps {
   lead: CallingLead;
@@ -68,6 +68,30 @@ export default function LeadCard({ lead }: LeadCardProps) {
           </span>
         )}
       </div>
+
+      {lead.handover && (
+        <div
+          className="border-l-4 px-4 py-3 rounded-r-xl"
+          style={{ borderColor: COLORS.emerald, background: COLORS.emeraldPale }}
+        >
+          <div className="flex items-center gap-2 text-xs font-semibold" style={{ color: COLORS.emerald }}>
+            <UserCheck size={14} />
+            Předal operátor {lead.handover.operatorName} ·{" "}
+            {new Date(lead.handover.at).toLocaleString("cs-CZ", {
+              day: "numeric",
+              month: "numeric",
+              hour: "2-digit",
+              minute: "2-digit",
+              timeZone: "Europe/Prague",
+            })}
+          </div>
+          {lead.handover.note && (
+            <p className="mt-1.5 text-sm whitespace-pre-wrap" style={{ color: COLORS.text }}>
+              {lead.handover.note}
+            </p>
+          )}
+        </div>
+      )}
     </div>
   );
 }

@@ -18,7 +18,7 @@ export default async function TicketDetailPage({ params }: Props) {
 
   const [ticket, users] = await Promise.all([
     getTicketDetail(id),
-    session.role !== "broker"
+    (session.role !== "broker" && session.role !== "operator")
       ? prisma.user.findMany({
           where: { active: true },
           select: { id: true, firstName: true, lastName: true },

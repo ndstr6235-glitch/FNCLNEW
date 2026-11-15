@@ -14,13 +14,13 @@ export default async function TicketsPage() {
   const role = session.role as Role;
 
   const defaultFilters =
-    role === "broker"
+    (role === "broker" || role === "operator")
       ? { fromMine: true as const }
       : { status: "OPEN" as const };
 
   const [tickets, users, clients] = await Promise.all([
     listTickets(defaultFilters),
-    role !== "broker"
+    (role !== "broker" && role !== "operator")
       ? prisma.user.findMany({
           where: { active: true },
           select: { id: true, firstName: true, lastName: true },
@@ -28,7 +28,7 @@ export default async function TicketsPage() {
         })
       : Promise.resolve([]),
     prisma.client.findMany({
-      where: role === "broker" ? { assignedTo: session.id } : undefined,
+      where: (role === "broker" || role === "operator") ? { assignedTo: session.id } : undefined,
       select: { id: true, firstName: true, lastName: true },
       orderBy: { firstName: "asc" },
       take: 200,

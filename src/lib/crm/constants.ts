@@ -67,6 +67,7 @@ export const ROLE_META: Record<
   administrator: { label: "Administrator", color: "#d94040", icon: "🛡️" },
   supervisor: { label: "Supervizor", color: "#b8912a", icon: "👁️" },
   broker: { label: "Broker", color: "#2d6be4", icon: "💼" },
+  operator: { label: "Operátor", color: "#1a9e6a", icon: "🎧" },
 };
 
 // ---------------------------------------------------------------------------
@@ -87,18 +88,18 @@ export const NAV_SECTIONS: NavSection[] = [
   {
     title: "HLAVNI",
     items: [
-      { key: "dashboard", label: "Dashboard", roles: ["administrator", "supervisor", "broker"] },
-      { key: "calling", label: "Vyvolavani", roles: ["broker"] },
-      { key: "clients", label: "Klienti", roles: ["administrator", "supervisor", "broker"] },
+      { key: "dashboard", label: "Dashboard", roles: ["administrator", "supervisor", "broker", "operator"] },
+      { key: "calling", label: "Vyvolavani", roles: ["broker", "operator"] },
+      { key: "clients", label: "Klienti", roles: ["administrator", "supervisor", "broker", "operator"] },
       { key: "database", label: "Databaze", roles: ["administrator", "supervisor"] },
-      { key: "calendar", label: "Kalendar", roles: ["administrator", "supervisor", "broker"] },
+      { key: "calendar", label: "Kalendar", roles: ["administrator", "supervisor", "broker", "operator"] },
     ],
   },
   {
     title: "KOMUNIKACE",
     items: [
       { key: "emails", label: "Emaily", roles: ["administrator", "supervisor", "broker"] },
-      { key: "tickets", label: "Pozadavky", roles: ["administrator", "supervisor", "broker"] },
+      { key: "tickets", label: "Pozadavky", roles: ["administrator", "supervisor", "broker", "operator"] },
       { key: "documents", label: "Dokumenty", roles: ["administrator", "supervisor"] },
       { key: "contracts", label: "Smlouva k tisku", roles: ["administrator", "supervisor"] },
     ],

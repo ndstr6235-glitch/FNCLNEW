@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, useEffect, useTransition, useRef } from "react";
-import type { CallingLead, CallingProgress } from "@/app/actions/crm/calling";
+import type { CallingLead, CallingProgress, HandoverBroker } from "@/app/actions/crm/calling";
 import { getNextLeadToCall, getCallingProgress } from "@/app/actions/crm/calling";
+import HandoverPanel from "./handover-panel";
 import { logCall } from "@/app/actions/crm/calls";
 import { CALL_OUTCOMES } from "@/lib/crm/call-outcomes";
 import { COLORS } from "@/lib/crm/constants";
@@ -14,11 +15,14 @@ import EmptyDone from "./empty-done";
 interface CallingFocusModeProps {
   initialLead: CallingLead | null;
   initialProgress: CallingProgress;
+  /** Operators only — brokers the lead can be handed over to */
+  handoverBrokers?: HandoverBroker[] | null;
 }
 
 export default function CallingFocusMode({
   initialLead,
   initialProgress,
+  handoverBrokers = null,
 }: CallingFocusModeProps) {
   const [currentLead, setCurrentLead] = useState<CallingLead | null>(initialLead);
   const [progress, setProgress] = useState<CallingProgress>(initialProgress);
@@ -180,6 +184,16 @@ export default function CallingFocusMode({
             </div>
           )}
         </div>
+
+        {handoverBrokers && (
+          <HandoverPanel
+            key={currentLead.id}
+            clientId={currentLead.id}
+            brokers={handoverBrokers}
+            disabled={isPending}
+            onDone={() => startTransition(async () => { await refreshState(Array.from(skippedIds)); })}
+          />
+        )}
 
         <div className="px-4 pb-6 flex items-center justify-between gap-3">
           <button

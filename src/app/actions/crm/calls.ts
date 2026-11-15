@@ -49,7 +49,7 @@ export async function logCall(
   });
   if (!client) return { success: false, error: "Klient nenalezen" };
 
-  if (session.role === "broker" && client.assignedTo !== session.id) {
+  if ((session.role === "broker" || session.role === "operator") && client.assignedTo !== session.id) {
     return { success: false, error: "Nemáte oprávnění" };
   }
 
@@ -222,7 +222,7 @@ export async function getClientCalls(clientId: string): Promise<CallRow[]> {
     select: { assignedTo: true },
   });
   if (!client) return [];
-  if (session.role === "broker" && client.assignedTo !== session.id) return [];
+  if ((session.role === "broker" || session.role === "operator") && client.assignedTo !== session.id) return [];
 
   const calls = await prisma.call.findMany({
     where: { clientId },
