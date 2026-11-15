@@ -1,5 +1,6 @@
 "use client";
 
+import OriginBadge from "./origin-badge";
 import { ChevronRight } from "lucide-react";
 import { fmtCZK, fmtDate, cn } from "@/lib/crm/utils";
 import { SCORE_META } from "@/lib/crm/constants";
@@ -165,8 +166,8 @@ export default function ClientsTable({
                   )}
 
                   {/* Origin */}
-                  <td className="px-4 py-3 text-text-mid hidden xl:table-cell">
-                    {client.origin}
+                  <td className="px-4 py-3 hidden xl:table-cell">
+                    <OriginBadge origin={client.origin} />
                   </td>
 
                   {/* Arrow */}
