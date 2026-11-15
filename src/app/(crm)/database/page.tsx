@@ -5,6 +5,8 @@ import { clientSearchConditions } from "@/lib/crm/field-crypto";
 import { calculateScore } from "@/lib/crm/scoring";
 import { getPoolUserId } from "@/lib/crm/pool-user";
 import ClientsPageClient from "@/components/crm/clients/clients-page-client";
+import DistributionPanel from "@/components/crm/database/distribution-panel";
+import { getDistributionPlan } from "@/app/actions/crm/distribution-plan";
 import { redirect } from "next/navigation";
 import type { Prisma } from "@prisma/client";
 
@@ -44,7 +46,7 @@ export default async function DatabaseRoute({ searchParams }: PageProps) {
   if (outcomeParam === "none") where.lastCallOutcome = "";
   else if (outcomeParam !== "all") where.lastCallOutcome = outcomeParam;
 
-  const [rawClients, totalCount, rawBrokers] = await Promise.all([
+  const [rawClients, totalCount, rawBrokers, plan] = await Promise.all([
     prisma.client.findMany({
       where,
       select: {
@@ -73,6 +75,7 @@ export default async function DatabaseRoute({ searchParams }: PageProps) {
       select: { id: true, firstName: true, lastName: true },
       orderBy: { firstName: "asc" },
     }),
+    getDistributionPlan(),
   ]);
   // outcomeCounts přeskočíme pro pool view (groupBy přes 240k je pomalý)
   const outcomeGroups: { lastCallOutcome: string; _count: number }[] = [];
@@ -119,6 +122,8 @@ export default async function DatabaseRoute({ searchParams }: PageProps) {
   );
 
   return (
+    <div className="space-y-5">
+    {plan && <DistributionPanel plan={plan} isAdmin={session.role === "administrator"} />}
     <ClientsPageClient
       clients={clients}
       brokers={brokers}
@@ -132,5 +137,6 @@ export default async function DatabaseRoute({ searchParams }: PageProps) {
       currentPage={page}
       pageSize={PAGE_SIZE}
     />
+    </div>
   );
 }

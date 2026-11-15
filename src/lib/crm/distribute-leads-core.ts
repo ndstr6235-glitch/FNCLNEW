@@ -1,5 +1,6 @@
 import { prisma } from "./db";
 import { getPoolUserId } from "./pool-user";
+import { getLeadSourcePrefs } from "./lead-sources";
 
 export interface BrokerAssignmentSummary {
   brokerId: string;
@@ -42,6 +43,8 @@ export async function distributeLeads(
   });
 
   const perBroker: BrokerAssignmentSummary[] = [];
+  // Which lead database each person draws from (set by the admin on Databáze)
+  const sourcePrefs = await getLeadSourcePrefs();
 
   for (const broker of brokers) {
     // Top up to the quota instead of adding a full quota every day: leads the
@@ -55,7 +58,13 @@ export async function distributeLeads(
     const leads =
       needed > 0
         ? await prisma.client.findMany({
-            where: { assignedTo: poolId, dnc: false },
+            where: {
+              assignedTo: poolId,
+              dnc: false,
+              ...(sourcePrefs[broker.id]?.length
+                ? { source: { in: sourcePrefs[broker.id] } }
+                : {}),
+            },
             orderBy: { createdAt: "asc" },
             take: needed,
             select: { id: true },
