@@ -16,6 +16,7 @@ import {
   Ticket,
   Database,
   Globe,
+  Download,
   type LucideIcon,
 } from "lucide-react";
 import Image from "next/image";
@@ -156,6 +157,28 @@ export default function Sidebar({ user }: SidebarProps) {
             </div>
           ))}
         </nav>
+
+        {/* Blank proposal contract — always at hand to print, fill in and sign */}
+        <div className="px-2 mb-2 relative group">
+          <a
+            href="/api/crm/navrh-pdf"
+            download
+            className={cn(
+              "w-full flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-brass hover:text-on-dark hover:bg-[rgba(169,136,78,0.12)] transition-all border border-brass/25",
+              isCompact && "justify-center px-2.5"
+            )}
+          >
+            <Download size={17} className="shrink-0" />
+            {(isOverlay || !collapsed) && (
+              <span className="whitespace-nowrap flex-1">Návrh smlouvy (PDF)</span>
+            )}
+          </a>
+          {isCompact && !isOverlay && (
+            <div className="absolute left-full top-1/2 -translate-y-1/2 ml-2 px-2.5 py-1 bg-ink text-on-dark text-xs font-medium whitespace-nowrap opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity border border-[rgba(239,234,225,0.1)] z-50">
+              Stáhnout prázdný návrh smlouvy
+            </div>
+          )}
+        </div>
 
         {/* Collapse toggle — desktop only */}
         {!isOverlay && (

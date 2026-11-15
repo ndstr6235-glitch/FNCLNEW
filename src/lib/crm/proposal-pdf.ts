@@ -464,17 +464,18 @@ export async function generateProposalPdf(data: ProposalPdfData): Promise<Buffer
 
   y -= 50;
 
-  // Our side goes out already signed — the client only adds their own name
-  if (SIGNATURE_PNG_B64) {
+  // Our side goes out already signed — the client only adds their own name.
+  // A blank template (no client) is never signed, so no signed blank form exists.
+  if (SIGNATURE_PNG_B64 && data.clientName) {
     try {
       const sigImage = await doc.embedPng(Buffer.from(SIGNATURE_PNG_B64, "base64"));
-      const sigWidth = 120;
+      const sigWidth = 125;
       const sigHeight = (sigImage.height / sigImage.width) * sigWidth;
       page.drawImage(sigImage, {
         x: rightCol + 4,
-        y: y + 4,
+        y: y - 3,
         width: sigWidth,
-        height: Math.min(sigHeight, 46),
+        height: sigHeight,
       });
     } catch (err) {
       console.error("Signature image could not be embedded:", err);
@@ -489,7 +490,12 @@ export async function generateProposalPdf(data: ProposalPdfData): Promise<Buffer
   // Both sides are dated by the contract's start date — the one value the
   // broker fills in right before sending. Without it, fall back to today.
   const today = new Date().toLocaleDateString("cs-CZ", { day: "numeric", month: "numeric", year: "numeric" });
-  const signDate = data.startDate ? fmtCzDate(data.startDate) : today;
+  // A blank template (no client) leaves the date to be filled in by hand.
+  const signDate = data.startDate
+    ? fmtCzDate(data.startDate)
+    : data.clientName
+      ? today
+      : "_______________";
   y -= 24;
   page.drawText(`V Praze dne ${signDate}`, { x: leftCol, y, size: 9, font: fontRegular, color: grey });
   page.drawText(`V Praze dne ${signDate}`, { x: rightCol, y, size: 9, font: fontRegular, color: grey });

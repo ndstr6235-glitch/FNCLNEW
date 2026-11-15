@@ -1,7 +1,6 @@
 import { getSession } from "@/lib/crm/auth";
 import { redirect } from "next/navigation";
-import ContractGenerator from "@/components/crm/contracts/contract-generator";
-import type { Role } from "@/lib/crm/types";
+import FinalContractForm from "@/components/crm/contracts/final-contract-form";
 
 export default async function ContractsRoute() {
   const session = await getSession();
@@ -10,7 +9,5 @@ export default async function ContractsRoute() {
   // Brokers cannot access contracts
   if (session.role === "broker") redirect("/dashboard");
 
-  return (
-    <ContractGenerator userRole={session.role as Role} />
-  );
+  return <FinalContractForm />;
 }
