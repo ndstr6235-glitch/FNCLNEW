@@ -10,7 +10,7 @@ import { importLeadChunk, finishLeadImport } from "@/app/actions/crm/lead-import
 import {
   LEAD_FIELD_LABELS,
   guessMapping,
-  guessMappingFromData,
+  guessSheetMapping,
   looksLikeHeader,
   parseLeadRows,
   type LeadField,
@@ -42,6 +42,9 @@ export default function ImportLeadsModal({ open, onClose }: Props) {
   const [mapping, setMapping] = useState<Partial<Record<LeadField, number>>>({});
   // Some exports start straight with data — then row 1 is a lead, not a header
   const [hasHeader, setHasHeader] = useState(true);
+  // Upload only part of the file — rows "from–to" (1-based, of the data rows)
+  const [rangeFrom, setRangeFrom] = useState("");
+  const [rangeTo, setRangeTo] = useState("");
   const [source, setSource] = useState("");
   const [reading, setReading] = useState(false);
   const [progress, setProgress] = useState<number | null>(null);
@@ -53,9 +56,12 @@ export default function ImportLeadsModal({ open, onClose }: Props) {
     () => (sheet ? (hasHeader ? sheet.rows.slice(1) : sheet.rows) : []),
     [sheet, hasHeader]
   );
+  const from = Math.max(1, parseInt(rangeFrom) || 1);
+  const to = Math.min(dataRows.length, parseInt(rangeTo) || dataRows.length);
+  const pickedRows = useMemo(() => dataRows.slice(from - 1, Math.max(from - 1, to)), [dataRows, from, to]);
   const summary = useMemo(
-    () => (sheet ? parseLeadRows(dataRows, mapping) : null),
-    [sheet, dataRows, mapping]
+    () => (sheet ? parseLeadRows(pickedRows, mapping) : null),
+    [sheet, pickedRows, mapping]
   );
   const width = Math.max(header.length, ...dataRows.slice(0, 20).map((r) => r.length));
   const columnLabel = (i: number) => {
@@ -68,13 +74,13 @@ export default function ImportLeadsModal({ open, onClose }: Props) {
   function applySheet(rows: unknown[][]) {
     const withHeader = looksLikeHeader(rows[0] ?? []);
     setHasHeader(withHeader);
-    setMapping(withHeader ? guessMapping(rows[0]) : guessMappingFromData(rows));
+    setMapping(guessSheetMapping(rows, withHeader));
   }
 
   function toggleHeader(value: boolean) {
     if (!sheet) return;
     setHasHeader(value);
-    setMapping(value ? guessMapping(sheet.rows[0]) : guessMappingFromData(sheet.rows));
+    setMapping(guessSheetMapping(sheet.rows, value));
   }
 
   function reset() {
@@ -82,6 +88,8 @@ export default function ImportLeadsModal({ open, onClose }: Props) {
     setSheetIdx(0);
     setMapping({});
     setHasHeader(true);
+    setRangeFrom("");
+    setRangeTo("");
     setSource("");
     setProgress(null);
     setResult(null);
@@ -101,12 +109,11 @@ export default function ImportLeadsModal({ open, onClose }: Props) {
       const wb = XLSX.read(await file.arrayBuffer(), { type: "array" });
       const parsed: Sheet[] = wb.SheetNames.map((name) => ({
         name,
-        rows: XLSX.utils.sheet_to_json<unknown[]>(wb.Sheets[name], {
-          header: 1,
-          defval: "",
-          raw: false,
-        }),
-      })).filter((s) => s.rows.some((r) => r.some((c) => String(c ?? "").trim())));
+        // Blank rows (e.g. the title row of a Numbers export) carry nothing
+        rows: XLSX.utils
+          .sheet_to_json<unknown[]>(wb.Sheets[name], { header: 1, defval: "", raw: false })
+          .filter((r) => r.some((c) => String(c ?? "").trim())),
+      })).filter((s) => s.rows.length > 0);
       if (parsed.length === 0) {
         toast("Soubor neobsahuje žádná data", "error");
         return;
@@ -238,6 +245,35 @@ export default function ImportLeadsModal({ open, onClose }: Props) {
             />
             První řádek je záhlaví (názvy sloupců)
           </label>
+
+          <div>
+            <div className="text-xs font-semibold text-text-mid mb-2">
+              Nahrát jen část (nepovinné) — soubor má {dataRows.length.toLocaleString("cs-CZ")} kontaktů
+            </div>
+            <div className="flex items-center gap-2 text-sm text-text">
+              od
+              <input
+                type="number"
+                min={1}
+                max={dataRows.length}
+                value={rangeFrom}
+                placeholder="1"
+                onChange={(e) => setRangeFrom(e.target.value)}
+                className="w-24 border border-border bg-surface px-2 py-1.5 text-sm text-text"
+              />
+              do
+              <input
+                type="number"
+                min={1}
+                max={dataRows.length}
+                value={rangeTo}
+                placeholder={String(dataRows.length)}
+                onChange={(e) => setRangeTo(e.target.value)}
+                className="w-24 border border-border bg-surface px-2 py-1.5 text-sm text-text"
+              />
+              <span className="text-xs text-text-dim">prázdné = celý soubor</span>
+            </div>
+          </div>
 
           <div>
             <div className="text-xs font-semibold text-text-mid mb-2">Sloupce v souboru</div>

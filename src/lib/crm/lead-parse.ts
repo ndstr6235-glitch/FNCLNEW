@@ -192,3 +192,27 @@ export function looksLikeHeader(row: unknown[]): boolean {
   if (Object.keys(guessMapping(row)).length > 0) return true;
   return !row.some((c) => cleanPhone(c) !== "" || /@/.test(String(c ?? "")));
 }
+
+/**
+ * Column guess for a whole sheet: header names first, then whatever the
+ * header did not name (phone, e-mail, name) is recognised from the data.
+ */
+export function guessSheetMapping(
+  rows: unknown[][],
+  hasHeader: boolean
+): Partial<Record<LeadField, number>> {
+  if (!hasHeader) return guessMappingFromData(rows);
+  const byName = guessMapping(rows[0] ?? []);
+  const byData = guessMappingFromData(rows.slice(1));
+  const used = new Set(Object.values(byName));
+  const out = { ...byName };
+  for (const f of ["phone", "email"] as const) {
+    if (out[f] === undefined && byData[f] !== undefined && !used.has(byData[f])) {
+      out[f] = byData[f];
+      used.add(byData[f]!);
+    }
+  }
+  const hasName = out.fullName !== undefined || out.firstName !== undefined || out.lastName !== undefined;
+  if (!hasName && byData.fullName !== undefined && !used.has(byData.fullName)) out.fullName = byData.fullName;
+  return out;
+}
