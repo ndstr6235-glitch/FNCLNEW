@@ -20,7 +20,8 @@ async function requireAdmin() {
 }
 
 export async function bulkAssignBroker(clientIds: string[], brokerId: string) {
-  const session = await requireAdminOrSupervisor();
+  // Only the administrator hands contacts out
+  const session = await requireAdmin();
   if (!session) return { error: "Nemáte oprávnění." };
   if (!clientIds.length || !brokerId) return { error: "Vyberte klienty a brokera." };
 

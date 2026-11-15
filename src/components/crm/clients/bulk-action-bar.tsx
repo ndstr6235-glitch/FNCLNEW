@@ -142,7 +142,8 @@ export default function BulkActionBar({
               <span className="hidden sm:inline">Email</span>
             </button>
 
-            {/* Assign broker */}
+            {/* Assign broker — administrator only */}
+            {userRole === "administrator" && (
             <div className="relative">
               <button
                 onClick={() => {
@@ -169,6 +170,7 @@ export default function BulkActionBar({
                 </div>
               )}
             </div>
+            )}
 
             {/* Change stage */}
             <div className="relative">

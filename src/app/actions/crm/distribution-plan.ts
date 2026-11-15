@@ -137,3 +137,63 @@ export async function setUserLeadSources(
   revalidatePath("/database");
   return { success: true };
 }
+
+/**
+ * Admin: hand a person a number of leads from one database right now, on top
+ * of the automatic daily distribution. Recorded in the history like any other.
+ */
+export async function assignLeadsManually(input: {
+  userId: string;
+  /** Client.source to draw from; null = any database */
+  source: string | null;
+  count: number;
+}): Promise<{ success: boolean; assigned?: number; error?: string }> {
+  const session = await getSession();
+  if (!session || session.role !== "administrator") return { success: false, error: "Nemáte oprávnění" };
+
+  const count = Math.floor(Number(input.count));
+  if (!Number.isFinite(count) || count < 1 || count > 2000) {
+    return { success: false, error: "Zadejte počet 1–2000" };
+  }
+
+  const poolId = await getPoolUserId();
+  const user = await prisma.user.findFirst({
+    where: { AND: [{ id: input.userId }, { id: { not: poolId } }], active: true, role: { in: ["BROKER", "OPERATOR"] } },
+    select: { id: true, firstName: true, lastName: true },
+  });
+  if (!user) return { success: false, error: "Uživatel nenalezen" };
+
+  const leads = await prisma.client.findMany({
+    where: {
+      assignedTo: poolId,
+      dnc: false,
+      ...(input.source !== null ? { source: input.source } : {}),
+    },
+    orderBy: { createdAt: "asc" },
+    take: count,
+    select: { id: true },
+  });
+  if (leads.length === 0) return { success: false, error: "V této databázi už nic nezbývá" };
+
+  const ids = leads.map((l) => l.id);
+  const today = new Date().toISOString().split("T")[0];
+  // Only leads still in the pool — guards against a parallel distribution
+  const moved = await prisma.client.updateMany({
+    where: { id: { in: ids }, assignedTo: poolId },
+    data: { assignedTo: user.id, callDate: today },
+  });
+  await prisma.leadAssignment.createMany({
+    data: ids.map((clientId) => ({ clientId, userId: user.id, assignedBy: session.id, reason: "manual" })),
+  });
+
+  await logAudit(
+    session.id,
+    "DISTRIBUTE_LEADS",
+    "user",
+    user.id,
+    `Ručně ${moved.count} leadů z ${input.source === null ? "všech databází" : input.source || "(bez zdroje)"} → ${user.firstName} ${user.lastName}`
+  );
+  revalidatePath("/database");
+  revalidatePath("/dashboard");
+  return { success: true, assigned: moved.count };
+}

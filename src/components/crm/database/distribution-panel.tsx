@@ -2,10 +2,14 @@
 
 import { useMemo, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { ChevronDown, History, Loader2, Shuffle, Zap } from "lucide-react";
+import { ChevronDown, History, Loader2, Send, Shuffle, Zap } from "lucide-react";
 import { useToast } from "@/components/crm/ui/toast";
 import { triggerDistributionManual } from "@/app/actions/crm/distribute-leads";
-import { setUserLeadSources, type DistributionPlan } from "@/app/actions/crm/distribution-plan";
+import {
+  assignLeadsManually,
+  setUserLeadSources,
+  type DistributionPlan,
+} from "@/app/actions/crm/distribution-plan";
 import { cn } from "@/lib/crm/utils";
 
 const ANY = "__any__";
@@ -27,6 +31,10 @@ export default function DistributionPanel({ plan, isAdmin }: { plan: Distributio
   const [pending, startTransition] = useTransition();
   const [savingId, setSavingId] = useState<string | null>(null);
   const [showHistory, setShowHistory] = useState(false);
+  // Manual hand-out: who, from which database, how many
+  const [mUser, setMUser] = useState("");
+  const [mSource, setMSource] = useState(ANY);
+  const [mCount, setMCount] = useState("50");
 
   const poolCount = new Map(plan.poolSources.map((s) => [s.source, s.count]));
   const totalPool = plan.poolSources.reduce((s, p) => s + p.count, 0);
@@ -59,6 +67,23 @@ export default function DistributionPanel({ plan, isAdmin }: { plan: Distributio
         toast("Uloženo — rozdělování se tím bude řídit");
         router.refresh();
       }
+    });
+  }
+
+  function assignNow() {
+    startTransition(async () => {
+      const res = await assignLeadsManually({
+        userId: mUser,
+        source: mSource === ANY ? null : mSource,
+        count: Number(mCount),
+      });
+      if (!res.success) {
+        toast(res.error || "Přidělení se nepovedlo", "error");
+        return;
+      }
+      const who = plan.people.find((p) => p.id === mUser)?.name ?? "";
+      toast(`Přiděleno ${res.assigned} leadů → ${who}`);
+      router.refresh();
     });
   }
 
@@ -180,6 +205,63 @@ export default function DistributionPanel({ plan, isAdmin }: { plan: Distributio
           </tbody>
         </table>
       </div>
+
+      {isAdmin && plan.people.length > 0 && (
+        <div className="flex flex-col lg:flex-row lg:items-end gap-2.5 px-4 lg:px-5 py-4 border-t border-border bg-surface-hover">
+          <div className="lg:w-40 shrink-0">
+            <div className="text-xs font-semibold text-text">Přidělit ručně</div>
+            <div className="text-[11px] text-text-dim">navíc k automatice</div>
+          </div>
+          <label className="flex-1 min-w-0">
+            <span className="block text-[11px] text-text-mid mb-1">Komu</span>
+            <select
+              value={mUser}
+              onChange={(e) => setMUser(e.target.value)}
+              className="w-full px-2.5 py-2 border border-border bg-surface text-sm text-text"
+            >
+              <option value="">Vyberte…</option>
+              {plan.people.map((p) => (
+                <option key={p.id} value={p.id}>
+                  {p.name} ({p.role === "operator" ? "operátor" : "makléř"})
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className="flex-1 min-w-0">
+            <span className="block text-[11px] text-text-mid mb-1">Z které databáze</span>
+            <select
+              value={mSource}
+              onChange={(e) => setMSource(e.target.value)}
+              className="w-full px-2.5 py-2 border border-border bg-surface text-sm text-text"
+            >
+              <option value={ANY}>Všechny databáze</option>
+              {plan.poolSources.map((s) => (
+                <option key={s.source} value={s.source}>
+                  {label(s.source)} ({s.count.toLocaleString("cs-CZ")} v poolu)
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className="lg:w-28">
+            <span className="block text-[11px] text-text-mid mb-1">Kolik</span>
+            <input
+              type="number"
+              min={1}
+              max={2000}
+              value={mCount}
+              onChange={(e) => setMCount(e.target.value)}
+              className="w-full px-2.5 py-2 border border-border bg-surface text-sm text-text"
+            />
+          </label>
+          <button
+            onClick={assignNow}
+            disabled={pending || !mUser || !(Number(mCount) > 0)}
+            className="inline-flex items-center justify-center gap-2 px-4 py-2 bg-ink text-on-dark text-sm font-semibold disabled:opacity-50"
+          >
+            <Send size={14} /> Přidělit
+          </button>
+        </div>
+      )}
 
       <button
         onClick={() => setShowHistory((v) => !v)}

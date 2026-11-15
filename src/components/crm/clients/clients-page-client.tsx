@@ -328,7 +328,8 @@ export default function ClientsPageClient({
         initialTab={openTab === "email" ? "email" : undefined}
         onClose={() => setSelectedClientId(null)}
         brokers={brokers}
-        isBroker={isBroker}
+        // only the administrator chooses who the contact belongs to
+        isBroker={userRole !== "administrator"}
         userRole={userRole}
         userName={userName}
         userEmail={userEmail}
@@ -340,7 +341,8 @@ export default function ClientsPageClient({
         onClose={() => setShowCreateForm(false)}
         onSuccess={handleCreateSuccess}
         brokers={brokers}
-        isBroker={isBroker}
+        // only the administrator chooses who the contact belongs to
+        isBroker={userRole !== "administrator"}
       />
 
       {isPoolView && (

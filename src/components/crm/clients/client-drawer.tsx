@@ -226,7 +226,8 @@ export default function ClientDrawer({
         onClose={() => setShowClientForm(false)}
         onSuccess={handleFormSuccess}
         brokers={brokers}
-        isBroker={isBroker}
+        // only the administrator chooses who the contact belongs to
+        isBroker={userRole !== "administrator"}
         editData={client}
       />
 

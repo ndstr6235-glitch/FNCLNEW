@@ -325,8 +325,9 @@ export async function createClient(data: {
     return { success: false, error: "Email je povinný" };
   }
 
+  // Only the administrator may give a contact to someone else
   const assignedTo =
-    (session.role === "broker" || session.role === "operator") ? session.id : data.assignedTo || session.id;
+    session.role === "administrator" ? data.assignedTo || session.id : session.id;
 
   const client = await prisma.client.create({
     data: {
@@ -420,8 +421,9 @@ export async function updateClient(
     return { success: false, error: "Email je povinný" };
   }
 
+  // Only the administrator may move a contact to someone else
   const newAssignedTo =
-    (session.role === "broker" || session.role === "operator") ? existing.assignedTo : data.assignedTo;
+    session.role === "administrator" ? data.assignedTo : existing.assignedTo;
 
   await prisma.client.update({
     where: { id: clientId },
