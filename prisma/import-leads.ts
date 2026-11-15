@@ -3,7 +3,11 @@
  * converted to text). Goes through the same encrypted path as the CRM dialog.
  *
  * Usage:
- *   npx tsx --env-file=.env.local prisma/import-leads.ts <file> <source> [sheet] [--apply]
+ *   npx tsx --env-file=.env.local prisma/import-leads.ts <file> <source> [sheet]
+ *     [--from=N] [--to=N] [--note=D] [--apply]
+ *
+ * --from/--to pick only part of the data rows (1-based); --note=D puts column D
+ * into the lead's note.
  *
  * <file> is .xls/.xlsx/.csv, or a .txt made with `pdftotext -layout` from a
  * "č / Jméno / Příjmení / telefon" table.
@@ -11,11 +15,21 @@
 import { readFileSync } from "fs";
 import * as XLSX from "xlsx";
 import { insertLeadBatch } from "../src/lib/crm/lead-import";
-import { cleanPhone, guessMapping, parseLeadRows, type ParsedLead } from "../src/lib/crm/lead-parse";
+import {
+  cleanPhone,
+  guessSheetMapping,
+  looksLikeHeader,
+  parseLeadRows,
+  type ParsedLead,
+} from "../src/lib/crm/lead-parse";
 
 const [file, source, ...rest] = process.argv.slice(2);
 const apply = rest.includes("--apply");
 const sheetName = rest.find((a) => !a.startsWith("--"));
+const opt = (name: string) => rest.find((a) => a.startsWith(`--${name}=`))?.split("=")[1];
+const rangeFrom = Number(opt("from")) || 1;
+const rangeTo = Number(opt("to")) || Infinity;
+const noteCol = opt("note")?.toUpperCase();
 const CHUNK = 500;
 
 if (!file || !source) {
@@ -50,10 +64,15 @@ function fromSheet(path: string) {
   const name = sheetName ?? wb.SheetNames[0];
   const ws = wb.Sheets[name];
   if (!ws) throw new Error(`Sheet "${name}" not found (have: ${wb.SheetNames.join(", ")})`);
-  const rows = XLSX.utils.sheet_to_json<unknown[]>(ws, { header: 1, defval: "", raw: false });
-  const mapping = guessMapping(rows[0]);
-  console.log(`Sheet "${name}", columns:`, JSON.stringify(mapping));
-  return parseLeadRows(rows.slice(1), mapping);
+  const rows = XLSX.utils
+    .sheet_to_json<unknown[]>(ws, { header: 1, defval: "", raw: false })
+    .filter((r) => r.some((c) => String(c ?? "").trim()));
+  const hasHeader = looksLikeHeader(rows[0] ?? []);
+  const mapping = guessSheetMapping(rows, hasHeader);
+  if (noteCol) mapping.note = noteCol.charCodeAt(0) - 65;
+  const data = (hasHeader ? rows.slice(1) : rows).slice(rangeFrom - 1, rangeTo);
+  console.log(`Sheet "${name}", header: ${hasHeader}, columns:`, JSON.stringify(mapping), `rows ${rangeFrom}–${Math.min(rangeTo, rangeFrom - 1 + data.length)}`);
+  return parseLeadRows(data, mapping);
 }
 
 async function main() {
