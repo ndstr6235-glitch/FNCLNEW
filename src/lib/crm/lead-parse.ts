@@ -160,3 +160,35 @@ export function parseLeadRows(
 
   return { leads, total, withoutPhone, duplicatesInFile };
 }
+
+/**
+ * For files without a header row: guesses the columns from the data itself
+ * (phone numbers, e-mails, and the first column holding names).
+ */
+export function guessMappingFromData(rows: unknown[][]): Partial<Record<LeadField, number>> {
+  const sample = rows.filter((r) => r && r.some((c) => String(c ?? "").trim())).slice(0, 50);
+  const width = Math.max(0, ...sample.map((r) => r.length));
+  const share = (col: number, test: (s: string) => boolean) =>
+    sample.filter((r) => test(String(r[col] ?? "").trim())).length / Math.max(1, sample.length);
+
+  const mapping: Partial<Record<LeadField, number>> = {};
+  for (let col = 0; col < width; col++) {
+    if (mapping.phone === undefined && share(col, (s) => cleanPhone(s) !== "") > 0.6) mapping.phone = col;
+    else if (mapping.email === undefined && share(col, (s) => /@/.test(s)) > 0.6) mapping.email = col;
+  }
+  for (let col = 0; col < width; col++) {
+    if (col === mapping.phone || col === mapping.email) continue;
+    // Two or more words of letters → a name column
+    if (share(col, (s) => /^\p{L}[\p{L}.'-]*(\s+\p{L}[\p{L}.'-]*)+$/u.test(s)) > 0.6) {
+      mapping.fullName = col;
+      break;
+    }
+  }
+  return mapping;
+}
+
+/** True when the first row looks like column names rather than a lead. */
+export function looksLikeHeader(row: unknown[]): boolean {
+  if (Object.keys(guessMapping(row)).length > 0) return true;
+  return !row.some((c) => cleanPhone(c) !== "" || /@/.test(String(c ?? "")));
+}

@@ -10,6 +10,8 @@ import { importLeadChunk, finishLeadImport } from "@/app/actions/crm/lead-import
 import {
   LEAD_FIELD_LABELS,
   guessMapping,
+  guessMappingFromData,
+  looksLikeHeader,
   parseLeadRows,
   type LeadField,
 } from "@/lib/crm/lead-parse";
@@ -38,6 +40,8 @@ export default function ImportLeadsModal({ open, onClose }: Props) {
   const [sheets, setSheets] = useState<Sheet[]>([]);
   const [sheetIdx, setSheetIdx] = useState(0);
   const [mapping, setMapping] = useState<Partial<Record<LeadField, number>>>({});
+  // Some exports start straight with data — then row 1 is a lead, not a header
+  const [hasHeader, setHasHeader] = useState(true);
   const [source, setSource] = useState("");
   const [reading, setReading] = useState(false);
   const [progress, setProgress] = useState<number | null>(null);
@@ -45,15 +49,39 @@ export default function ImportLeadsModal({ open, onClose }: Props) {
 
   const sheet = sheets[sheetIdx];
   const header = sheet?.rows[0] ?? [];
-  const summary = useMemo(
-    () => (sheet ? parseLeadRows(sheet.rows.slice(1), mapping) : null),
-    [sheet, mapping]
+  const dataRows = useMemo(
+    () => (sheet ? (hasHeader ? sheet.rows.slice(1) : sheet.rows) : []),
+    [sheet, hasHeader]
   );
+  const summary = useMemo(
+    () => (sheet ? parseLeadRows(dataRows, mapping) : null),
+    [sheet, dataRows, mapping]
+  );
+  const width = Math.max(header.length, ...dataRows.slice(0, 20).map((r) => r.length));
+  const columnLabel = (i: number) => {
+    const letter = String.fromCharCode(65 + (i % 26));
+    if (hasHeader) return String(header[i] || `Sloupec ${letter}`);
+    const example = String(dataRows.find((r) => String(r[i] ?? "").trim())?.[i] ?? "").slice(0, 24);
+    return example ? `Sloupec ${letter} – např. „${example}“` : `Sloupec ${letter}`;
+  };
+
+  function applySheet(rows: unknown[][]) {
+    const withHeader = looksLikeHeader(rows[0] ?? []);
+    setHasHeader(withHeader);
+    setMapping(withHeader ? guessMapping(rows[0]) : guessMappingFromData(rows));
+  }
+
+  function toggleHeader(value: boolean) {
+    if (!sheet) return;
+    setHasHeader(value);
+    setMapping(value ? guessMapping(sheet.rows[0]) : guessMappingFromData(sheet.rows));
+  }
 
   function reset() {
     setSheets([]);
     setSheetIdx(0);
     setMapping({});
+    setHasHeader(true);
     setSource("");
     setProgress(null);
     setResult(null);
@@ -78,14 +106,14 @@ export default function ImportLeadsModal({ open, onClose }: Props) {
           defval: "",
           raw: false,
         }),
-      })).filter((s) => s.rows.length > 1);
+      })).filter((s) => s.rows.some((r) => r.some((c) => String(c ?? "").trim())));
       if (parsed.length === 0) {
         toast("Soubor neobsahuje žádná data", "error");
         return;
       }
       setSheets(parsed);
       setSheetIdx(0);
-      setMapping(guessMapping(parsed[0].rows[0]));
+      applySheet(parsed[0].rows);
       setSource(file.name.replace(/\.[^.]+$/, ""));
     } catch {
       toast("Soubor se nepodařilo přečíst", "error");
@@ -96,7 +124,7 @@ export default function ImportLeadsModal({ open, onClose }: Props) {
 
   function selectSheet(i: number) {
     setSheetIdx(i);
-    setMapping(guessMapping(sheets[i].rows[0]));
+    applySheet(sheets[i].rows);
   }
 
   async function handleImport() {
@@ -186,7 +214,7 @@ export default function ImportLeadsModal({ open, onClose }: Props) {
               >
                 {sheets.map((s, i) => (
                   <option key={s.name} value={i}>
-                    {s.name} ({(s.rows.length - 1).toLocaleString("cs-CZ")} řádků)
+                    {s.name} ({s.rows.length.toLocaleString("cs-CZ")} řádků)
                   </option>
                 ))}
               </select>
@@ -200,6 +228,16 @@ export default function ImportLeadsModal({ open, onClose }: Props) {
               className="w-full border border-border bg-surface px-3 py-2 text-sm text-text"
             />
           </Field>
+
+          <label className="flex items-center gap-2 text-sm text-text">
+            <input
+              type="checkbox"
+              checked={hasHeader}
+              onChange={(e) => toggleHeader(e.target.checked)}
+              className="accent-brass"
+            />
+            První řádek je záhlaví (názvy sloupců)
+          </label>
 
           <div>
             <div className="text-xs font-semibold text-text-mid mb-2">Sloupce v souboru</div>
@@ -218,9 +256,9 @@ export default function ImportLeadsModal({ open, onClose }: Props) {
                     className="mt-1 w-full border border-border bg-surface px-2 py-1.5 text-sm text-text"
                   >
                     <option value="">—</option>
-                    {header.map((h, i) => (
+                    {Array.from({ length: width }, (_, i) => (
                       <option key={i} value={i}>
-                        {String(h || `Sloupec ${i + 1}`)}
+                        {columnLabel(i)}
                       </option>
                     ))}
                   </select>
