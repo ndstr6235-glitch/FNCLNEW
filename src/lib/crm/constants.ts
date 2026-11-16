@@ -101,7 +101,7 @@ export const NAV_SECTIONS: NavSection[] = [
       { key: "emails", label: "Emaily", roles: ["administrator", "supervisor", "broker"] },
       { key: "tickets", label: "Pozadavky", roles: ["administrator", "supervisor", "broker", "operator"] },
       { key: "documents", label: "Dokumenty", roles: ["administrator", "supervisor"] },
-      { key: "contracts", label: "Smlouva k tisku", roles: ["administrator", "supervisor"] },
+      { key: "contracts", label: "Smlouva k tisku", roles: ["administrator"] },
     ],
   },
   {

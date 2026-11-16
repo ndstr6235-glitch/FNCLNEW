@@ -11,6 +11,8 @@ interface DrawerTabPaymentsProps {
   client: ClientDetail;
   onAddPayment: () => void;
   onRefresh?: () => void;
+  /** Only the administrator may change payouts (paid state, account, schedule) */
+  canEdit?: boolean;
 }
 
 // Extract "[Účet: XXX]" marker from note → { bank, restOfNote }
@@ -24,6 +26,7 @@ export default function DrawerTabPayments({
   client,
   onAddPayment,
   onRefresh,
+  canEdit = false,
 }: DrawerTabPaymentsProps) {
   const { payments, totalDeposit, totalProfit } = client;
   const { toast } = useToast();
@@ -149,6 +152,7 @@ export default function DrawerTabPayments({
                       Čeká na platbu
                     </span>
                   )}
+                  {canEdit && (
                   <button
                     onClick={() => togglePaid(p.id, p.paid)}
                     className={`text-xs px-2 py-1 transition-colors ${
@@ -159,6 +163,7 @@ export default function DrawerTabPayments({
                   >
                     {p.paid ? "Vrátit" : "Označit jako zaplaceno"}
                   </button>
+                  )}
                 </div>
 
                 {/* Variable symbol */}
@@ -215,6 +220,7 @@ export default function DrawerTabPayments({
                           <span className="text-text-faint italic">Účet nezadán</span>
                         )}
                       </span>
+                      {canEdit && (
                       <button
                         onClick={() => startEdit(p.id, bank)}
                         className="text-xs text-gold hover:underline flex items-center gap-1"
@@ -222,6 +228,7 @@ export default function DrawerTabPayments({
                         <Pencil size={11} />
                         {bank ? "Upravit" : "Doplnit"}
                       </button>
+                      )}
                     </>
                   )}
                 </div>
@@ -236,7 +243,7 @@ export default function DrawerTabPayments({
       )}
 
       {/* Reschedule payouts button */}
-      {client.paymentReceivedDate && client.payments.some(p => p.paid && p.duration > 0) && (
+      {canEdit && client.paymentReceivedDate && client.payments.some(p => p.paid && p.duration > 0) && (
         <button
           onClick={async () => {
             const result = await schedulePayoutsFromClient(client.id);
@@ -255,6 +262,7 @@ export default function DrawerTabPayments({
       )}
 
       {/* Add payment button */}
+      {canEdit ? (
       <button
         onClick={onAddPayment}
         className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-emerald/10 text-emerald text-sm font-medium hover:bg-emerald/20 transition-colors"
@@ -262,6 +270,9 @@ export default function DrawerTabPayments({
         <Plus size={16} />
         Přidat platbu
       </button>
+      ) : (
+        <p className="text-[11px] text-text-dim text-center">Platby a výplaty úroků upravuje jen administrátor.</p>
+      )}
     </div>
   );
 }

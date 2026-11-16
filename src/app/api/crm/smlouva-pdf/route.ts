@@ -11,7 +11,7 @@ export const maxDuration = 30;
 // Empty fields stay as lines to fill in by hand.
 export async function POST(req: Request) {
   const session = await getSession();
-  if (!session || (session.role === "broker" || session.role === "operator")) {
+  if (!session || session.role !== "administrator") {
     return NextResponse.json({ error: "Nemáte oprávnění" }, { status: 403 });
   }
 

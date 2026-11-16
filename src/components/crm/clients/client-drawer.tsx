@@ -184,6 +184,7 @@ export default function ClientDrawer({
                   client={client}
                   onAddPayment={() => setShowPaymentForm(true)}
                   onRefresh={handleFormSuccess}
+                  canEdit={userRole === "administrator"}
                 />
               )}
               {activeTab === "events" && (
@@ -208,6 +209,7 @@ export default function ClientDrawer({
             </div>
 
             <DrawerFooter
+              canAddPayment={userRole === "administrator"}
               onSwitchTab={(tab) => {
                 if (tab === "payments") {
                   setShowPaymentForm(true);

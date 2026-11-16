@@ -312,6 +312,7 @@ export default function ClientForm({
                 <input
                   type="date"
                   value={nextPaymentDate}
+                disabled={isBroker}
                   onChange={(e) => setNextPaymentDate(e.target.value)}
                   className="w-full px-3 py-2.5 min-h-[44px] border border-border bg-surface text-sm text-text focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
                 />
@@ -325,11 +326,13 @@ export default function ClientForm({
               <input
                 type="date"
                 value={paymentReceivedDate}
+                disabled={isBroker}
                 onChange={(e) => setPaymentReceivedDate(e.target.value)}
                 className="w-full px-3 py-2.5 min-h-[44px] border border-border bg-surface text-sm text-text focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
               />
               <p className="mt-1 text-[11px] text-text-faint">
                 Skutečné datum, kdy peníze přišly na účet. Od tohoto data se počítá výplatní harmonogram.
+                {isBroker && " Výplaty úroků upravuje jen administrátor."}
               </p>
             </div>
 
@@ -341,6 +344,7 @@ export default function ClientForm({
                 type="number"
                 min={1}
                 value={paymentFreq}
+                disabled={isBroker}
                 onChange={(e) => setPaymentFreq(parseInt(e.target.value) || 30)}
                 className="w-full px-3 py-2.5 min-h-[44px] border border-border bg-surface text-sm text-text focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
               />

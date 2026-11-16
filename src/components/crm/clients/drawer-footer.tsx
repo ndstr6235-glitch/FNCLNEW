@@ -6,9 +6,11 @@ type Tab = "overview" | "payments" | "events" | "email";
 
 interface DrawerFooterProps {
   onSwitchTab: (tab: Tab) => void;
+  /** Only the administrator records payments */
+  canAddPayment?: boolean;
 }
 
-export default function DrawerFooter({ onSwitchTab }: DrawerFooterProps) {
+export default function DrawerFooter({ onSwitchTab, canAddPayment = true }: DrawerFooterProps) {
   return (
     <div className="border-t border-border px-4 py-3 shrink-0 bg-surface">
       <div className="flex flex-col gap-2 sm:flex-row sm:gap-3">
@@ -19,6 +21,7 @@ export default function DrawerFooter({ onSwitchTab }: DrawerFooterProps) {
           <Mail size={16} />
           Email
         </button>
+        {canAddPayment && (
         <button
           onClick={() => onSwitchTab("payments")}
           className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 min-h-[44px] bg-emerald text-white text-sm font-semibold hover:bg-emerald/90 transition-colors"
@@ -26,6 +29,7 @@ export default function DrawerFooter({ onSwitchTab }: DrawerFooterProps) {
           <CreditCard size={16} />
           Platba
         </button>
+        )}
         <button
           onClick={() => onSwitchTab("events")}
           className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 min-h-[44px] border border-border text-text-mid text-sm font-medium hover:bg-surface-hover transition-colors"

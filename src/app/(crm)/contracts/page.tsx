@@ -6,8 +6,8 @@ export default async function ContractsRoute() {
   const session = await getSession();
   if (!session) redirect("/login");
 
-  // Brokers cannot access contracts
-  if ((session.role === "broker" || session.role === "operator")) redirect("/dashboard");
+  // Only the administrator fills in and sends final contracts
+  if (session.role !== "administrator") redirect("/dashboard");
 
   return <FinalContractForm senderName={`${session.firstName} ${session.lastName}`.trim()} />;
 }

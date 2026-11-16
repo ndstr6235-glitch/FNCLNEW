@@ -425,6 +425,16 @@ export async function updateClient(
   const newAssignedTo =
     session.role === "administrator" ? data.assignedTo : existing.assignedTo;
 
+  // Only the administrator may change when interest is paid out
+  if (session.role !== "administrator") {
+    data = {
+      ...data,
+      paymentReceivedDate: existing.paymentReceivedDate,
+      nextPaymentDate: existing.nextPaymentDate,
+      paymentFreq: existing.paymentFreq,
+    };
+  }
+
   await prisma.client.update({
     where: { id: clientId },
     data: {
@@ -606,6 +616,9 @@ export async function schedulePayoutsFromClient(
 ): Promise<{ success: boolean; eventsCreated?: number; error?: string }> {
   const session = await getSession();
   if (!session) return { success: false, error: "Nepřihlášen" };
+  if (session.role !== "administrator") {
+    return { success: false, error: "Výplaty úroků může upravovat jen administrátor" };
+  }
 
   const client = await prisma.client.findUnique({
     where: { id: clientId },
@@ -713,15 +726,15 @@ export async function createPayment(data: {
 }): Promise<{ success: boolean; error?: string }> {
   const session = await getSession();
   if (!session) return { success: false, error: "Nepřihlášen" };
+  if (session.role !== "administrator") {
+    return { success: false, error: "Výplaty úroků může upravovat jen administrátor" };
+  }
 
   const client = await prisma.client.findUnique({
     where: { id: data.clientId },
   });
   if (!client) return { success: false, error: "Klient nenalezen" };
 
-  if ((session.role === "broker" || session.role === "operator") && client.assignedTo !== session.id) {
-    return { success: false, error: "Nemáte oprávnění" };
-  }
 
   if (data.amount <= 0) {
     return { success: false, error: "Částka musí být větší než 0" };
@@ -787,6 +800,9 @@ export async function updatePaymentBankAccount(
 ): Promise<{ success: boolean; error?: string }> {
   const session = await getSession();
   if (!session) return { success: false, error: "Nepřihlášen" };
+  if (session.role !== "administrator") {
+    return { success: false, error: "Výplaty úroků může upravovat jen administrátor" };
+  }
 
   const payment = await prisma.payment.findUnique({
     where: { id: paymentId },
@@ -794,9 +810,6 @@ export async function updatePaymentBankAccount(
   });
   if (!payment) return { success: false, error: "Platba nenalezena" };
 
-  if ((session.role === "broker" || session.role === "operator") && payment.client.assignedTo !== session.id) {
-    return { success: false, error: "Nemáte oprávnění" };
-  }
 
   // Strip existing [Účet: ...] marker, then prepend the new one (or remove)
   const stripped = payment.note.replace(/^\[Účet:[^\]]+\]\s*/, "");
@@ -883,8 +896,8 @@ export async function setPaymentPaid(
 ): Promise<{ success: boolean; error?: string }> {
   const session = await getSession();
   if (!session) return { success: false, error: "Nepřihlášen" };
-  if ((session.role === "broker" || session.role === "operator")) {
-    return { success: false, error: "Nemáte oprávnění" };
+  if (session.role !== "administrator") {
+    return { success: false, error: "Výplaty úroků může upravovat jen administrátor" };
   }
 
   const payment = await prisma.payment.findUnique({

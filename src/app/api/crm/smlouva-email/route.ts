@@ -17,7 +17,7 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 // client with the subject and text from the e-mail draft.
 export async function POST(req: Request) {
   const session = await getSession();
-  if (!session || session.role === "broker" || session.role === "operator") {
+  if (!session || session.role !== "administrator") {
     return NextResponse.json({ error: "Nemáte oprávnění" }, { status: 403 });
   }
 

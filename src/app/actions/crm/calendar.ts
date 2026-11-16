@@ -89,6 +89,9 @@ export async function createEvent(data: {
   if (!prismaType) {
     return { success: false, error: "Neplatný typ události" };
   }
+  if (prismaType === "INTEREST" && session.role !== "administrator") {
+    return { success: false, error: "Výplaty úroků může plánovat jen administrátor" };
+  }
 
   const eventDate = data.date || new Date().toISOString().split("T")[0];
   const eventTime = data.time || "09:00";
@@ -131,6 +134,9 @@ export async function deleteEvent(
   });
   if (!event) return { success: false, error: "Událost nenalezena" };
 
+  if (event.type === "INTEREST" && session.role !== "administrator") {
+    return { success: false, error: "Výplaty úroků může upravovat jen administrátor" };
+  }
   if ((session.role === "broker" || session.role === "operator") && event.userId !== session.id) {
     return { success: false, error: "Nemáte oprávnění" };
   }
