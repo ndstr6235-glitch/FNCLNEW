@@ -1,7 +1,8 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Check, Copy, Mail, RotateCcw } from "lucide-react";
+import { Check, Copy, Loader2, Mail, RotateCcw, Send } from "lucide-react";
+import { useToast } from "@/components/crm/ui/toast";
 import { COMPANY_BANK_ACCOUNT } from "@/lib/crm/company";
 
 export interface DraftData {
@@ -93,7 +94,20 @@ function CopyBtn({ text, label }: { text: string; label: string }) {
 }
 
 /** Ready-to-send e-mail text for the client, shown once the name is filled in. */
-export default function ContractEmailDraft({ data, senderName }: { data: DraftData; senderName: string }) {
+export default function ContractEmailDraft({
+  data,
+  form,
+  senderName,
+}: {
+  data: DraftData;
+  /** The whole contract form — sent to the server to build the PDF attachment */
+  form: Record<string, string>;
+  senderName: string;
+}) {
+  const { toast } = useToast();
+  const [to, setTo] = useState("");
+  const [sending, setSending] = useState(false);
+  const [sentTo, setSentTo] = useState<string | null>(null);
   const [sal, setSal] = useState<Salutation>("neutral");
   const generated = useMemo(() => buildDraft(data, sal, senderName), [data, sal, senderName]);
   // Hand edits override the generated text; until then it follows the form
@@ -106,6 +120,30 @@ export default function ContractEmailDraft({ data, senderName }: { data: DraftDa
     setSubjectEdit(null);
     setBodyEdit(null);
   };
+
+  async function send() {
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(to.trim())) {
+      toast("Zadejte platný e-mail klienta", "error");
+      return;
+    }
+    if (!confirm(`Odeslat smlouvu (PDF) na ${to.trim()}?`)) return;
+    setSending(true);
+    try {
+      const res = await fetch("/api/crm/smlouva-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ to: to.trim(), subject, text: body, form }),
+      });
+      const out = await res.json().catch(() => null);
+      if (!res.ok) throw new Error(out?.error || "Odeslání selhalo");
+      setSentTo(to.trim());
+      toast(`Smlouva odeslána na ${to.trim()}`);
+    } catch (e) {
+      toast(e instanceof Error ? e.message : "Odeslání selhalo", "error");
+    } finally {
+      setSending(false);
+    }
+  }
 
   const salBtn = (v: Salutation, text: string) => (
     <button
@@ -168,7 +206,7 @@ export default function ContractEmailDraft({ data, senderName }: { data: DraftDa
       <div className="flex flex-wrap items-center justify-between gap-2 text-[11px] text-text-dim">
         <span>
           {sal !== "neutral" && "U oslovení zkontrolujte 5. pád příjmení (např. „pane Nováku“). "}
-          Smlouvu (PDF) přiložte k e-mailu.
+          Při odeslání z CRM se smlouva v PDF přiloží automaticky.
         </span>
         {edited && (
           <button
@@ -180,6 +218,36 @@ export default function ContractEmailDraft({ data, senderName }: { data: DraftDa
           </button>
         )}
       </div>
+
+      <div className="flex flex-col sm:flex-row sm:items-end gap-2.5 pt-3 border-t border-border">
+        <label className="flex-1">
+          <span className="block text-xs font-medium text-text-mid mb-1">E-mail klienta</span>
+          <input
+            type="email"
+            value={to}
+            onChange={(e) => {
+              setTo(e.target.value);
+              setSentTo(null);
+            }}
+            placeholder="klient@email.cz"
+            className="w-full px-3 py-2.5 min-h-[44px] border border-border bg-surface text-sm text-text focus:outline-none focus:ring-2 focus:ring-gold/30"
+          />
+        </label>
+        <button
+          type="button"
+          onClick={send}
+          disabled={sending || !to.trim()}
+          className="inline-flex items-center justify-center gap-2 px-5 py-3 min-h-[44px] bg-ink text-on-dark text-sm font-semibold disabled:opacity-50"
+        >
+          {sending ? <Loader2 size={16} className="animate-spin" /> : <Send size={16} />}
+          {sending ? "Odesílám…" : "Odeslat klientovi i s PDF"}
+        </button>
+      </div>
+      {sentTo && (
+        <p className="text-xs text-emerald font-medium">
+          <Check size={13} className="inline -mt-0.5" /> Odesláno na {sentTo} — smlouva v PDF byla v příloze.
+        </p>
+      )}
     </section>
   );
 }

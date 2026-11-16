@@ -140,7 +140,7 @@ export default function FinalContractForm({ senderName }: { senderName: string }
         </button>
       </div>
 
-      {f.firstName.trim() && f.lastName.trim() && <ContractEmailDraft data={f} senderName={senderName} />}
+      {f.firstName.trim() && f.lastName.trim() && <ContractEmailDraft data={f} form={f} senderName={senderName} />}
     </div>
   );
 }
