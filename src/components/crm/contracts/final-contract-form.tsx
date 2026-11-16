@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Download, Loader2, RotateCcw } from "lucide-react";
 import { useToast } from "@/components/crm/ui/toast";
+import ContractEmailDraft from "./contract-email-draft";
 
 const INPUT =
   "w-full px-3 py-2.5 min-h-[44px] border border-border bg-surface text-sm text-text placeholder:text-text-faint focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition";
@@ -25,7 +26,7 @@ const EMPTY = {
 };
 type Form = typeof EMPTY;
 
-export default function FinalContractForm() {
+export default function FinalContractForm({ senderName }: { senderName: string }) {
   const { toast } = useToast();
   const [f, setF] = useState<Form>(EMPTY);
   const [busy, setBusy] = useState(false);
@@ -138,6 +139,8 @@ export default function FinalContractForm() {
           <RotateCcw size={15} /> Vymazat
         </button>
       </div>
+
+      {f.firstName.trim() && f.lastName.trim() && <ContractEmailDraft data={f} senderName={senderName} />}
     </div>
   );
 }
