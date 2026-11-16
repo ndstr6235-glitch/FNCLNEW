@@ -70,7 +70,7 @@ export async function bulkDelete(clientIds: string[]) {
 // ---------------------------------------------------------------------------
 export async function bulkSendPrezentace(
   emails: string[]
-): Promise<{ success: boolean; sent: number; error?: string }> {
+): Promise<{ success: boolean; sent: number; failed?: string[]; error?: string }> {
   const session = await getSession();
   if (!session) return { success: false, sent: 0, error: "Nepřihlášen." };
   if (!emails.length) return { success: false, sent: 0, error: "Žádné emaily." };
@@ -127,8 +127,10 @@ export async function bulkSendPrezentace(
   // Resend has no attachments in its batch API, so send one by one, throttled.
   const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
   let totalSent = 0;
+  const failed: string[] = [];
 
   for (const email of emails) {
+    let ok = false;
     for (let attempt = 0; attempt < 3; attempt++) {
       try {
         const { error } = await resend.emails.send({
@@ -141,6 +143,7 @@ export async function bulkSendPrezentace(
         });
         if (!error) {
           totalSent++;
+          ok = true;
           break;
         }
         // Rate limited — wait and retry; anything else is final for this address
@@ -155,6 +158,7 @@ export async function bulkSendPrezentace(
         break;
       }
     }
+    if (!ok) failed.push(email);
     await sleep(250);
   }
 
@@ -167,10 +171,10 @@ export async function bulkSendPrezentace(
   );
 
   if (totalSent === 0) {
-    return { success: false, sent: 0, error: "Odeslání selhalo." };
+    return { success: false, sent: 0, failed, error: "Odeslání selhalo." };
   }
 
-  return { success: true, sent: totalSent };
+  return { success: true, sent: totalSent, failed };
 }
 
 export async function bulkExportCSV(clientIds: string[]) {

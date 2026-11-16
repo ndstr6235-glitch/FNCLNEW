@@ -135,7 +135,14 @@ export default function EmailComposer({
 
   // Filter templates by role (allowedRoles are lowercase from server)
   const allowedTemplates = useMemo(
-    () => templates.filter((t) => t.allowedRoles.includes(userRole.toLowerCase())),
+    () =>
+      templates.filter((t) => {
+        if (!t.allowedRoles.includes(userRole.toLowerCase())) return false;
+        // The final contract is sent by the administrator only
+        const l = t.label.toLowerCase();
+        const isFinal = l.includes("smlouv") && !l.includes("návrh") && !l.includes("navrh");
+        return !isFinal || userRole === "administrator";
+      }),
     [templates, userRole]
   );
 

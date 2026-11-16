@@ -40,10 +40,14 @@ export default function BulkEmailModal({
     const result = await bulkSendPrezentace(unique);
     setSending(false);
 
-    if (result.success) {
-      toast(`Prezentace odeslána ${result.sent} příjemcům`);
+    if (result.success && !result.failed?.length) {
+      toast(`Prezentace odeslána všem ${result.sent} příjemcům`);
       setRaw("");
       onClose();
+    } else if (result.success) {
+      // Keep only the addresses that failed so they can be fixed and resent
+      toast(`Odesláno ${result.sent} z ${unique.length}. Nepodařilo se: ${result.failed!.join(", ")}`, "error");
+      setRaw(result.failed!.join("\n"));
     } else {
       toast(result.error || "Odeslání selhalo", "error");
     }

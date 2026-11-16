@@ -297,6 +297,16 @@ export async function sendEmail(
     return { success: false, error: "Chybí povinné údaje (email, předmět, text)" };
   }
 
+  // Only the administrator sends the final contract (it also books the deposit
+  // and schedules the interest payouts)
+  {
+    const l = templateLabel?.toLowerCase() || "";
+    const isFinal = l.includes("smlouv") && !l.includes("návrh") && !l.includes("navrh");
+    if (isFinal && session.role !== "administrator") {
+      return { success: false, error: "Smlouvu finální může odeslat jen administrátor" };
+    }
+  }
+
   if (clientId) {
     const cli = await prisma.client.findUnique({ where: { id: clientId }, select: { dnc: true } });
     if (cli?.dnc) {
