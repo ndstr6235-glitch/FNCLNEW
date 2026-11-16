@@ -54,7 +54,7 @@ export default function BulkEmailModal({
       <div className="space-y-4">
         <p className="text-sm text-text-mid">
           Vložte emailové adresy (oddělené čárkou, středníkem nebo novým
-          řádkem). Prezentace s PDF přílohou se odešle ve skryté kopii (BCC).
+          řádkem). Prezentace s PDF přílohou odejde každému zvlášť — příjemci se navzájem nevidí a do info@ nechodí kopie.
         </p>
 
         <div>

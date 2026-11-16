@@ -66,7 +66,7 @@ export async function bulkDelete(clientIds: string[]) {
 }
 
 // ---------------------------------------------------------------------------
-// Bulk send Prezentace via BCC
+// Bulk send Prezentace — one e-mail per recipient
 // ---------------------------------------------------------------------------
 export async function bulkSendPrezentace(
   emails: string[]
@@ -74,6 +74,7 @@ export async function bulkSendPrezentace(
   const session = await getSession();
   if (!session) return { success: false, sent: 0, error: "Nepřihlášen." };
   if (!emails.length) return { success: false, sent: 0, error: "Žádné emaily." };
+  if (emails.length > 300) return { success: false, sent: 0, error: "Najednou lze poslat nejvýš 300 e-mailů." };
 
   const key = process.env.RESEND_API_KEY;
   if (!key) return { success: false, sent: 0, error: "RESEND_API_KEY chybí." };
@@ -121,32 +122,40 @@ export async function bulkSendPrezentace(
     console.error("Prezentace PDF load failed:", err);
   }
 
-  // Send in batches of 49 (Resend BCC limit)
-  const BATCH_SIZE = 49;
+  // One e-mail per recipient — the client sees their own address in "To" and no
+  // copy lands in the shared info@ inbox (the old BCC send went To: info@).
+  // Resend has no attachments in its batch API, so send one by one, throttled.
+  const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
   let totalSent = 0;
 
-  for (let i = 0; i < emails.length; i += BATCH_SIZE) {
-    const batch = emails.slice(i, i + BATCH_SIZE);
-
-    try {
-      const { error } = await resend.emails.send({
-        from: `${senderName} | Puskin and Partners <info@puskinpartners.cz>`,
-        to: ["info@puskinpartners.cz"],
-        bcc: batch,
-        subject: template.subject,
-        text: body,
-        replyTo: ["info@puskinpartners.cz"],
-        ...(attachments.length > 0 ? { attachments } : {}),
-      });
-
-      if (error) {
-        console.error("Bulk BCC send error:", error);
-      } else {
-        totalSent += batch.length;
+  for (const email of emails) {
+    for (let attempt = 0; attempt < 3; attempt++) {
+      try {
+        const { error } = await resend.emails.send({
+          from: `${senderName} | Puskin and Partners <info@puskinpartners.cz>`,
+          to: [email],
+          subject: template.subject,
+          text: body,
+          replyTo: ["info@puskinpartners.cz"],
+          ...(attachments.length > 0 ? { attachments } : {}),
+        });
+        if (!error) {
+          totalSent++;
+          break;
+        }
+        // Rate limited — wait and retry; anything else is final for this address
+        if (error.name === "rate_limit_exceeded") {
+          await sleep(1000 * (attempt + 1));
+          continue;
+        }
+        console.error(`Bulk Prezentace to ${email} failed:`, error);
+        break;
+      } catch (err) {
+        console.error(`Bulk Prezentace to ${email} failed:`, err);
+        break;
       }
-    } catch (err) {
-      console.error("Bulk BCC batch failed:", err);
     }
+    await sleep(250);
   }
 
   await logAudit(
@@ -154,7 +163,7 @@ export async function bulkSendPrezentace(
     "BULK_EMAIL",
     "email",
     undefined,
-    `Hromadná Prezentace BCC: ${totalSent}/${emails.length} odesláno`
+    `Hromadná Prezentace: ${totalSent}/${emails.length} odesláno`
   );
 
   if (totalSent === 0) {
