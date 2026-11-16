@@ -5,6 +5,7 @@ import { prisma } from "@/lib/crm/db";
 import { logAudit } from "@/app/actions/crm/audit";
 import { generateProposalPdf } from "@/lib/crm/proposal-pdf";
 import { contractFileName, finalContractFromForm } from "@/lib/crm/final-contract-data";
+import { COMPANY_SIGNATORY } from "@/lib/crm/company";
 import { emailHash } from "@/lib/crm/field-crypto";
 import { plainBodyToHtml } from "@/lib/crm/email-footer";
 
@@ -50,9 +51,8 @@ export async function POST(req: Request) {
 
   try {
     const pdf = await generateProposalPdf(data);
-    const fromName = `${session.firstName} ${session.lastName}`.trim();
     const { error } = await new Resend(key).emails.send({
-      from: `${fromName ? `${fromName} | ` : ""}Puskin and Partners <info@puskinpartners.cz>`,
+      from: `${COMPANY_SIGNATORY} | Puskin and Partners <info@puskinpartners.cz>`,
       to: [to],
       replyTo: ["info@puskinpartners.cz"],
       subject,

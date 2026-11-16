@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import { Check, Copy, Loader2, Mail, RotateCcw, Send } from "lucide-react";
 import { useToast } from "@/components/crm/ui/toast";
-import { COMPANY_BANK_ACCOUNT } from "@/lib/crm/company";
+import { COMPANY_BANK_ACCOUNT, COMPANY_SIGNATORY_TITLE } from "@/lib/crm/company";
 
 export interface DraftData {
   firstName: string;
@@ -67,7 +67,7 @@ function buildDraft(d: DraftData, sal: Salutation, senderName: string) {
     "S pozdravem,",
     "",
     senderName,
-    "Alexandr Puškin, s.r.o.",
+    `${COMPANY_SIGNATORY_TITLE[0].toUpperCase()}${COMPANY_SIGNATORY_TITLE.slice(1)}, Alexandr Puškin, s.r.o.`,
     "info@puskinpartners.cz",
     "www.puskinpartners.cz",
   ].join("\n");
