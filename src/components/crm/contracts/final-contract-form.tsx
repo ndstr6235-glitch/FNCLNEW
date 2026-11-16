@@ -140,7 +140,14 @@ export default function FinalContractForm({ senderName }: { senderName: string }
         </button>
       </div>
 
-      {f.firstName.trim() && f.lastName.trim() && <ContractEmailDraft data={f} form={f} senderName={senderName} />}
+      {f.firstName.trim() && f.lastName.trim() ? (
+        <ContractEmailDraft data={f} form={f} senderName={senderName} />
+      ) : (
+        <p className="border border-dashed border-border px-4 py-3 text-sm text-text-dim">
+          ✉️ Po vyplnění <b className="text-text-mid">jména a příjmení</b> se tu objeví návrh e-mailu
+          pro klienta a tlačítko pro odeslání smlouvy i s PDF.
+        </p>
+      )}
     </div>
   );
 }
