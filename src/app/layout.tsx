@@ -17,6 +17,8 @@ const libreFranklin = Libre_Franklin({
 });
 
 export const metadata: Metadata = {
+  // Web ani CRM se nemají indexovat (doplňuje hlavičku X-Robots-Tag z next.config.ts)
+  robots: { index: false, follow: false, nocache: true, googleBot: { index: false, follow: false } },
   title: {
     default: "Puskin and Partners | Development, Rekonstrukce, Reality, Investice",
     template: "%s | Puskin and Partners",
