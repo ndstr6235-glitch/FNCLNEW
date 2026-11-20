@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { Pencil, Trash2, Power, FileSignature } from "lucide-react";
+import { Pencil, Trash2, Power, FileSignature, KeyRound } from "lucide-react";
 import { cn } from "@/lib/crm/utils";
 import { useToast } from "@/components/crm/ui/toast";
-import { toggleUserActive, deleteUser, type UserRow } from "@/app/actions/crm/users";
+import { toggleUserActive, deleteUser, resetUserTwoFactor, type UserRow } from "@/app/actions/crm/users";
 import ConfirmDialog from "@/components/crm/ui/confirm-dialog";
 
 const ROLE_BADGE: Record<string, { label: string; cls: string }> = {
@@ -39,6 +39,13 @@ export default function UsersCards({
       toast(result.error || "Nepodařilo se smazat", "error");
     }
     setDeleteId(null);
+  }
+
+  async function handleResetTwoFactor(id: string, name: string) {
+    if (!window.confirm(`Obnovit ověření kódem pro ${name}? Při dalším přihlášení si naskenuje nový QR kód.`)) return;
+    const result = await resetUserTwoFactor(id);
+    if (result.success) toast("Ověření obnoveno — nastaví si ho při dalším přihlášení");
+    else toast(result.error || "Nepodařilo se obnovit ověření", "error");
   }
 
   async function handleToggleActive(id: string) {
@@ -136,6 +143,13 @@ export default function UsersCards({
                       >
                         <Power size={12} />
                         {user.active ? "Deaktivovat" : "Aktivovat"}
+                      </button>
+                      <button
+                        onClick={() => handleResetTwoFactor(user.id, `${user.firstName} ${user.lastName}`)}
+                        className="flex-1 flex items-center justify-center gap-1.5 py-2 min-h-[44px] text-xs font-medium text-gold hover:bg-gold/10 transition-colors"
+                      >
+                        <KeyRound size={12} />
+                        Obnovit 2FA
                       </button>
                       <button
                         onClick={() => setDeleteId(user.id)}

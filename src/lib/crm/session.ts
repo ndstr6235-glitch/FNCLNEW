@@ -30,9 +30,11 @@ export interface SessionPayload {
   loginAt: number;
   /** Poslední aktivita (ms) — od ní se počítá SESSION_IDLE_MS. */
   lastSeen: number;
+  /** Přihlášení prošlo ověřením kódem (2FA). Tokeny bez něj neplatí. */
+  mfa: true;
 }
 
-export type SessionUser = Omit<SessionPayload, "loginAt" | "lastSeen">;
+export type SessionUser = Omit<SessionPayload, "loginAt" | "lastSeen" | "mfa">;
 
 export async function encrypt(
   user: SessionUser,
@@ -47,6 +49,7 @@ export async function encrypt(
     role: user.role,
     loginAt,
     lastSeen: now,
+    mfa: true,
   };
   return new SignJWT(payload as unknown as Record<string, unknown>)
     .setProtectedHeader({ alg: "HS256" })
@@ -64,6 +67,7 @@ export async function decrypt(
     const p = payload as unknown as SessionPayload;
     const now = Date.now();
     if (typeof p.loginAt !== "number" || typeof p.lastSeen !== "number") return null;
+    if (p.mfa !== true) return null;
     if (now - p.loginAt > SESSION_MAX_MS) return null;
     if (now - p.lastSeen > SESSION_IDLE_MS) return null;
     return p;

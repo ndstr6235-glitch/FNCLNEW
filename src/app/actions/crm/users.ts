@@ -206,3 +206,18 @@ export async function deleteUser(
   revalidatePath("/users");
   return { success: true };
 }
+
+/** Obnoví dvoufázové ověření (ztracený telefon) — uživatel si ho nastaví při dalším přihlášení. */
+export async function resetUserTwoFactor(
+  id: string
+): Promise<{ success: boolean; error?: string }> {
+  const session = await getSession();
+  if (!session || session.role !== "administrator") {
+    return { success: false, error: "Nemáte oprávnění" };
+  }
+  const { deleteTotp } = await import("@/lib/crm/two-factor");
+  await deleteTotp(id);
+  const { logAudit } = await import("@/lib/crm/server-log");
+  await logAudit(session.id, "2FA_RESET", "user", id);
+  return { success: true };
+}
