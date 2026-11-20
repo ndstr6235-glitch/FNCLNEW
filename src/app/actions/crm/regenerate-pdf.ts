@@ -115,9 +115,9 @@ export async function regenerateContractPdf(
       `smlouvy/${se.client.id}/${Date.now()}-${filename}`,
       pdfBuffer,
       {
-        access: "public",
+        access: "private",
         contentType: "application/pdf",
-        addRandomSuffix: false,
+        addRandomSuffix: true,
       }
     );
     fileUrl = blob.url;

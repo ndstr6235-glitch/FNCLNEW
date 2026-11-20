@@ -462,9 +462,9 @@ export async function sendEmail(
                 `smlouvy/${clientId}/${Date.now()}-${pdfFilename}`,
                 pdfBuffer,
                 {
-                  access: "public",
+                  access: "private",
                   contentType: "application/pdf",
-                  addRandomSuffix: false,
+                  addRandomSuffix: true,
                 }
               );
               await prisma.document.create({

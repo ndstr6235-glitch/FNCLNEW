@@ -6,6 +6,7 @@ import { revalidatePath } from "next/cache";
 import { put, del } from "@vercel/blob";
 import { randomUUID } from "crypto";
 import { logAudit } from "@/lib/crm/server-log";
+import { documentHref } from "@/lib/crm/document-href";
 
 const ALLOWED_TYPES = [
   "application/pdf",
@@ -115,7 +116,8 @@ export async function getAllDocuments(filters?: {
       id: d.id,
       name: d.name,
       fileName: d.fileName,
-      fileUrl: d.fileUrl,
+      // Skutečná adresa souboru nikdy neodchází do prohlížeče
+      fileUrl: documentHref(d.id),
       fileSize: d.fileSize,
       mimeType: d.mimeType,
       uploadedBy: d.uploadedBy,
@@ -187,7 +189,7 @@ export async function getClientDocuments(
     id: d.id,
     name: d.name,
     fileName: d.fileName,
-    fileUrl: d.fileUrl,
+    fileUrl: documentHref(d.id),
     fileSize: d.fileSize,
     mimeType: d.mimeType,
     uploadedBy: d.uploadedBy,
@@ -227,9 +229,9 @@ export async function uploadDocument(
     `documents/${clientId}/${uniqueName}`,
     buffer,
     {
-      access: "public",
+      access: "private",
       contentType: file.type,
-      addRandomSuffix: false,
+      addRandomSuffix: true,
     }
   );
 

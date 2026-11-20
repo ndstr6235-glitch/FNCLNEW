@@ -56,9 +56,9 @@ export async function uploadPdfToSentEmail(
       `smlouvy/${se.client.id}/${Date.now()}-${filename}`,
       buffer,
       {
-        access: "public",
+        access: "private",
         contentType: "application/pdf",
-        addRandomSuffix: false,
+        addRandomSuffix: true,
       }
     );
     fileUrl = blob.url;
