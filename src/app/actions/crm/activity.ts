@@ -6,22 +6,7 @@ import { getSession } from "@/lib/crm/auth";
 // ---------------------------------------------------------------------------
 // Types
 // ---------------------------------------------------------------------------
-export type ActivityType =
-  | "CLIENT_CREATED"
-  | "CLIENT_UPDATED"
-  | "PAYMENT_ADDED"
-  | "PAYMENT_PAID"
-  | "PAYMENT_UNPAID"
-  | "EMAIL_SENT"
-  | "EVENT_CREATED"
-  | "NOTE_CHANGED"
-  | "ASSIGNED_TO_CHANGED"
-  | "GDPR_UNSUBSCRIBE"
-  | "GDPR_RESUBSCRIBE"
-  | "CLIENT_DATA_RECEIVED"
-  | "CLIENT_REPLIED"
-  | "PAYOUT_SCHEDULED"
-  | "LEAD_HANDED_OVER";
+export type { ActivityType } from "@/lib/crm/activity-types";
 
 export interface ActivityRow {
   id: string;
@@ -36,23 +21,6 @@ export interface ActivityRow {
 // ---------------------------------------------------------------------------
 // Log activity (called from other server actions)
 // ---------------------------------------------------------------------------
-export async function logActivity(
-  clientId: string,
-  userId: string,
-  type: ActivityType,
-  description: string,
-  metadata: Record<string, unknown> = {}
-) {
-  await prisma.activity.create({
-    data: {
-      clientId,
-      userId,
-      type,
-      description,
-      metadata: JSON.stringify(metadata),
-    },
-  });
-}
 
 // ---------------------------------------------------------------------------
 // Get activities for a client (paginated)

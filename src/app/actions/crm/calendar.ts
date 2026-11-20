@@ -3,7 +3,7 @@
 import { prisma } from "@/lib/crm/db";
 import { getSession } from "@/lib/crm/auth";
 import { revalidatePath } from "next/cache";
-import { logActivity } from "./activity";
+import { logActivity } from "@/lib/crm/server-log";
 
 const EVENT_TYPE_MAP: Record<string, string> = {
   CALL: "call",

@@ -4,7 +4,7 @@ import { revalidatePath, updateTag } from "next/cache";
 import { getSession } from "@/lib/crm/auth";
 import { insertLeadBatch } from "@/lib/crm/lead-import";
 import type { ParsedLead } from "@/lib/crm/lead-parse";
-import { logAudit } from "./audit";
+import { logAudit } from "@/lib/crm/server-log";
 
 const MAX_CHUNK = 500;
 const MAX_LEN = 300;

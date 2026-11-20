@@ -2,7 +2,7 @@
 
 import { prisma } from "@/lib/crm/db";
 import { getSession } from "@/lib/crm/auth";
-import { createNotification } from "./notifications";
+import { createNotification } from "@/lib/crm/server-log";
 
 export type TicketStatus = "OPEN" | "IN_PROGRESS" | "DONE" | "CANCELLED";
 export type TicketPriority = "LOW" | "MEDIUM" | "HIGH" | "URGENT";

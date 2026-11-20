@@ -220,32 +220,5 @@ async function generateAutoNotifications(userId: string) {
   }
 }
 
-// Generic helper to create a notification
-export async function createNotification(
-  userId: string,
-  type: string,
-  title: string,
-  message: string,
-  link?: string
-): Promise<void> {
-  await prisma.notification.create({
-    data: { userId, type, title, message, link },
-  });
-}
 
-// Called when admin assigns a client to a broker
-export async function createAssignmentNotification(
-  brokerId: string,
-  clientName: string,
-  clientId: string
-): Promise<void> {
-  await prisma.notification.create({
-    data: {
-      userId: brokerId,
-      type: "client_assigned",
-      title: "Nový klient přiřazen",
-      message: `${clientName} vám byl přiřazen`,
-      link: `/clients?open=${clientId}`,
-    },
-  });
-}
+

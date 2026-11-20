@@ -2,8 +2,8 @@
 
 import { prisma } from "@/lib/crm/db";
 import { getSession } from "@/lib/crm/auth";
-import { logActivity } from "./activity";
-import { logAudit } from "./audit";
+import { logActivity } from "@/lib/crm/server-log";
+import { logAudit } from "@/lib/crm/server-log";
 import { formatLocalDate } from "@/lib/crm/payout-schedule";
 import { generateUniqueVS } from "@/lib/crm/variable-symbol";
 

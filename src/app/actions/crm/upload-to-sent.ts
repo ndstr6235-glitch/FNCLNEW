@@ -3,7 +3,7 @@
 import { prisma } from "@/lib/crm/db";
 import { getSession } from "@/lib/crm/auth";
 import { put } from "@vercel/blob";
-import { logAudit } from "./audit";
+import { logAudit } from "@/lib/crm/server-log";
 
 const MAX_SIZE = 20 * 1024 * 1024; // 20MB
 

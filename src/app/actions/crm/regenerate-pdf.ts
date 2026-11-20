@@ -4,7 +4,7 @@ import { prisma } from "@/lib/crm/db";
 import { getSession } from "@/lib/crm/auth";
 import { put } from "@vercel/blob";
 import { generateProposalPdf } from "@/lib/crm/proposal-pdf";
-import { logAudit } from "./audit";
+import { logAudit } from "@/lib/crm/server-log";
 
 /**
  * Regeneruje PDF pro starou odeslanou smlouvu (SentEmail bez Document záznamu).

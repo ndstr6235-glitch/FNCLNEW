@@ -125,7 +125,7 @@ export async function markTaskDone(eventId: string, note?: string): Promise<void
   });
 
   if (event?.clientId) {
-    const { logActivity } = await import("./activity");
+    const { logActivity } = await import("@/lib/crm/server-log");
     await logActivity(
       event.clientId,
       session.id,

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { deleteSession, getSession } from "@/lib/crm/auth";
-import { logAudit } from "@/app/actions/crm/audit";
+import { logAudit } from "@/lib/crm/server-log";
 
 export async function POST(request: NextRequest) {
   const session = await getSession();

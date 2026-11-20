@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { Resend } from "resend";
 import { getSession } from "@/lib/crm/auth";
 import { prisma } from "@/lib/crm/db";
-import { logAudit } from "@/app/actions/crm/audit";
+import { logAudit } from "@/lib/crm/server-log";
 import { generateProposalPdf } from "@/lib/crm/proposal-pdf";
 import { contractFileName, finalContractFromForm } from "@/lib/crm/final-contract-data";
 import { COMPANY_SIGNATORY } from "@/lib/crm/company";

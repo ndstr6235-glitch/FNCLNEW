@@ -5,7 +5,7 @@ import { getSession } from "@/lib/crm/auth";
 import { revalidatePath } from "next/cache";
 import { deletePayoutEventsOfClients } from "@/lib/crm/payout-events";
 import { Resend } from "resend";
-import { logAudit } from "./audit";
+import { logAudit } from "@/lib/crm/server-log";
 
 async function requireAdminOrSupervisor() {
   const session = await getSession();

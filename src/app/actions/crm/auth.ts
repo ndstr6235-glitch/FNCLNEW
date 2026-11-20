@@ -5,7 +5,7 @@ import bcrypt from "bcryptjs";
 import { headers } from "next/headers";
 import { createSession, deleteSession, getSession } from "@/lib/crm/auth";
 import { redirect } from "next/navigation";
-import { logAudit } from "./audit";
+import { logAudit } from "@/lib/crm/server-log";
 import type { Role } from "@/lib/crm/types";
 
 const MAX_FAILED_PER_IP = 10;

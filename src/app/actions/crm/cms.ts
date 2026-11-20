@@ -15,6 +15,7 @@ async function checkAdmin() {
 // ---------------------------------------------------------------------------
 
 export async function getEmissions() {
+  if (!(await checkAdmin())) return [];
   return prisma.webEmission.findMany({ orderBy: { sortOrder: "asc" } });
 }
 
@@ -51,6 +52,7 @@ export async function deleteEmission(id: string) {
 // ---------------------------------------------------------------------------
 
 export async function getProjects() {
+  if (!(await checkAdmin())) return [];
   return prisma.webProject.findMany({ orderBy: { sortOrder: "asc" } });
 }
 
@@ -85,6 +87,7 @@ export async function deleteProject(id: string) {
 // ---------------------------------------------------------------------------
 
 export async function getStats() {
+  if (!(await checkAdmin())) return [];
   return prisma.webStat.findMany({ orderBy: { sortOrder: "asc" } });
 }
 
@@ -117,6 +120,7 @@ export async function deleteStat(id: string) {
 // ---------------------------------------------------------------------------
 
 export async function getContents() {
+  if (!(await checkAdmin())) return [];
   return prisma.webContent.findMany();
 }
 
@@ -143,6 +147,7 @@ export async function deleteContent(key: string) {
 // ---------------------------------------------------------------------------
 
 export async function getNews() {
+  if (!(await checkAdmin())) return [];
   return prisma.webNews.findMany({ orderBy: { sortOrder: "asc" } });
 }
 
@@ -177,6 +182,7 @@ export async function deleteNews(id: string) {
 // ---------------------------------------------------------------------------
 
 export async function getTestimonials() {
+  if (!(await checkAdmin())) return [];
   return prisma.webTestimonial.findMany({ orderBy: { sortOrder: "asc" } });
 }
 

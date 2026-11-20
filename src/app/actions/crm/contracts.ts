@@ -2,7 +2,7 @@
 
 import { getSession } from "@/lib/crm/auth";
 import { prisma } from "@/lib/crm/db";
-import { logAudit } from "./audit";
+import { logAudit } from "@/lib/crm/server-log";
 import { Resend } from "resend";
 import { buildUnsubscribeUrl } from "@/lib/crm/unsubscribe-token";
 import { unsubscribeFooterHtml } from "@/lib/crm/email-footer";

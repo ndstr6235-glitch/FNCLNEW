@@ -1,4 +1,4 @@
-"use server";
+import "server-only";
 
 import { prisma } from "@/lib/crm/db";
 import { unstable_cache } from "next/cache";

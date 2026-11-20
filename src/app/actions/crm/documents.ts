@@ -5,7 +5,7 @@ import { getSession } from "@/lib/crm/auth";
 import { revalidatePath } from "next/cache";
 import { put, del } from "@vercel/blob";
 import { randomUUID } from "crypto";
-import { logAudit } from "./audit";
+import { logAudit } from "@/lib/crm/server-log";
 
 const ALLOWED_TYPES = [
   "application/pdf",

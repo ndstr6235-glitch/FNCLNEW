@@ -5,7 +5,7 @@ import { prisma } from "@/lib/crm/db";
 import { getSession } from "@/lib/crm/auth";
 import { getPoolUserId } from "@/lib/crm/pool-user";
 import { getLeadSourcePrefs, saveLeadSourcePrefs } from "@/lib/crm/lead-sources";
-import { logAudit } from "./audit";
+import { logAudit } from "@/lib/crm/server-log";
 
 export interface DistributionPerson {
   id: string;

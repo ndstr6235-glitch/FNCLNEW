@@ -5,7 +5,7 @@ import {
   distributeLeads,
   type DistributeLeadsResult,
 } from "@/lib/crm/distribute-leads-core";
-import { logAudit } from "./audit";
+import { logAudit } from "@/lib/crm/server-log";
 
 /**
  * Admin-only manual trigger from the dashboard.

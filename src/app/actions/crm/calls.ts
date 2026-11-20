@@ -3,8 +3,8 @@
 import { prisma } from "@/lib/crm/db";
 import { getSession } from "@/lib/crm/auth";
 import { revalidatePath } from "next/cache";
-import { logActivity } from "./activity";
-import { logAudit } from "./audit";
+import { logActivity } from "@/lib/crm/server-log";
+import { logAudit } from "@/lib/crm/server-log";
 import { CALL_OUTCOMES, getOutcomeMeta } from "@/lib/crm/call-outcomes";
 import type { EventType } from "@prisma/client";
 

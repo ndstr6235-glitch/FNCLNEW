@@ -4,7 +4,7 @@ import { prisma } from "@/lib/crm/db";
 import { getSession } from "@/lib/crm/auth";
 import { revalidatePath } from "next/cache";
 import { getHandovers, HANDOVER_REASON, type HandoverInfo } from "@/lib/crm/handover";
-import { logActivity } from "./activity";
+import { logActivity } from "@/lib/crm/server-log";
 
 export interface CallingLead {
   id: string;
