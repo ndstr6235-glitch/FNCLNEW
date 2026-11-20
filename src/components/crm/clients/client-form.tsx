@@ -262,10 +262,14 @@ export default function ClientForm({
             value={bankAccount}
             onChange={(e) => setBankAccount(e.target.value)}
             placeholder="123456789/0300"
-            className="w-full px-3 py-2.5 min-h-[44px] border border-border bg-surface text-sm text-text placeholder:text-text-faint focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
+            // isBroker = kdokoli kromě administrátora; číslo účtu mění jen admin
+            disabled={isBroker}
+            className="w-full px-3 py-2.5 min-h-[44px] border border-border bg-surface text-sm text-text placeholder:text-text-faint focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition disabled:opacity-60 disabled:cursor-not-allowed"
           />
           <p className="mt-1 text-[11px] text-text-faint">
-            Použije se v PDF smlouvy jako bankovní spojení Věřitele i v každém upozornění na výplatu úroku.
+            {isBroker
+              ? "Číslo účtu může zadat nebo změnit jen administrátor."
+              : "Použije se v PDF smlouvy jako bankovní spojení Věřitele i v každém upozornění na výplatu úroku."}
           </p>
         </div>
 

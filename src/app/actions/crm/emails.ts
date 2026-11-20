@@ -565,7 +565,8 @@ export async function sendEmail(
       setIfFilled("street", contractMeta.street);
       setIfFilled("city", contractMeta.city);
       setIfFilled("zip", contractMeta.zip);
-      setIfFilled("bankAccount", contractMeta.bankAccount);
+      // Číslo účtu na kartě mění jen administrátor
+      if (session.role === "administrator") setIfFilled("bankAccount", contractMeta.bankAccount);
       // Only fill name if Client has none yet (don't overwrite existing name)
       if (contractMeta.firstName || contractMeta.lastName) {
         const existing = await prisma.client.findUnique({

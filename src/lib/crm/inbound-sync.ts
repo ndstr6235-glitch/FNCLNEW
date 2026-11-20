@@ -331,6 +331,11 @@ export function splitAgainstCard(
   ) => {
     if (incoming === undefined || incoming === "" || incoming === 0) return;
     const isEmpty = current === "" || current === 0 || current === null;
+    // Číslo účtu se z e-mailu nikdy nezapisuje samo — vždy ho potvrdí administrátor
+    if (field === "bankAccount") {
+      if (String(current).trim() !== String(incoming).trim()) pending[field] = incoming;
+      return;
+    }
     if (isEmpty) {
       applied[field] = incoming;
     } else if (String(current).trim() !== String(incoming).trim()) {

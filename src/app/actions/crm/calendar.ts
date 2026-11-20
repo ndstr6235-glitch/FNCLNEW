@@ -1,6 +1,7 @@
 "use server";
 
 import { prisma } from "@/lib/crm/db";
+import { ownEventsWhere } from "@/lib/crm/event-scope";
 import { getSession } from "@/lib/crm/auth";
 import { revalidatePath } from "next/cache";
 import { logActivity } from "@/lib/crm/server-log";
@@ -47,7 +48,7 @@ export async function getMonthEvents(
 
   const events = await prisma.calEvent.findMany({
     where: {
-      ...(isBroker ? { userId: session.id } : {}),
+      ...(isBroker ? ownEventsWhere(session.id) : {}),
       date: { gte: startDate, lt: endDate },
     },
     include: {

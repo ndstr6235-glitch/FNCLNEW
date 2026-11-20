@@ -2,6 +2,7 @@
 
 import { getSession } from "@/lib/crm/auth";
 import { prisma } from "@/lib/crm/db";
+import { ownEventsWhere } from "@/lib/crm/event-scope";
 import { clientSearchConditions } from "@/lib/crm/field-crypto";
 
 export interface SearchResult {
@@ -73,7 +74,7 @@ export async function globalSearch(query: string): Promise<{
   // Search events
   const eventWhere = {
     AND: [
-      isBroker ? { userId: session.id } : {},
+      isBroker ? ownEventsWhere(session.id) : {},
       {
         OR: [
           { title: { contains: q } },

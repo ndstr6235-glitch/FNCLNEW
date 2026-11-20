@@ -120,6 +120,9 @@ export async function confirmInboundField(
 
   const pending = parseJson(inbound.pending);
   if (!(field in pending)) return { success: false, error: "Údaj už byl vyřízen" };
+  if (field === "bankAccount" && session.role !== "administrator") {
+    return { success: false, error: "Číslo účtu může potvrdit jen administrátor" };
+  }
 
   const value = pending[field];
   await prisma.client.update({

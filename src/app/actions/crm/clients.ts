@@ -341,7 +341,8 @@ export async function createClient(data: {
       street: data.street?.trim() ?? "",
       city: data.city?.trim() ?? "",
       zip: data.zip?.trim() ?? "",
-      bankAccount: data.bankAccount?.trim() ?? "",
+      // Číslo účtu zadává jen administrátor
+      bankAccount: session.role === "administrator" ? data.bankAccount?.trim() ?? "" : "",
       investmentAmount: data.investmentAmount || 0,
       paymentReceivedDate: data.paymentReceivedDate?.trim() ?? "",
       callDate: data.callDate || new Date().toISOString().split("T")[0],
@@ -434,6 +435,8 @@ export async function updateClient(
       paymentReceivedDate: existing.paymentReceivedDate,
       nextPaymentDate: existing.nextPaymentDate,
       paymentFreq: existing.paymentFreq,
+      // Číslo účtu mění jen administrátor
+      bankAccount: existing.bankAccount,
     };
   }
 

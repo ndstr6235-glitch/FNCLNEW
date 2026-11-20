@@ -1,6 +1,7 @@
 "use server";
 
 import { prisma } from "@/lib/crm/db";
+import { ownEventsWhere } from "@/lib/crm/event-scope";
 import { getSession } from "@/lib/crm/auth";
 import { removeOrphanedPayoutEvents } from "@/lib/crm/payout-events";
 
@@ -19,7 +20,10 @@ export async function getNotifications(): Promise<NotificationRow[]> {
   if (!session) return [];
 
   // Generate auto-notifications before fetching
-  await generateAutoNotifications(session.id);
+  await generateAutoNotifications(
+    session.id,
+    session.role === "broker" || session.role === "operator"
+  );
 
   const notifications = await prisma.notification.findMany({
     where: { userId: session.id },
@@ -67,7 +71,9 @@ export async function markAllAsRead(): Promise<void> {
   });
 }
 
-async function generateAutoNotifications(userId: string) {
+async function generateAutoNotifications(userId: string, restricted: boolean) {
+  // Makléř/operátor: jen události klientů, kteří mu stále patří
+  const scope = restricted ? ownEventsWhere(userId) : { userId };
   const today = new Date().toISOString().split("T")[0];
   const tomorrow = new Date(Date.now() + 86400000).toISOString().split("T")[0];
 
@@ -112,7 +118,7 @@ async function generateAutoNotifications(userId: string) {
   // Find calls scheduled for today
   const todayCalls = await prisma.calEvent.findMany({
     where: {
-      userId,
+      ...scope,
       date: today,
       type: "CALL",
     },
@@ -139,7 +145,7 @@ async function generateAutoNotifications(userId: string) {
   // Find reminders for today
   const todayReminders = await prisma.calEvent.findMany({
     where: {
-      userId,
+      ...scope,
       date: today,
       type: "REMINDER",
     },
@@ -168,7 +174,7 @@ async function generateAutoNotifications(userId: string) {
 
   const upcomingInterestEvents = await prisma.calEvent.findMany({
     where: {
-      userId,
+      ...scope,
       type: "INTEREST",
       date: { gte: today, lte: threeDaysFromNow },
     },

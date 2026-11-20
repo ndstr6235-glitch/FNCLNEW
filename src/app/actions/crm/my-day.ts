@@ -2,6 +2,7 @@
 
 import { getSession } from "@/lib/crm/auth";
 import { prisma } from "@/lib/crm/db";
+import { ownEventsWhere } from "@/lib/crm/event-scope";
 
 export interface DayTask {
   id: string;
@@ -48,7 +49,7 @@ export async function getMyDayData(): Promise<MyDayData> {
   const events = await prisma.calEvent.findMany({
     where: {
       date: today,
-      ...(isBroker ? { userId: session.id } : {}),
+      ...(isBroker ? ownEventsWhere(session.id) : {}),
     },
     include: {
       client: { select: { firstName: true, lastName: true, phone: true } },
