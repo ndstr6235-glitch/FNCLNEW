@@ -1,34 +1,38 @@
 import "server-only";
 
 import { cookies } from "next/headers";
-import { encrypt, decrypt, type SessionPayload } from "./session";
-
-const COOKIE_NAME = "session";
+import {
+  encrypt,
+  decrypt,
+  cookieMaxAge,
+  SESSION_COOKIE,
+  type SessionPayload,
+  type SessionUser,
+} from "./session";
 
 export type { SessionPayload };
 
-export async function createSession(
-  user: Omit<SessionPayload, "expiresAt">
-) {
-  const token = await encrypt(user);
+export async function createSession(user: SessionUser) {
+  const loginAt = Date.now();
+  const token = await encrypt(user, loginAt);
   const cookieStore = await cookies();
-  cookieStore.set(COOKIE_NAME, token, {
+  cookieStore.set(SESSION_COOKIE, token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "strict",
     path: "/",
-    maxAge: 60 * 60 * 24 * 7, // 7 days
+    maxAge: cookieMaxAge({ loginAt }),
   });
 }
 
 export async function getSession(): Promise<SessionPayload | null> {
   const cookieStore = await cookies();
-  const token = cookieStore.get(COOKIE_NAME)?.value;
+  const token = cookieStore.get(SESSION_COOKIE)?.value;
   if (!token) return null;
   return decrypt(token);
 }
 
 export async function deleteSession() {
   const cookieStore = await cookies();
-  cookieStore.delete(COOKIE_NAME);
+  cookieStore.delete(SESSION_COOKIE);
 }

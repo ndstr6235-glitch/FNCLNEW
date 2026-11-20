@@ -4,6 +4,7 @@ import { SidebarProvider } from "@/components/crm/layout/sidebar-context";
 import Sidebar from "@/components/crm/layout/sidebar";
 import DashboardMain from "@/components/crm/layout/dashboard-main";
 import { ToastProvider } from "@/components/crm/ui/toast";
+import IdleLogout from "@/components/crm/layout/idle-logout";
 
 export default async function CrmLayout({
   children,
@@ -27,6 +28,7 @@ export default async function CrmLayout({
 
   return (
     <ToastProvider>
+      <IdleLogout />
       <SidebarProvider>
         <div className="flex min-h-dvh overflow-x-hidden max-w-[100dvw]">
           <Sidebar user={user} />

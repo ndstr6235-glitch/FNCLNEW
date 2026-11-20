@@ -1,6 +1,12 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { jwtVerify } from "jose";
+import {
+  decrypt,
+  refresh,
+  cookieMaxAge,
+  SESSION_COOKIE,
+  SESSION_REFRESH_MS,
+} from "@/lib/crm/session";
 
 const CRM_ROUTES = [
   "/dashboard", "/clients", "/cms", "/emails", "/calendar",
@@ -39,20 +45,26 @@ export async function middleware(request: NextRequest) {
     return NextResponse.rewrite(new URL(staticPages[pathname], request.url));
   }
 
-  // Protect CRM routes — verify session JWT
+  // Protect CRM routes — platná session, max 12 h, odhlášení po 30 min nečinnosti
   if (isCrmRoute(pathname)) {
-    const token = request.cookies.get("session")?.value;
-    if (!token) {
-      return NextResponse.redirect(new URL("/login", request.url));
+    const token = request.cookies.get(SESSION_COOKIE)?.value;
+    const session = token ? await decrypt(token) : null;
+    if (!session) {
+      const response = NextResponse.redirect(new URL("/login", request.url));
+      if (token) response.cookies.delete(SESSION_COOKIE);
+      return response;
     }
 
-    try {
-      const secret = new TextEncoder().encode(process.env.SESSION_SECRET);
-      await jwtVerify(token, secret);
-    } catch {
-      // Invalid or expired token — clear cookie and redirect
-      const response = NextResponse.redirect(new URL("/login", request.url));
-      response.cookies.delete("session");
+    // Aktivita → posunout poslední aktivitu (nejvýš jednou za minutu)
+    if (Date.now() - session.lastSeen > SESSION_REFRESH_MS) {
+      const response = NextResponse.next();
+      response.cookies.set(SESSION_COOKIE, await refresh(session), {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+        path: "/",
+        maxAge: cookieMaxAge(session),
+      });
       return response;
     }
   }
