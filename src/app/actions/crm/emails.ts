@@ -5,6 +5,7 @@ import { getSession } from "@/lib/crm/auth";
 import { Resend } from "resend";
 import { put } from "@vercel/blob";
 import { logAudit } from "@/lib/crm/server-log";
+import { WORKED_CLIENT_WHERE } from "@/lib/crm/contacted";
 import { logActivity } from "@/lib/crm/server-log";
 import { buildUnsubscribeUrl } from "@/lib/crm/unsubscribe-token";
 import { plainBodyToHtml, plainBodyWithFooter } from "@/lib/crm/email-footer";
@@ -44,13 +45,16 @@ export async function getEmailPageData(): Promise<EmailPageData | null> {
   const roleUpper = session.role.toUpperCase();
 
   const [rawClients, rawTemplates, user] = await Promise.all([
+    // Jen opracovaní klienti (ne nedotčený pool 240k+ leadů) a s limitem —
+    // stránka nesmí stáhnout celou databázi osobních údajů najednou.
     prisma.client.findMany({
-      where: isBroker ? { assignedTo: session.id } : {},
+      where: isBroker ? { assignedTo: session.id } : WORKED_CLIENT_WHERE,
       include: {
         payments: { select: { amount: true, paid: true } },
         user: { select: { firstName: true, lastName: true } },
       },
       orderBy: { firstName: "asc" },
+      take: 5000,
     }),
     prisma.emailTemplate.findMany({
       orderBy: { label: "asc" },
@@ -137,34 +141,6 @@ export const updateUserSignature = updateSignature;
 // ---------------------------------------------------------------------------
 // Individual data fetchers (used by page.tsx and drawer-tab-email.tsx)
 // ---------------------------------------------------------------------------
-export async function getEmailClients(): Promise<EmailClientRow[]> {
-  const session = await getSession();
-  if (!session) return [];
-
-  const isBroker = (session.role === "broker" || session.role === "operator");
-
-  const rawClients = await prisma.client.findMany({
-    where: isBroker ? { assignedTo: session.id } : {},
-    include: {
-      payments: { select: { amount: true, paid: true } },
-      user: { select: { firstName: true, lastName: true } },
-    },
-    orderBy: { firstName: "asc" },
-  });
-
-  return rawClients.map((c) => ({
-    id: c.id,
-    firstName: c.firstName,
-    lastName: c.lastName,
-    email: c.email,
-    phone: c.phone,
-    isInvestor: c.payments.some((p) => p.paid),
-    totalDeposit: c.payments.filter((p) => p.paid).reduce((s, p) => s + p.amount, 0),
-    note: c.note,
-    brokerName: `${c.user.firstName} ${c.user.lastName}`,
-  }));
-}
-
 export async function getEmailTemplates(): Promise<EmailTemplateRow[]> {
   const session = await getSession();
   if (!session) return [];
@@ -307,10 +283,34 @@ export async function sendEmail(
     }
   }
 
+  const isRestricted = session.role === "broker" || session.role === "operator";
   if (clientId) {
-    const cli = await prisma.client.findUnique({ where: { id: clientId }, select: { dnc: true } });
-    if (cli?.dnc) {
+    const cli = await prisma.client.findUnique({
+      where: { id: clientId },
+      select: { dnc: true, assignedTo: true },
+    });
+    if (!cli) return { success: false, error: "Klient nenalezen" };
+    // Makléř/operátor smí psát (a tím měnit kartu) jen svým klientům
+    if (isRestricted && cli.assignedTo !== session.id) {
+      return { success: false, error: "Klient vám není přidělen" };
+    }
+    if (cli.dnc) {
       return { success: false, error: "Klient je v DNC listu — nelze odeslat e-mail" };
+    }
+  }
+  // Adresa patřící klientovi v DNC nebo cizímu klientovi — i bez clientId
+  {
+    const { emailHash } = await import("@/lib/crm/field-crypto");
+    const owners = await prisma.client.findMany({
+      where: { emailHash: emailHash(to) },
+      select: { dnc: true, assignedTo: true },
+      take: 20,
+    });
+    if (owners.some((o) => o.dnc)) {
+      return { success: false, error: "Adresa je v DNC listu — nelze odeslat e-mail" };
+    }
+    if (isRestricted && owners.length > 0 && !owners.some((o) => o.assignedTo === session.id)) {
+      return { success: false, error: "Adresa patří klientovi jiného makléře" };
     }
   }
 

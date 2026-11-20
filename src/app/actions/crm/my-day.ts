@@ -110,19 +110,24 @@ export async function markTaskDone(eventId: string, note?: string): Promise<void
   const session = await getSession();
   if (!session) return;
 
-  // Add a note to the event if provided
+  const event = await prisma.calEvent.findUnique({
+    where: { id: eventId },
+    select: { clientId: true, title: true, type: true, userId: true },
+  });
+  if (!event) return;
+  // Výplaty úroků upravuje jen administrátor, ostatní jen své události
+  if (event.type === "INTEREST" && session.role !== "administrator") return;
+  if (
+    (session.role === "broker" || session.role === "operator") &&
+    event.userId !== session.id
+  ) return;
+
   if (note) {
     await prisma.calEvent.update({
       where: { id: eventId },
       data: { note },
     });
   }
-
-  // Log activity if event has a client
-  const event = await prisma.calEvent.findUnique({
-    where: { id: eventId },
-    select: { clientId: true, title: true, type: true },
-  });
 
   if (event?.clientId) {
     const { logActivity } = await import("@/lib/crm/server-log");

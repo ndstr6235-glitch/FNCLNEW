@@ -1,6 +1,8 @@
 import { getSession } from "@/lib/crm/auth";
 import { prisma } from "@/lib/crm/db";
 import { redirect } from "next/navigation";
+import { WORKED_CLIENT_WHERE } from "@/lib/crm/contacted";
+import { watchDataExport } from "@/lib/crm/server-log";
 
 export default async function PrintContactsPage() {
   const session = await getSession();
@@ -9,12 +11,18 @@ export default async function PrintContactsPage() {
   const isBroker = (session.role === "broker" || session.role === "operator");
 
   const clients = await prisma.client.findMany({
-    where: isBroker ? { assignedTo: session.id, dnc: false } : undefined,
+    // Bez nedotčeného poolu a bez DNC; každý tisk se zapisuje do auditu
+    where: isBroker
+      ? { assignedTo: session.id, dnc: false }
+      : { AND: [WORKED_CLIENT_WHERE, { dnc: false }] },
+    take: 5000,
     include: {
       user: { select: { firstName: true, lastName: true } },
     },
     orderBy: [{ assignedTo: "asc" }, { lastName: "asc" }, { firstName: "asc" }],
   });
+
+  await watchDataExport(session, "Tisk kontaktů", clients.length);
 
   // Group by broker
   const grouped = new Map<string, typeof clients>();

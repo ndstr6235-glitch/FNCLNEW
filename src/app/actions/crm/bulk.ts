@@ -5,7 +5,7 @@ import { getSession } from "@/lib/crm/auth";
 import { revalidatePath } from "next/cache";
 import { deletePayoutEventsOfClients } from "@/lib/crm/payout-events";
 import { Resend } from "resend";
-import { logAudit } from "@/lib/crm/server-log";
+import { logAudit, watchDataExport } from "@/lib/crm/server-log";
 
 async function requireAdminOrSupervisor() {
   const session = await getSession();
@@ -75,6 +75,30 @@ export async function bulkSendPrezentace(
   if (!session) return { success: false, sent: 0, error: "Nepřihlášen." };
   if (!emails.length) return { success: false, sent: 0, error: "Žádné emaily." };
   if (emails.length > 300) return { success: false, sent: 0, error: "Najednou lze poslat nejvýš 300 e-mailů." };
+
+  // Adresy klientů v DNC se nikdy neposílají; makléř/operátor nesmí psát
+  // klientům jiných makléřů. Nové adresy (lidé mimo databázi) projdou.
+  const blocked: string[] = [];
+  {
+    const { emailHash } = await import("@/lib/crm/field-crypto");
+    const restricted = session.role === "broker" || session.role === "operator";
+    const allowed: string[] = [];
+    for (const e of emails) {
+      const owners = await prisma.client.findMany({
+        where: { emailHash: emailHash(e) },
+        select: { dnc: true, assignedTo: true },
+        take: 20,
+      });
+      const isDnc = owners.some((o) => o.dnc);
+      const foreign = restricted && owners.length > 0 && !owners.some((o) => o.assignedTo === session.id);
+      if (isDnc || foreign) blocked.push(e);
+      else allowed.push(e);
+    }
+    emails = allowed;
+  }
+  if (!emails.length) {
+    return { success: false, sent: 0, error: `Žádná adresa nejde odeslat (DNC nebo klient jiného makléře): ${blocked.join(", ")}` };
+  }
 
   const key = process.env.RESEND_API_KEY;
   if (!key) return { success: false, sent: 0, error: "RESEND_API_KEY chybí." };
@@ -167,8 +191,11 @@ export async function bulkSendPrezentace(
     "BULK_EMAIL",
     "email",
     undefined,
-    `Hromadná Prezentace: ${totalSent}/${emails.length} odesláno`
+    `Hromadná Prezentace: ${totalSent}/${emails.length} odesláno` +
+      (blocked.length ? `, zablokováno ${blocked.length} (DNC / cizí klient)` : "")
   );
+  // Zablokované adresy se vrací jako neodeslané, aby je makléř viděl
+  failed.push(...blocked);
 
   if (totalSent === 0) {
     return { success: false, sent: 0, failed, error: "Odeslání selhalo." };
@@ -198,5 +225,6 @@ export async function bulkExportCSV(clientIds: string[]) {
     return `"${c.firstName}","${c.lastName}","${c.email}","${c.phone}",${totalDeposit},${totalProfit},"${broker}","${c.stage}"`;
   }).join("\n");
 
+  await watchDataExport(session, "Export CSV", clients.length);
   return { success: true, csv: header + rows };
 }

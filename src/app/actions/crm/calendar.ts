@@ -93,6 +93,13 @@ export async function createEvent(data: {
     return { success: false, error: "Výplaty úroků může plánovat jen administrátor" };
   }
 
+  if (data.clientId && (session.role === "broker" || session.role === "operator")) {
+    const owner = await prisma.client.findUnique({ where: { id: data.clientId }, select: { assignedTo: true } });
+    if (!owner || owner.assignedTo !== session.id) {
+      return { success: false, error: "Klient vám není přidělen" };
+    }
+  }
+
   const eventDate = data.date || new Date().toISOString().split("T")[0];
   const eventTime = data.time || "09:00";
 

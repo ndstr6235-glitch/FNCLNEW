@@ -20,7 +20,8 @@ export async function regenerateContractPdf(
 ): Promise<{ success: true; documentId: string } | { success: false; error: string }> {
   const session = await getSession();
   if (!session) return { success: false, error: "Nepřihlášen" };
-  if ((session.role === "broker" || session.role === "operator"))
+  // Finální smlouvy jsou jen pro administrátora
+  if (session.role !== "administrator")
     return { success: false, error: "Nemáte oprávnění" };
 
   const se = await prisma.sentEmail.findUnique({

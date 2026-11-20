@@ -33,6 +33,10 @@ export async function scheduleInterestPayments(
 ): Promise<{ success: true; eventsCreated: number } | { success: false; error: string }> {
   const session = await getSession();
   if (!session) return { success: false, error: "Neautorizovaný přístup" };
+  // Vklady a výplaty úroků zakládá jen administrátor (volá se z finální smlouvy)
+  if (session.role !== "administrator") {
+    return { success: false, error: "Výplaty úroků může plánovat jen administrátor" };
+  }
 
   const {
     clientId,

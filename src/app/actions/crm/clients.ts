@@ -9,7 +9,7 @@ import { logActivity } from "@/lib/crm/server-log";
 import { deletePayoutEventsOfClients } from "@/lib/crm/payout-events";
 import { calculateScore } from "@/lib/crm/scoring";
 import { createAssignmentNotification } from "@/lib/crm/server-log";
-import { logAudit } from "@/lib/crm/server-log";
+import { logAudit, watchClientView } from "@/lib/crm/server-log";
 import { sendEmail } from "./emails";
 import { SENSITIVE_METADATA_KEYS } from "@/lib/crm/lead-import";
 import { computePayoutSchedule } from "@/lib/crm/payout-schedule";
@@ -119,6 +119,8 @@ export async function getClientDetail(
   if ((session.role === "broker" || session.role === "operator") && client.assignedTo !== session.id) {
     return null;
   }
+  // Zápis a kontrola limitu až po odpovědi, ať se karta neotevírá pomaleji
+  after(() => watchClientView(session, clientId));
 
   // Totals reflect actually paid money, not just scheduled
   const paidPayments = client.payments.filter((p) => p.paid);

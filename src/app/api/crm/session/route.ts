@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { prisma } from "@/lib/crm/db";
 import {
   decrypt,
   refresh,
@@ -10,7 +11,10 @@ import {
 export async function POST(request: NextRequest) {
   const token = request.cookies.get(SESSION_COOKIE)?.value;
   const session = token ? await decrypt(token) : null;
-  if (!session) {
+  const account = session
+    ? await prisma.user.findUnique({ where: { id: session.id }, select: { active: true } })
+    : null;
+  if (!session || !account?.active) {
     const res = NextResponse.json({ ok: false }, { status: 401 });
     res.cookies.delete(SESSION_COOKIE);
     return res;

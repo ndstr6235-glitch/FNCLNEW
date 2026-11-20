@@ -178,6 +178,13 @@ export async function createTicket(data: {
     return { success: false, error: "Název je povinný" };
   }
 
+  if (data.clientId && (session.role === "broker" || session.role === "operator")) {
+    const owner = await prisma.client.findUnique({ where: { id: data.clientId }, select: { assignedTo: true } });
+    if (!owner || owner.assignedTo !== session.id) {
+      return { success: false, error: "Klient vám není přidělen" };
+    }
+  }
+
   const assigneeId = (session.role === "broker" || session.role === "operator") ? undefined : data.assigneeId;
 
   const ticket = await prisma.ticket.create({

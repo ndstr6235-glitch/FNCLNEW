@@ -23,7 +23,7 @@ export async function generateContract(
   }
 
   // Only admin and supervisor can generate contracts
-  if ((session.role === "broker" || session.role === "operator")) {
+  if (session.role !== "administrator") {
     return { success: false, error: "Nemáte oprávnění generovat smlouvy" };
   }
 
@@ -59,7 +59,7 @@ export async function sendContractEmail(
     return { success: false, error: "Neautorizovaný přístup" };
   }
 
-  if ((session.role === "broker" || session.role === "operator")) {
+  if (session.role !== "administrator") {
     return { success: false, error: "Nemáte oprávnění odesílat smlouvy" };
   }
 

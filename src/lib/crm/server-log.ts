@@ -93,3 +93,76 @@ export async function createAssignmentNotification(
     },
   });
 }
+
+// ---------------------------------------------------------------------------
+// Hlídání stahování dat — upozorní administrátory na export, tisk kontaktů
+// a nezvykle mnoho otevřených karet klientů za hodinu.
+// ---------------------------------------------------------------------------
+
+/** Kolik karet klientů za hodinu je ještě normální práce. */
+export const CLIENT_VIEWS_PER_HOUR_ALERT = 100;
+const ALERT_EMAIL = "info@puskinpartners.cz";
+
+type Who = { id: string; firstName: string; lastName: string; role: string };
+
+async function alertAdmins(who: Who, title: string, message: string) {
+  try {
+    const admins = await prisma.user.findMany({
+      where: { role: "ADMINISTRATOR", active: true },
+      select: { id: true },
+    });
+    await Promise.all(
+      admins.map((a) => createNotification(a.id, "security", title, message, "/settings/audit"))
+    );
+  } catch (err) {
+    console.error("alertAdmins notification failed:", err);
+  }
+  try {
+    const key = process.env.RESEND_API_KEY;
+    if (!key) return;
+    const { Resend } = await import("resend");
+    await new Resend(key).emails.send({
+      from: "CRM Puskin Partners <info@puskinpartners.cz>",
+      to: ALERT_EMAIL,
+      subject: `Bezpečnost CRM: ${title}`,
+      text: `${message}\n\nUživatel: ${who.firstName} ${who.lastName} (${who.role})\nČas: ${new Date().toLocaleString("cs-CZ", { timeZone: "Europe/Prague" })}\n\nPodrobnosti v CRM → Nastavení → Audit.`,
+    });
+  } catch (err) {
+    console.error("alertAdmins e-mail failed:", err);
+  }
+}
+
+/** Otevření karty klienta: zapíše do auditu a při překročení limitu upozorní. */
+export async function watchClientView(who: Who, clientId: string) {
+  try {
+    await logAudit(who.id, "VIEW_CLIENT", "client", clientId);
+    const since = new Date(Date.now() - 60 * 60 * 1000);
+    const views = await prisma.auditLog.count({
+      where: { userId: who.id, action: "VIEW_CLIENT", createdAt: { gte: since } },
+    });
+    if (views < CLIENT_VIEWS_PER_HOUR_ALERT) return;
+    // Nejvýš jedno upozornění za hodinu na uživatele
+    const alerted = await prisma.auditLog.count({
+      where: { userId: who.id, action: "DATA_ALERT", createdAt: { gte: since } },
+    });
+    if (alerted > 0) return;
+    await logAudit(who.id, "DATA_ALERT", "client", undefined, `${views} karet klientů za hodinu`);
+    await alertAdmins(
+      who,
+      "Nezvykle mnoho otevřených klientů",
+      `${who.firstName} ${who.lastName} otevřel(a) za poslední hodinu ${views} karet klientů.`
+    );
+  } catch (err) {
+    console.error("watchClientView failed:", err);
+  }
+}
+
+/** Export nebo tisk osobních údajů — vždy audit + upozornění administrátorům. */
+export async function watchDataExport(who: Who, kind: string, count: number) {
+  await logAudit(who.id, "DATA_EXPORT", "client", undefined, `${kind}: ${count} klientů`);
+  await alertAdmins(
+    who,
+    `${kind} (${count} klientů)`,
+    `${who.firstName} ${who.lastName} provedl(a) ${kind.toLowerCase()} — ${count} klientů.`
+  );
+}
