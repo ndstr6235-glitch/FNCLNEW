@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import Link from "next/link";
 import { verifyTwoFactor } from "@/app/actions/crm/auth";
 
@@ -9,9 +9,19 @@ export default function TwoFactorForm({
   setup,
 }: {
   firstName: string;
-  setup: { qr: string; secret: string } | null;
+  setup: { qr: string; secret: string; uri: string } | null;
 }) {
   const [state, action, pending] = useActionState(verifyTwoFactor, undefined);
+  const [copied, setCopied] = useState(false);
+
+  async function copyKey() {
+    if (!setup) return;
+    try {
+      await navigator.clipboard.writeText(setup.secret.replace(/\s/g, ""));
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2500);
+    } catch {}
+  }
 
   return (
     <div className="min-h-dvh flex items-center justify-center px-4 py-8 bg-ink">
@@ -30,20 +40,50 @@ export default function TwoFactorForm({
               <p>
                 {firstName}, přihlášení do CRM je chráněné kódem z mobilu. Nastavíte ho jen jednou:
               </p>
-              <ol className="list-decimal pl-5 space-y-1">
-                <li>Nainstalujte si aplikaci <strong>Google Authenticator</strong> (nebo Microsoft Authenticator).</li>
-                <li>V aplikaci zvolte <strong>+</strong> → <strong>Naskenovat QR kód</strong>.</li>
-                <li>Opište 6místný kód, který aplikace ukáže.</li>
-              </ol>
-              <div className="flex justify-center py-2">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={setup.qr} alt="QR kód pro Google Authenticator" width={220} height={220} className="bg-white p-2" />
+              {/* Na mobilu: otevřít rovnou v aplikaci */}
+              <div className="md:hidden space-y-3">
+                <p className="font-medium text-on-dark/80">Přihlašujete se z mobilu:</p>
+                <ol className="list-decimal pl-5 space-y-1">
+                  <li>Nainstalujte si aplikaci <strong>Google Authenticator</strong>.</li>
+                  <li>Klepněte na tlačítko níže — otevře se aplikace a přidá účet.</li>
+                  <li>Vraťte se sem a opište 6místný kód z aplikace.</li>
+                </ol>
+                <a
+                  href={setup.uri}
+                  className="flex h-12 items-center justify-center border border-brass text-brass font-semibold text-sm"
+                >
+                  Přidat do Authenticatoru
+                </a>
+                <p className="text-xs text-on-dark/40">
+                  Nic se neotevřelo? V aplikaci dejte <strong>+</strong> → <strong>Zadat klíč nastavení</strong>,
+                  název „Puskin“, vložte klíč a typ <strong>Podle času</strong>.
+                </p>
               </div>
-              <p className="text-xs text-on-dark/40 text-center">
-                Nejde naskenovat? Zadejte v aplikaci ručně klíč:
-                <br />
-                <code className="text-on-dark/70 tracking-wider select-all">{setup.secret}</code>
-              </p>
+
+              {/* Na počítači: naskenovat QR kód telefonem */}
+              <div className="hidden md:block space-y-3">
+                <ol className="list-decimal pl-5 space-y-1">
+                  <li>Nainstalujte si do telefonu aplikaci <strong>Google Authenticator</strong> (nebo Microsoft Authenticator).</li>
+                  <li>V aplikaci zvolte <strong>+</strong> → <strong>Naskenovat QR kód</strong>.</li>
+                  <li>Opište 6místný kód, který aplikace ukáže.</li>
+                </ol>
+                <div className="flex justify-center py-2">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={setup.qr} alt="QR kód pro Google Authenticator" width={220} height={220} className="bg-white p-2" />
+                </div>
+              </div>
+
+              <div className="text-xs text-on-dark/40 text-center space-y-2">
+                <p>Klíč pro ruční zadání:</p>
+                <code className="block text-on-dark/70 tracking-wider select-all">{setup.secret}</code>
+                <button
+                  type="button"
+                  onClick={copyKey}
+                  className="text-brass hover:text-brass-dark underline underline-offset-2"
+                >
+                  {copied ? "Zkopírováno ✓" : "Zkopírovat klíč"}
+                </button>
+              </div>
             </div>
           ) : (
             <p className="mb-6 text-sm text-on-dark/70">

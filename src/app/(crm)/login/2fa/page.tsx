@@ -10,14 +10,15 @@ export default async function TwoFactorPage() {
   const pending = await getPendingLogin();
   if (!pending) redirect("/login");
 
-  let setup: { qr: string; secret: string } | null = null;
+  let setup: { qr: string; secret: string; uri: string } | null = null;
   if (pending.setupSecret) {
     const secret = openSetupSecret(pending.setupSecret);
-    const qr = await QRCode.toDataURL(totpUri(secret, pending.user.email), {
+    const uri = totpUri(secret, pending.user.email);
+    const qr = await QRCode.toDataURL(uri, {
       margin: 1,
       width: 220,
     });
-    setup = { qr, secret: secret.replace(/(.{4})/g, "$1 ").trim() };
+    setup = { qr, uri, secret: secret.replace(/(.{4})/g, "$1 ").trim() };
   }
 
   return <TwoFactorForm firstName={pending.user.firstName} setup={setup} />;

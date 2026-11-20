@@ -19,6 +19,9 @@ import {
 } from "@/lib/crm/two-factor";
 import type { Role } from "@/lib/crm/types";
 
+/** Vyžadovat kód z Google Authenticatoru po hesle. */
+const TWO_FACTOR_REQUIRED = false;
+
 const MAX_FAILED_PER_IP = 10;
 const MAX_FAILED_PER_EMAIL = 5;
 const WINDOW_MIN = 5;
@@ -122,6 +125,15 @@ export async function login(
     email: user.email,
     role: ROLE_MAP[user.role] || "broker",
   };
+  // Dvoufázové ověření je zatím vypnuté (2026-11-20, na přání majitele).
+  // Zapnutí: TWO_FACTOR_REQUIRED = true — nic dalšího měnit netřeba.
+  if (!TWO_FACTOR_REQUIRED) {
+    await recordLoginAttempt(email, ipAddress, true);
+    await createSession(sessionUser);
+    await logAudit(user.id, "LOGIN", "user", user.id, `${user.firstName} ${user.lastName}`);
+    redirect("/dashboard");
+  }
+
   const enrolled = await hasTotp(user.id);
   await setPendingLogin({
     user: sessionUser,
