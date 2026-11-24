@@ -8,7 +8,15 @@ import type { BrokerContactStats, DatabasePeriod } from "@/lib/crm/database-stat
 import { Big, PERIODS, Small, num } from "./database-overview";
 
 /** Broker's view of the contact database: what they were given and what is still waiting. */
-export default function MyContactsOverview({ stats }: { stats: BrokerContactStats }) {
+export default function MyContactsOverview({
+  stats,
+  brokerId,
+}: {
+  stats: BrokerContactStats;
+  /** Set when an admin looks at a broker's card (third-person labels, link to their contacts) */
+  brokerId?: string;
+}) {
+  const admin = !!brokerId;
   const [period, setPeriod] = useState<DatabasePeriod>("week");
   const p = stats.periods[period];
 
@@ -20,9 +28,9 @@ export default function MyContactsOverview({ stats }: { stats: BrokerContactStat
             <Database size={18} />
           </span>
           <div>
-            <h3 className="text-sm font-semibold text-text">Moje kontakty</h3>
+            <h3 className="text-sm font-semibold text-text">{admin ? "Kontakty" : "Moje kontakty"}</h3>
             <p className="text-[11px] text-text-dim">
-              Otevřený kontakt = poprvé jste mu volali nebo psali
+              {admin ? "Otevřený kontakt = poprvé mu volal nebo psal" : "Otevřený kontakt = poprvé jste mu volali nebo psali"}
             </p>
           </div>
         </div>
@@ -45,19 +53,19 @@ export default function MyContactsOverview({ stats }: { stats: BrokerContactStat
       </div>
 
       <div className="mt-4 grid grid-cols-3 gap-3">
-        <Big label="Přiděleno mi" value={num(p.assigned)} />
-        <Big label="Otevřel jsem" value={num(p.opened)} />
-        <Big label="Moje vlastní kontakty" value={num(p.own)} />
+        <Big label={admin ? "Přiděleno" : "Přiděleno mi"} value={num(p.assigned)} />
+        <Big label={admin ? "Otevřel" : "Otevřel jsem"} value={num(p.opened)} />
+        <Big label={admin ? "Vlastní kontakty" : "Moje vlastní kontakty"} value={num(p.own)} />
       </div>
 
       <div className="mt-3 grid grid-cols-2 gap-3">
-        <Small label="Mám celkem" value={num(stats.total)} />
+        <Small label={admin ? "Má celkem" : "Mám celkem"} value={num(stats.total)} />
         <Small label="Čeká na první hovor" value={num(stats.waiting)} />
       </div>
 
       {stats.waiting > 0 && (
         <Link
-          href="/clients?outcome=none"
+          href={admin ? `/clients?broker=${brokerId}&outcome=none` : "/clients?outcome=none"}
           className="mt-4 w-full flex items-center justify-center gap-2 px-4 py-2.5 border border-border text-sm font-semibold text-text hover:bg-surface-hover"
         >
           Zobrazit kontakty, které čekají <ArrowRight size={14} />

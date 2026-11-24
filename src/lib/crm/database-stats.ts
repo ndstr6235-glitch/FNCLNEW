@@ -43,7 +43,7 @@ export interface DatabaseStats {
 const SOURCE_ROWS = 8;
 
 /** Midnight in Czech time — the server runs in UTC. */
-function pragueDayStart(): Date {
+export function pragueDayStart(): Date {
   const now = new Date();
   const local = new Date(now.toLocaleString("en-US", { timeZone: "Europe/Prague" }));
   const offsetMin = Math.round((local.getTime() - now.getTime()) / 60000);

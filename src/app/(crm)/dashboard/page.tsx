@@ -57,7 +57,7 @@ export default async function DashboardPage() {
   let totalDeposits: number;
   let totalProfit: number;
   let pipelineCounts: Record<string, number> = {};
-  let topBrokers: { name: string; totalProfit: number; clientCount: number }[] =
+  let topBrokers: { id: string; name: string; totalProfit: number; clientCount: number }[] =
     [];
 
   if (isBroker) {

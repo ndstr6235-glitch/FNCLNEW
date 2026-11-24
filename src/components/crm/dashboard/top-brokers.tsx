@@ -1,7 +1,9 @@
 import { fmtCZK } from "@/lib/crm/utils";
+import Link from "next/link";
 import { Medal } from "lucide-react";
 
 interface BrokerItem {
+  id: string;
   name: string;
   totalProfit: number;
   clientCount: number;
@@ -32,7 +34,11 @@ export default function TopBrokers({ brokers, visible }: TopBrokersProps) {
               .map((w) => w[0])
               .join("");
             return (
-              <div key={i} className="flex items-center gap-3">
+              <Link
+                key={broker.id}
+                href={`/users/${broker.id}`}
+                className="flex items-center gap-3 -mx-2 px-2 py-1 hover:bg-surface-hover transition-colors"
+              >
                 <div className="w-6 text-center shrink-0">
                   {i < 3 ? (
                     <Medal size={18} className={MEDAL_COLORS[i]} />
@@ -56,7 +62,7 @@ export default function TopBrokers({ brokers, visible }: TopBrokersProps) {
                 <span className="text-sm font-semibold text-emerald">
                   {fmtCZK(broker.totalProfit)}
                 </span>
-              </div>
+              </Link>
             );
           })}
         </div>

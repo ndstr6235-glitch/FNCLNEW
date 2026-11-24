@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { Pencil, Trash2, Power, FileSignature, KeyRound } from "lucide-react";
 import { cn } from "@/lib/crm/utils";
 import { useToast } from "@/components/crm/ui/toast";
@@ -97,14 +98,14 @@ export default function UsersTable({
                         {user.firstName[0]}
                         {user.lastName[0]}
                       </div>
-                      <span className="font-medium text-text">
+                      <Link href={`/users/${user.id}`} className="font-medium text-text hover:text-gold hover:underline">
                         {user.firstName} {user.lastName}
                         {isSelf && (
                           <span className="ml-1.5 text-[10px] text-text-dim">
                             (vy)
                           </span>
                         )}
-                      </span>
+                      </Link>
                     </div>
                   </td>
 

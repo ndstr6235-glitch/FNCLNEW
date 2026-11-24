@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { Pencil, Trash2, Power, FileSignature, KeyRound } from "lucide-react";
 import { cn } from "@/lib/crm/utils";
 import { useToast } from "@/components/crm/ui/toast";
@@ -79,14 +80,14 @@ export default function UsersCards({
                   {user.lastName[0]}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold text-text truncate">
+                  <Link href={`/users/${user.id}`} className="block text-sm font-semibold text-text truncate hover:text-gold">
                     {user.firstName} {user.lastName}
                     {isSelf && (
                       <span className="ml-1 text-[10px] text-text-dim">
                         (vy)
                       </span>
                     )}
-                  </p>
+                  </Link>
                   <p className="text-xs text-text-dim truncate">{user.email}</p>
                 </div>
                 <span

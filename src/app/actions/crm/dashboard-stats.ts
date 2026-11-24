@@ -10,7 +10,7 @@ export interface CompanyDashboardStats {
   totalDeposits: number;
   totalProfit: number;
   pipelineCounts: Record<string, number>;
-  topBrokers: { name: string; totalProfit: number; clientCount: number }[];
+  topBrokers: { id: string; name: string; totalProfit: number; clientCount: number }[];
 }
 
 /**
@@ -74,6 +74,7 @@ async function computeCompanyDashboardStats(): Promise<CompanyDashboardStats> {
   const topBrokers = brokers
     .filter((b) => b.email !== "pool@system.local")
     .map((b) => ({
+      id: b.id,
       name: `${b.firstName} ${b.lastName}`,
       totalProfit: profitByBroker.get(b.id) ?? 0,
       clientCount: clientCountById.get(b.id) ?? 0,
@@ -92,6 +93,6 @@ async function computeCompanyDashboardStats(): Promise<CompanyDashboardStats> {
 
 export const getCompanyDashboardStats = unstable_cache(
   computeCompanyDashboardStats,
-  ["dashboard-company-stats"],
+  ["dashboard-company-stats-v2"],
   { revalidate: 300 }
 );
