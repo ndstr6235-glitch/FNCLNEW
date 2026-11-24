@@ -189,14 +189,14 @@ export default function UserForm({ open, onClose, editData }: UserFormProps) {
             <input
               type="number"
               min={0}
-              max={150}
+              max={300}
               value={dailyLeadQuota}
               onChange={(e) => setDailyLeadQuota(e.target.value)}
               className="w-full px-3 py-2.5 min-h-[44px] border border-border bg-surface text-sm text-text focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition"
             />
             <p className="text-[11px] text-text-dim mt-1">
               Kolik nových leadů z poolu se brokerovi denně přiřadí (cron běží
-              ráno). Max 150.
+              ráno). Max 300.
             </p>
           </div>
         )}

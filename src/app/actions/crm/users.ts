@@ -42,6 +42,7 @@ export async function getUsers(): Promise<UserRow[]> {
 }
 
 const MIN_PASSWORD_LEN = 8;
+const MAX_DAILY_LEAD_QUOTA = 300;
 
 function validatePassword(pw: string): string | null {
   if (pw.length < MIN_PASSWORD_LEN) {
@@ -83,7 +84,7 @@ export async function createUser(data: {
 
   const quota =
     typeof data.dailyLeadQuota === "number" && data.dailyLeadQuota >= 0
-      ? Math.min(150, Math.floor(data.dailyLeadQuota))
+      ? Math.min(MAX_DAILY_LEAD_QUOTA, Math.floor(data.dailyLeadQuota))
       : 150;
 
   await prisma.user.create({
@@ -142,7 +143,7 @@ export async function updateUser(
   }
 
   if (typeof data.dailyLeadQuota === "number" && data.dailyLeadQuota >= 0) {
-    updateData.dailyLeadQuota = Math.min(150, Math.floor(data.dailyLeadQuota));
+    updateData.dailyLeadQuota = Math.min(MAX_DAILY_LEAD_QUOTA, Math.floor(data.dailyLeadQuota));
   }
 
   await prisma.user.update({
