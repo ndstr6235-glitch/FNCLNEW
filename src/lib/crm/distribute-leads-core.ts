@@ -55,24 +55,35 @@ export async function distributeLeads(
     });
     const needed = Math.max(0, broker.dailyLeadQuota - waiting);
 
-    // Sources are drawn in the order they are listed (first one is used up
-    // before the next); no preference = any source, oldest first.
+    // Several sources → mix them evenly (one from each in turn); when a source
+    // runs out the others fill the gap. No preference = any source, oldest first.
     const leads: { id: string }[] = [];
-    const sources = sourcePrefs[broker.id]?.length ? sourcePrefs[broker.id] : [null];
-    for (const source of sources) {
-      const missing = needed - leads.length;
-      if (missing <= 0) break;
-      const batch = await prisma.client.findMany({
-        where: {
-          assignedTo: poolId,
-          dnc: false,
-          ...(source !== null ? { source } : {}),
-        },
-        orderBy: { createdAt: "asc" },
-        take: missing,
-        select: { id: true },
-      });
-      leads.push(...batch);
+    if (needed > 0) {
+      const sources = sourcePrefs[broker.id]?.length ? sourcePrefs[broker.id] : [null];
+      const batches = await Promise.all(
+        sources.map((source) =>
+          prisma.client.findMany({
+            where: {
+              assignedTo: poolId,
+              dnc: false,
+              ...(source !== null ? { source } : {}),
+            },
+            orderBy: { createdAt: "asc" },
+            take: needed,
+            select: { id: true },
+          })
+        )
+      );
+      for (let i = 0; leads.length < needed; i++) {
+        let added = false;
+        for (const batch of batches) {
+          if (i < batch.length && leads.length < needed) {
+            leads.push(batch[i]);
+            added = true;
+          }
+        }
+        if (!added) break;
+      }
     }
 
     if (leads.length === 0) {
