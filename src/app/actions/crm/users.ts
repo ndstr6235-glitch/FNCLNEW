@@ -3,6 +3,7 @@
 import { prisma } from "@/lib/crm/db";
 import { getSession } from "@/lib/crm/auth";
 import { revalidatePath } from "next/cache";
+import { logAudit } from "@/lib/crm/server-log";
 import bcrypt from "bcryptjs";
 
 export interface UserRow {
@@ -152,6 +153,24 @@ export async function updateUser(
   });
 
   revalidatePath("/users");
+  return { success: true };
+}
+
+/** Admin: change only the daily lead quota (from the broker card). */
+export async function setUserQuota(
+  id: string,
+  quota: number
+): Promise<{ success: boolean; error?: string }> {
+  const session = await getSession();
+  if (!session || session.role !== "administrator") {
+    return { success: false, error: "Nemáte oprávnění" };
+  }
+  if (!Number.isFinite(quota) || quota < 0) return { success: false, error: "Neplatná kvóta" };
+  const value = Math.min(MAX_DAILY_LEAD_QUOTA, Math.floor(quota));
+  await prisma.user.update({ where: { id }, data: { dailyLeadQuota: value } });
+  await logAudit(session.id, "UPDATE_USER", "user", id, `Denní kvóta: ${value}`);
+  revalidatePath("/users");
+  revalidatePath(`/users/${id}`);
   return { success: true };
 }
 
