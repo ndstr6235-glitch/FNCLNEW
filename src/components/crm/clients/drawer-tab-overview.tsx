@@ -14,7 +14,7 @@ import {
   CalendarCheck,
 } from "lucide-react";
 import { fmtDate, fmtCZK } from "@/lib/crm/utils";
-import CallOutcomeModal from "./call-outcome-modal";
+import QuickCallPanel from "@/components/crm/calling/quick-call-panel";
 import { getOutcomeMeta } from "@/lib/crm/call-outcomes";
 import CallOutcomeBadge from "./call-outcome-badge";
 import type { ClientDetail } from "@/app/actions/crm/clients";
@@ -100,7 +100,6 @@ export default function DrawerTabOverview({
   onDelete,
   onRefresh,
 }: DrawerTabOverviewProps) {
-  const [callOpen, setCallOpen] = useState(false);
   const [restoreOpen, setRestoreOpen] = useState(false);
   const [restoreReason, setRestoreReason] = useState("");
   const [restoring, setRestoring] = useState(false);
@@ -128,6 +127,77 @@ export default function DrawerTabOverview({
 
   return (
     <div className="p-4 md:p-6 space-y-5">
+      {/* Hovor — výsledek jedním klikem */}
+      {client.dnc ? (
+        <div className=" border-2 border-ruby-border bg-ruby-pale p-4 space-y-3">
+          <div className="flex items-center gap-2">
+            <span className="text-lg">🚫</span>
+            <div>
+              <p className="text-sm font-semibold text-ruby">
+                Klient v Do-Not-Call listu
+              </p>
+              <p className="text-[11px] text-ruby/70">
+                Tento klient si nepřeje další kontakt. Nevolat, neposílat e-maily.
+              </p>
+            </div>
+          </div>
+          {client.canRestoreContact &&
+            (restoreOpen ? (
+              <div className="space-y-2">
+                <textarea
+                  value={restoreReason}
+                  onChange={(e) => setRestoreReason(e.target.value)}
+                  rows={2}
+                  placeholder="Důvod (např. klient telefonicky potvrdil, že se odhlásil omylem)"
+                  className="w-full px-3 py-2 border border-border bg-white text-sm text-text"
+                />
+                {restoreError && (
+                  <p className="text-[11px] text-ruby">{restoreError}</p>
+                )}
+                <div className="flex gap-2">
+                  <button
+                    onClick={handleRestore}
+                    disabled={restoring || !restoreReason.trim()}
+                    className="flex-1 px-3 py-2 min-h-[44px] bg-brass text-white text-sm font-semibold disabled:opacity-50"
+                  >
+                    {restoring ? "Obnovuji…" : "Potvrdit obnovení"}
+                  </button>
+                  <button
+                    onClick={() => {
+                      setRestoreOpen(false);
+                      setRestoreError("");
+                    }}
+                    className="px-3 py-2 min-h-[44px] border border-border text-sm text-text-mid hover:bg-surface-hover"
+                  >
+                    Zrušit
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <button
+                onClick={() => setRestoreOpen(true)}
+                className="w-full px-3 py-2 min-h-[44px] border border-ruby-border bg-white text-sm font-medium text-ruby hover:bg-ruby-pale"
+              >
+                Zrušit odhlášení (klient se odhlásil omylem)
+              </button>
+            ))}
+        </div>
+      ) : (
+        <QuickCallPanel key={client.id} clientId={client.id} phone={client.phone} onLogged={() => onRefresh?.()} />
+      )}
+
+      {lastOutcome && (
+        <div className="flex items-center justify-center gap-2 -mt-2">
+          <span className="text-[11px] text-text-dim">Poslední výsledek:</span>
+          <CallOutcomeBadge outcome={client.lastCallOutcome} />
+          {client.lastCalledAt && (
+            <span className="text-[11px] text-text-dim">
+              {fmtDate(client.lastCalledAt)}
+            </span>
+          )}
+        </div>
+      )}
+
       {/* Where the contact came from */}
       <div className="border border-border bg-surface-hover px-3 py-2">
         <div className="text-[10px] uppercase tracking-wider text-text-dim">Původ kontaktu</div>
@@ -251,82 +321,6 @@ export default function DrawerTabOverview({
         onRefresh={onRefresh}
       />
 
-      {/* Po hovoru — primary CTA for call-center workflow */}
-      {client.dnc ? (
-        <div className=" border-2 border-ruby-border bg-ruby-pale p-4 space-y-3">
-          <div className="flex items-center gap-2">
-            <span className="text-lg">🚫</span>
-            <div>
-              <p className="text-sm font-semibold text-ruby">
-                Klient v Do-Not-Call listu
-              </p>
-              <p className="text-[11px] text-ruby/70">
-                Tento klient si nepřeje další kontakt. Nevolat, neposílat e-maily.
-              </p>
-            </div>
-          </div>
-          {client.canRestoreContact &&
-            (restoreOpen ? (
-              <div className="space-y-2">
-                <textarea
-                  value={restoreReason}
-                  onChange={(e) => setRestoreReason(e.target.value)}
-                  rows={2}
-                  placeholder="Důvod (např. klient telefonicky potvrdil, že se odhlásil omylem)"
-                  className="w-full px-3 py-2 border border-border bg-white text-sm text-text"
-                />
-                {restoreError && (
-                  <p className="text-[11px] text-ruby">{restoreError}</p>
-                )}
-                <div className="flex gap-2">
-                  <button
-                    onClick={handleRestore}
-                    disabled={restoring || !restoreReason.trim()}
-                    className="flex-1 px-3 py-2 min-h-[44px] bg-brass text-white text-sm font-semibold disabled:opacity-50"
-                  >
-                    {restoring ? "Obnovuji…" : "Potvrdit obnovení"}
-                  </button>
-                  <button
-                    onClick={() => {
-                      setRestoreOpen(false);
-                      setRestoreError("");
-                    }}
-                    className="px-3 py-2 min-h-[44px] border border-border text-sm text-text-mid hover:bg-surface-hover"
-                  >
-                    Zrušit
-                  </button>
-                </div>
-              </div>
-            ) : (
-              <button
-                onClick={() => setRestoreOpen(true)}
-                className="w-full px-3 py-2 min-h-[44px] border border-ruby-border bg-white text-sm font-medium text-ruby hover:bg-ruby-pale"
-              >
-                Zrušit odhlášení (klient se odhlásil omylem)
-              </button>
-            ))}
-        </div>
-      ) : (
-        <button
-          onClick={() => setCallOpen(true)}
-          className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-brass text-white text-sm font-semibold"
-        >
-          <Phone size={14} />
-          Po hovoru — zaznamenat výsledek
-        </button>
-      )}
-
-      {lastOutcome && (
-        <div className="flex items-center justify-center gap-2 -mt-2">
-          <CallOutcomeBadge outcome={client.lastCallOutcome} />
-          {client.lastCalledAt && (
-            <span className="text-[11px] text-text-dim">
-              {fmtDate(client.lastCalledAt)}
-            </span>
-          )}
-        </div>
-      )}
-
       {/* Action buttons */}
       <div className="flex gap-3">
         <button
@@ -344,13 +338,6 @@ export default function DrawerTabOverview({
         </button>
       </div>
 
-      <CallOutcomeModal
-        open={callOpen}
-        onClose={() => setCallOpen(false)}
-        onSuccess={onRefresh}
-        clientId={client.id}
-        clientName={`${client.firstName} ${client.lastName}`}
-      />
     </div>
   );
 }

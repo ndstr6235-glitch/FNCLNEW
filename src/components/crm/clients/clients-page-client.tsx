@@ -38,6 +38,9 @@ export interface ClientRow {
 }
 
 interface ClientsPageClientProps {
+  /** ?open= / ?tab= from the URL, read on the server so the first render matches */
+  initialOpenId?: string | null;
+  initialTab?: string | null;
   clients: ClientRow[];
   brokers: { id: string; name: string }[];
   isBroker: boolean;
@@ -69,22 +72,14 @@ export default function ClientsPageClient({
   pageSize = 200,
   userName,
   userEmail,
+  initialOpenId,
+  initialTab,
 }: ClientsPageClientProps) {
-  // Read ?open=<id> on mount AND react to URL changes so links from
-  // dashboard / notifications open the drawer even when already on /clients
-  const initialOpen =
-    typeof window !== "undefined"
-      ? new URLSearchParams(window.location.search).get("open")
-      : null;
-  const [selectedClientId, setSelectedClientId] = useState<string | null>(
-    initialOpen
-  );
+  // ?open=<id> opens the drawer (links from dashboard / notifications / broker card);
+  // the effect below keeps it in sync when the URL changes on /clients
+  const [selectedClientId, setSelectedClientId] = useState<string | null>(initialOpenId ?? null);
   // ?tab=email — notifications about a client's reply land on the thread
-  const [openTab, setOpenTab] = useState<string | null>(
-    typeof window !== "undefined"
-      ? new URLSearchParams(window.location.search).get("tab")
-      : null
-  );
+  const [openTab, setOpenTab] = useState<string | null>(initialTab ?? null);
   useEffect(() => {
     if (typeof window === "undefined") return;
     function syncFromUrl() {

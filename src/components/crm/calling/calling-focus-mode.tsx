@@ -1,15 +1,13 @@
 "use client";
 
-import { useState, useEffect, useTransition, useRef } from "react";
+import { useState, useEffect, useTransition } from "react";
 import type { CallingLead, CallingProgress, HandoverBroker } from "@/app/actions/crm/calling";
 import { getNextLeadToCall, getCallingProgress } from "@/app/actions/crm/calling";
 import HandoverPanel from "./handover-panel";
-import { logCall } from "@/app/actions/crm/calls";
-import { CALL_OUTCOMES } from "@/lib/crm/call-outcomes";
 import { COLORS } from "@/lib/crm/constants";
 import ProgressHeader from "./progress-header";
 import LeadCard from "./lead-card";
-import OutcomeButtons from "./outcome-buttons";
+import QuickCallPanel from "./quick-call-panel";
 import EmptyDone from "./empty-done";
 
 interface CallingFocusModeProps {
@@ -27,15 +25,7 @@ export default function CallingFocusMode({
   const [currentLead, setCurrentLead] = useState<CallingLead | null>(initialLead);
   const [progress, setProgress] = useState<CallingProgress>(initialProgress);
   const [skippedIds, setSkippedIds] = useState<Set<string>>(new Set());
-  const [selectedOutcome, setSelectedOutcome] = useState<string | null>(null);
-  const [callbackAt, setCallbackAt] = useState("");
   const [isPending, startTransition] = useTransition();
-  const callbackInputRef = useRef<HTMLInputElement>(null);
-
-  const requiresDate = selectedOutcome
-    ? CALL_OUTCOMES.find((o) => o.code === selectedOutcome) as { requiresDate?: boolean } | undefined
-    : undefined;
-  const needsDate = requiresDate?.requiresDate ?? false;
 
   async function refreshState(excludeIds: string[]) {
     const [next, prog] = await Promise.all([
@@ -44,38 +34,6 @@ export default function CallingFocusMode({
     ]);
     setCurrentLead(next);
     setProgress(prog);
-    setSelectedOutcome(null);
-    setCallbackAt("");
-  }
-
-  function handleOutcomeSelect(code: string) {
-    const meta = CALL_OUTCOMES.find((o) => o.code === code) as { requiresDate?: boolean } | undefined;
-    if (meta && (meta as { requiresDate?: boolean }).requiresDate) {
-      setSelectedOutcome(code);
-      setCallbackAt("");
-      setTimeout(() => callbackInputRef.current?.focus(), 50);
-    } else {
-      setSelectedOutcome(code);
-      handleSubmit(code, undefined);
-    }
-  }
-
-  function handleSubmit(outcome: string, cbAt: string | undefined) {
-    if (!currentLead) return;
-    startTransition(async () => {
-      await logCall({
-        clientId: currentLead.id,
-        outcome,
-        callbackAt: cbAt || undefined,
-      });
-      const excluded = Array.from(skippedIds);
-      await refreshState(excluded);
-    });
-  }
-
-  function handleCallbackSubmit() {
-    if (!selectedOutcome || !callbackAt) return;
-    handleSubmit(selectedOutcome, callbackAt);
   }
 
   function handleSkip() {
@@ -83,8 +41,6 @@ export default function CallingFocusMode({
     const next = new Set(skippedIds);
     next.add(currentLead.id);
     setSkippedIds(next);
-    setSelectedOutcome(null);
-    setCallbackAt("");
     startTransition(async () => {
       await refreshState(Array.from(next));
     });
@@ -109,16 +65,11 @@ export default function CallingFocusMode({
         return;
       }
 
-      const num = parseInt(e.key, 10);
-      if (num >= 1 && num <= CALL_OUTCOMES.length) {
-        e.preventDefault();
-        handleOutcomeSelect(CALL_OUTCOMES[num - 1].code);
-      }
     }
 
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [currentLead, isPending, skippedIds, selectedOutcome]);
+  });
 
   if (!currentLead) {
     return (
@@ -138,51 +89,12 @@ export default function CallingFocusMode({
       >
         <LeadCard lead={currentLead} />
 
-        <div
-          className="mx-4 mb-4 rounded-2xl border overflow-hidden"
-          style={{ borderColor: COLORS.border, background: COLORS.surface }}
-        >
-          <OutcomeButtons
-            onSelect={handleOutcomeSelect}
-            selectedOutcome={selectedOutcome}
-            disabled={isPending}
+        <div className="mx-4 mb-4">
+          <QuickCallPanel
+            key={currentLead.id}
+            clientId={currentLead.id}
+            onLogged={() => startTransition(async () => { await refreshState(Array.from(skippedIds)); })}
           />
-
-          {needsDate && selectedOutcome && (
-            <div
-              className="px-4 pb-4 flex flex-col gap-2 border-t pt-4"
-              style={{ borderColor: COLORS.border }}
-            >
-              <label
-                className="text-sm font-medium"
-                style={{ color: COLORS.textMid }}
-              >
-                {selectedOutcome === "SCHUZKA" ? "Datum a čas schůzky" : "Zavolat zpět"}
-              </label>
-              <div className="flex gap-2">
-                <input
-                  ref={callbackInputRef}
-                  type="datetime-local"
-                  value={callbackAt}
-                  onChange={(e) => setCallbackAt(e.target.value)}
-                  className="flex-1 px-3 py-2 border text-sm outline-none focus:ring-2"
-                  style={{
-                    borderColor: COLORS.border,
-                    color: COLORS.text,
-                    background: COLORS.bg,
-                  }}
-                />
-                <button
-                  onClick={handleCallbackSubmit}
-                  disabled={!callbackAt || isPending}
-                  className="px-4 py-2 text-sm font-medium text-white transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-                  style={{ background: COLORS.gold }}
-                >
-                  Potvrdit
-                </button>
-              </div>
-            </div>
-          )}
         </div>
 
         {handoverBrokers && (

@@ -200,6 +200,8 @@ export default async function ClientsRoute({ searchParams }: PageProps) {
 
   return (
     <ClientsPageClient
+      initialOpenId={typeof params.open === "string" ? params.open : null}
+      initialTab={typeof params.tab === "string" ? params.tab : null}
       clients={clients}
       brokers={brokers}
       isBroker={isBroker}
