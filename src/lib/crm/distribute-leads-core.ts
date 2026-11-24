@@ -55,21 +55,25 @@ export async function distributeLeads(
     });
     const needed = Math.max(0, broker.dailyLeadQuota - waiting);
 
-    const leads =
-      needed > 0
-        ? await prisma.client.findMany({
-            where: {
-              assignedTo: poolId,
-              dnc: false,
-              ...(sourcePrefs[broker.id]?.length
-                ? { source: { in: sourcePrefs[broker.id] } }
-                : {}),
-            },
-            orderBy: { createdAt: "asc" },
-            take: needed,
-            select: { id: true },
-          })
-        : [];
+    // Sources are drawn in the order they are listed (first one is used up
+    // before the next); no preference = any source, oldest first.
+    const leads: { id: string }[] = [];
+    const sources = sourcePrefs[broker.id]?.length ? sourcePrefs[broker.id] : [null];
+    for (const source of sources) {
+      const missing = needed - leads.length;
+      if (missing <= 0) break;
+      const batch = await prisma.client.findMany({
+        where: {
+          assignedTo: poolId,
+          dnc: false,
+          ...(source !== null ? { source } : {}),
+        },
+        orderBy: { createdAt: "asc" },
+        take: missing,
+        select: { id: true },
+      });
+      leads.push(...batch);
+    }
 
     if (leads.length === 0) {
       perBroker.push({
