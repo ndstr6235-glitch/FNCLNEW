@@ -316,7 +316,12 @@ export async function sendEmail(
 
   try {
     // Build sender name — use the team member name or default to company
-    const fromName = senderName || "Alexandr Puškin, s.r.o.";
+    // Makléř/operátor odesílá vždy pod svým jménem (jméno z prohlížeče se nebere)
+    const ownName = `${session.firstName} ${session.lastName}`.trim();
+    const requested = (senderName || "").replace(/[<>"\r\n]/g, "").trim();
+    const fromName = isRestricted
+      ? `${ownName} | Puskin and Partners`
+      : requested || "Alexandr Puškin, s.r.o.";
     const from = `${fromName} <info@puskinpartners.cz>`;
 
     // All replies always route to the shared info@ inbox

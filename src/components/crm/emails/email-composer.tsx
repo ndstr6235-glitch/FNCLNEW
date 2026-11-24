@@ -103,6 +103,13 @@ const TEAM_SIGNATURES = [
     email: "info@puskinpartners.cz",
     phone: "",
   },
+  {
+    id: "sinagl",
+    name: "Ruda Šinagl",
+    role: "Investment Advisor",
+    email: "info@puskinpartners.cz",
+    phone: "",
+  },
 ];
 
 // Email shown inside the signature block (shared inbox, not personal)
